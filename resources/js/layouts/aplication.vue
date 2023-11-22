@@ -62,7 +62,7 @@ export default {
                 { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/servicios' },
                 { nombre: 'Servicios Activos', icon: 'mdi-wrench-check', ruta: '/serviciosActivos' },
                 { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/servicios' },
-                { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/pilotos' },
+                { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
                 { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/serviciosMecanicos' },
                 { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
 

@@ -11,11 +11,7 @@ const routes = [
                 path: 'principal',
                 component: () => import('../web/ContactoCom.vue'),
             },
-            {
-                name: 'home',
-                path: 'home',
-                component: () => import('../web/HomeCom.vue')
-            }
+
         ],
     },
     {
@@ -32,6 +28,11 @@ const routes = [
                 name: 'homesite',
                 path: '/homesite',
                 component: () => import('../web/HomeCom.vue')
+            },
+            {
+                name: 'Pilotos',
+                path: '/Pilotos',
+                component: () => import('../Components/Pilotos/Pilotos.vue')
             }
         ]
     }
