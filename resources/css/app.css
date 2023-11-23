@@ -10,7 +10,12 @@ body {
     color: #FFFFFF;
 }
 
-.greyButton{
+.greyButton {
     background-color: #6c757d !important;
+    color: #FFFFFF !important;
+}
+
+.blueButton {
+    background-color: #1279C1 !important;
     color: #FFFFFF !important;
 }

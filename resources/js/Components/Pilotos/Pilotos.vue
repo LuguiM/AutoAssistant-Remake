@@ -11,14 +11,22 @@
 
             <v-card-Text>
                 <v-form>
-                    <v-text-field label="Nombre del piloto" prepend-inner-icon="mdi-car-search"
-                        class="inputStyle"></v-text-field>
-                    <v-btn variant="tonal" class="mr-2 btn-buscar">
-                        Buscar
-                    </v-btn>
-                    <v-btn variant="tonal" class="greyButton">
-                        Limpiar
-                    </v-btn>
+                    <v-row>
+                        <v-col cols="12" md="8">
+                            <v-text-field label="Nombre del piloto" prepend-inner-icon="mdi-car-search"
+                                class="inputStyle"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="4" class="d-flex align-center justify-center mb-5">
+                            <v-btn variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
+                                Buscar
+                            </v-btn>
+                            <v-btn variant="tonal" prepend-icon="mdi-trash-can" class="greyButton">
+                                Limpiar
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+
+
                 </v-form>
             </v-card-Text>
         </v-card>
@@ -94,10 +102,6 @@ export default {
     color: #FFFFFF;
 }
 
-.btn-buscar {
-    background-color: #1279C1;
-    color: #FFFFFF;
-}
 
 .card_piloto {
     height: 100%;

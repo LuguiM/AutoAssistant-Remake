@@ -44,6 +44,16 @@ const routes = [
                 path: '/crearPilotos',
                 component: () => import('../Components/Pilotos/CrearPiloto.vue')
             },
+            {
+                name: 'servicios-mecanicos',
+                path: '/servicios-mecanicos',
+                component: () => import('../Components/ServiciosMecanicos/ServiciosPerfiles.vue')
+            },
+            {
+                name: 'verServicio',
+                path: '/verServicio/:id',
+                component: () => import('../Components/ServiciosMecanicos/verServicio.vue')
+            }
 
         ]
     }
