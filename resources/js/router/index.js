@@ -33,7 +33,18 @@ const routes = [
                 name: 'Pilotos',
                 path: '/Pilotos',
                 component: () => import('../Components/Pilotos/Pilotos.vue')
-            }
+            },
+            {
+                name: 'verPilotos',
+                path: '/verPilotos',
+                component: () => import('../Components/Pilotos/VerPiloto.vue')
+            },
+            {
+                name: 'crearPilotos',
+                path: '/crearPilotos',
+                component: () => import('../Components/Pilotos/CrearPiloto.vue')
+            },
+
         ]
     }
 ];
