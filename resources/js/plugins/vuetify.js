@@ -21,7 +21,7 @@ export default createVuetify({
             light: {
                 defaultFont: 'Museo Sans Regular, sans-serif',
                 colors: {
-                    primary: '#30a4f1',
+                    primary: '#1279C1',
                     secondary: '#30a4f1',
                     bold: '#000000',
                     error: '#FF3E1D',

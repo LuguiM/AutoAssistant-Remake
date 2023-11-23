@@ -33,8 +33,10 @@
         <v-app-bar class="appNav" dense>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer">
             </v-app-bar-nav-icon>
-            <v-img aspect-ratio="16/9" src="../images/Logos/LogoBN.png"></v-img>
-            <v-img src="../images/Logos/LogonBlancoNegro.png"></v-img>
+
+            <v-spacer></v-spacer>
+
+            <v-img src="../images/Logos/sinLetrasLogo.png"></v-img>
 
 
             <v-spacer></v-spacer>

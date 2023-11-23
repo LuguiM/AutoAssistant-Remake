@@ -16,7 +16,7 @@
                     <v-btn variant="tonal" class="mr-2 btn-buscar">
                         Buscar
                     </v-btn>
-                    <v-btn variant="tonal" class="btn-limpiar">
+                    <v-btn variant="tonal" class="greyButton">
                         Limpiar
                     </v-btn>
                 </v-form>
@@ -28,12 +28,14 @@
                 <v-card class="text-center card_piloto">
                     <v-img class="img_piloto" :src="piloto.img"></v-img>
 
-                    <v-card-title style="white-space: normal;">
+                    <v-card-title class="card_title_p">
                         {{ piloto.titulo }}
                     </v-card-title>
 
                     <v-card-actions>
-                        <v-btn block class="btn-piloto" variant="outlined">Ver detalles</v-btn>
+                        <v-btn block prepend-icon="mdi-car-info" class="btn-piloto" variant="outlined"
+                            :to="{ path: '/verPiloto/' + piloto.id }">
+                            Ver detalles</v-btn>
                     </v-card-actions>
                 </v-card>
 
@@ -52,28 +54,28 @@ export default {
             pilotos: [
                 {
                     img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Advertencia del Airbag',
+                    titulo: 'Intermitente y luces de emergencia',
                     id: '1'
                 },
                 {
                     img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
                     titulo: 'Precion del aire',
-                    id: '1'
+                    id: '2'
                 },
                 {
                     img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
                     titulo: 'Servodireccion Electrica',
-                    id: '1'
+                    id: '3'
                 },
                 {
                     img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
                     titulo: 'Luz Antiniebla',
-                    id: '1'
+                    id: '4'
                 },
                 {
                     img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
                     titulo: 'Puertas abiertas',
-                    id: '1'
+                    id: '5'
                 },
             ]
         }
@@ -82,10 +84,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .fontPilotos {
     color: #FFFFFF !important;
-
 }
 
 .busquedaStyle {
@@ -98,12 +99,8 @@ export default {
     color: #FFFFFF;
 }
 
-.btn-limpiar {
-    background-color: #242424;
-    color: #FFFFFF;
-}
-
 .card_piloto {
+    height: 100%;
     max-width: 200px;
     margin: 0 auto;
     filter: brightness(50%);
@@ -120,15 +117,31 @@ export default {
     border-radius: 10px;
 }
 
-.card_piloto:hover {
-    filter: brightness(100%);
-}
-
-.card_piloto:hover .card_title_p {
-    color: initial;
+.card_title_p {
+    white-space: normal;
+    min-height: 112px;
+    max-height: 112px;
 }
 
 .btn-piloto {
     color: #1279C1;
+}
+
+
+.card_piloto:hover {
+    filter: brightness(100%);
+    transform: scale(1.05);
+    transition: transform .3s ease-out 0s;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+}
+
+.card_piloto:hover .card_title_p {
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.card_piloto:hover .btn-piloto {
+    color: #FFFFFF;
+    background-color: #1279C1;
 }
 </style>

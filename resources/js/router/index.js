@@ -35,8 +35,8 @@ const routes = [
                 component: () => import('../Components/Pilotos/Pilotos.vue')
             },
             {
-                name: 'verPilotos',
-                path: '/verPilotos',
+                name: 'verPiloto',
+                path: '/verPiloto/:id',
                 component: () => import('../Components/Pilotos/VerPiloto.vue')
             },
             {
