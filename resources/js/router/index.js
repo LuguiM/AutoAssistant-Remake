@@ -33,7 +33,28 @@ const routes = [
                 name: 'Pilotos',
                 path: '/Pilotos',
                 component: () => import('../Components/Pilotos/Pilotos.vue')
+            },
+            {
+                name: 'verPiloto',
+                path: '/verPiloto/:id',
+                component: () => import('../Components/Pilotos/VerPiloto.vue')
+            },
+            {
+                name: 'crearPilotos',
+                path: '/crearPilotos',
+                component: () => import('../Components/Pilotos/CrearPiloto.vue')
+            },
+            {
+                name: 'servicios-mecanicos',
+                path: '/servicios-mecanicos',
+                component: () => import('../Components/ServiciosMecanicos/ServiciosPerfiles.vue')
+            },
+            {
+                name: 'verServicio',
+                path: '/verServicio/:id',
+                component: () => import('../Components/ServiciosMecanicos/verServicio.vue')
             }
+
         ]
     }
 ];

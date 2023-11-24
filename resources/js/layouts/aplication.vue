@@ -33,8 +33,10 @@
         <v-app-bar class="appNav" dense>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer">
             </v-app-bar-nav-icon>
-            <v-img aspect-ratio="16/9" src="../images/Logos/LogoBN.png"></v-img>
-            <v-img src="../images/Logos/LogonBlancoNegro.png"></v-img>
+
+            <v-spacer></v-spacer>
+
+            <v-img src="../images/Logos/sinLetrasLogo.png"></v-img>
 
 
             <v-spacer></v-spacer>
@@ -63,7 +65,7 @@ export default {
                 { nombre: 'Servicios Activos', icon: 'mdi-wrench-check', ruta: '/serviciosActivos' },
                 { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/servicios' },
                 { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
-                { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/serviciosMecanicos' },
+                { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
                 { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
 
             ],
