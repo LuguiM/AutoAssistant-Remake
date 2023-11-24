@@ -61,7 +61,7 @@ export default {
             items: [
                 { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
                 { nombre: 'Perfil', icon: 'mdi-account', ruta: '/homesite' },
-                { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/servicios' },
+                { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
                 { nombre: 'Servicios Activos', icon: 'mdi-wrench-check', ruta: '/serviciosActivos' },
                 { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/servicios' },
                 { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
