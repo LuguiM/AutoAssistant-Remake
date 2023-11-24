@@ -53,6 +53,11 @@ const routes = [
                 name: 'verServicio',
                 path: '/verServicio/:id',
                 component: () => import('../Components/ServiciosMecanicos/verServicio.vue')
+            },
+            {
+                name: 'inscripcionServicios',
+                path: '/inscripcionServicios',
+                component: () => import('../Components/ServiciosMecanicos/InscripcionServicios.vue')
             }
 
         ]
