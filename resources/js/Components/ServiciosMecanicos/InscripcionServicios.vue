@@ -31,7 +31,9 @@
             </v-expansion-panel>
         </v-expansion-panels>
 
-        <v-btn block class="mt-5 bg-primary" prepend-icon="mdi-car-wrench">Inscribir servicio</v-btn>
+        <v-btn block class="mt-5 bg-primary" prepend-icon="mdi-car-wrench" :to="{ path: '/inscribirServicio' }">
+            Inscribir servicio mecanico
+        </v-btn>
 
         <v-row class="mt-5">
             <v-col cols="12">
@@ -56,10 +58,10 @@
                             </v-card-subtitle>
 
                             <v-card-actions>
-                                <v-btn class=" bg-primary" prepend-icon="mdi-car-wrench">
+                                <v-btn class=" bg-primary" prepend-icon="mdi-square-edit-outline">
                                     Modificar
                                 </v-btn>
-                                <v-btn class="bg-error" prepend-icon="mdi-car-wrench">
+                                <v-btn class="bg-error" prepend-icon="mdi-delete-outline">
                                     Eliminar
                                 </v-btn>
                             </v-card-actions>
@@ -87,10 +89,10 @@
                             </v-card-subtitle>
 
                             <v-card-actions class="text-center">
-                                <v-btn class=" bg-primary" prepend-icon="mdi-car-wrench">
+                                <v-btn class=" bg-primary" prepend-icon="mdi-square-edit-outline">
                                     Modificar
                                 </v-btn>
-                                <v-btn class="bg-error" prepend-icon="mdi-car-wrench">
+                                <v-btn class="bg-error" prepend-icon="mdi-delete-outline  ">
                                     Eliminar
                                 </v-btn>
                             </v-card-actions>
