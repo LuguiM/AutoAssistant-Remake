@@ -91,7 +91,7 @@
 
 
 <script setup>
-import { ref, toRefs, watch, } from 'vue';
+import { ref, watch, } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
@@ -103,7 +103,7 @@ const config = ref({
     noCalendar: true,
     dateFormat: "h:i K",
     time_24hr: false,
-    disableMobile: "true"
+    disableMobile: "true",
 });
 
 const dias = ref(['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']);

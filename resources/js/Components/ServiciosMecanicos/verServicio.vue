@@ -80,7 +80,8 @@
                                     </v-col>
                                     <v-col cols="12">
                                         <v-btn variant="outlined" block class="text-primary btnContratar"
-                                            prepend-icon="mdi-wrench-cog">Contratar servicio</v-btn>
+                                            prepend-icon="mdi-wrench-cog" @click="contratarModal = true">Contratar
+                                            servicio</v-btn>
                                     </v-col>
                                 </v-row>
 
@@ -91,19 +92,53 @@
                 </v-card>
             </v-col>
         </v-row>
+
+        <v-dialog v-model="contratarModal" width="auto">
+            <v-card width="550" style="background-color: #32525C;">
+                <v-card-text>
+                    <v-form>
+                        <v-row>
+                            <v-col cols="10">
+                                <h2 class="text-white">Contratar el servicio</h2>
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn elevation="0" color="error" @click="contratarModal = false">X</v-btn>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field class="btnModal" color="white" label="Nombre del conductor*" 
+                                    required></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field class="btnModal" label="Servicio a contratar*" variant="outlined"
+                                    required></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <VueDatePicker v-model="date" time-picker-inline teleport-center locale="es"
+                                    cancelText="Cancelar" selectText="Aceptar" placeholder="Fecha y hora" />
+                            </v-col>
+                            <v-col cols="12">
+                                <v-select class="selectModal" label="Seleccione el tipo de servicio"
+                                    :items="['Adomilicio', 'Cita en taller']" variant="outlined"></v-select>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-btn color="primary">Contratar servicio</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
     </v-container>
 </template>
 
-<script>
-export default {
+<script setup>
+import { ref } from 'vue';
 
-    data() {
-        return {
 
-        }
-    }
+const date = ref();
+const contratarModal = ref(false);
 
-}
 </script>
 
 <style>
@@ -116,4 +151,27 @@ export default {
     background-color: #1279C1;
     color: #FFFFFF !important;
 }
-</style>
+
+.btnModal .v-field--variant-filled .v-field__overlay {
+    background-color: #FFFFFF;
+    color: #242424;
+}
+
+.selectModal .v-input__control {
+    background-color: #FFFFFF;
+    color: #242424;
+}
+
+.dateTime {
+    border: #7A7A7A 1px solid;
+    width: 100%;
+    height: 56px;
+    padding-left: 10px;
+
+}
+
+.dateTime::placeholder {
+    padding-left: 10px;
+    color: #1279C1 !important;
+
+}</style>
