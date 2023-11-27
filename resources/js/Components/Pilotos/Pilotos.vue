@@ -53,43 +53,36 @@
 
     </v-container>
 </template>
+<script setup>
+import { ref } from 'vue';
 
-<script>
-export default {
-
-    data() {
-        return {
-            pilotos: [
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Intermitente y luces de emergencia',
-                    id: '1'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Precion del aire',
-                    id: '2'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Servodireccion Electrica',
-                    id: '3'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Luz Antiniebla',
-                    id: '4'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Puertas abiertas',
-                    id: '5'
-                },
-            ]
-        }
-    }
-
-}
+const pilotos = ref([
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Intermitente y luces de emergencia',
+        id: '1'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Precion del aire',
+        id: '2'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Servodireccion Electrica',
+        id: '3'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Luz Antiniebla',
+        id: '4'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Puertas abiertas',
+        id: '5'
+    },
+])
 </script>
 
 <style>

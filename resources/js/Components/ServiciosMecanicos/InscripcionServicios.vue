@@ -40,11 +40,11 @@
                 <h2>Servicios Inscritos</h2>
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12" sm="6">
                 <v-card class="inscritoCard">
                     <v-row>
-                        <v-col cols="12" md="4" class="pr-0">
-                            <v-img style="height: 100%; width: 100%;"
+                        <v-col cols="12" md="4">
+                            <v-img style="height: 100%;" class=""
                                 src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
                         </v-col>
 
@@ -57,11 +57,11 @@
                                 Creado: 12/09/2023
                             </v-card-subtitle>
 
-                            <v-card-actions>
+                            <v-card-actions class="text-center">
                                 <v-btn class=" bg-primary" prepend-icon="mdi-square-edit-outline">
                                     Modificar
                                 </v-btn>
-                                <v-btn class="bg-error" prepend-icon="mdi-delete-outline">
+                                <v-btn class="bg-error" prepend-icon="mdi-delete-outline  ">
                                     Eliminar
                                 </v-btn>
                             </v-card-actions>
@@ -71,7 +71,7 @@
                 </v-card>
 
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" sm="6">
                 <v-card class="inscritoCard">
                     <v-row>
                         <v-col cols="12" md="4">
