@@ -112,118 +112,117 @@
     </v-container>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            tab: null,
-            rubros: [
-                {
-                    label: "Mecanico",
-                    value: "Mecanico"
-                },
-                {
-                    label: "Electronico",
-                    value: "Electronico"
-                },
-                {
-                    label: "Enderezado y Pintura",
-                    value: "Enderezado y Pintura"
-                },
-                {
-                    label: "General de Caja",
-                    value: "General de Caja"
-                },
-                {
-                    label: "Lubricentro",
-                    value: "Lubricentro"
-                },
-                {
-                    label: "Llanteria",
-                    value: "Llanteria"
-                }
-            ],
-            serviciosMecanicos: [
-                {
-                    id: "1",
-                    image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                    servicio: "Cambio de alternador",
-                    rubro: "Lubricentro",
-                    tipoServicio: "Cita/Reserva",
-                    costo: "123",
-                },
-                {
-                    id: "2",
-                    image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                    servicio: "Cambio de aceite",
-                    rubro: "Lubricentro",
-                    tipoServicio: "Cita/Reserva",
-                    costo: "123",
-                },
-                {
-                    id: "3",
-                    image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                    servicio: "Cambio de luces",
-                    rubro: "Lubricentro",
-                    tipoServicio: "Cita/Reserva",
-                    costo: "123",
-                },
-                {
-                    id: "4",
-                    image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                    servicio: "Cambio de alternador",
-                    rubro: "Lubricentro",
-                    tipoServicio: "Cita/Reserva",
-                    costo: "123",
-                },
-                {
-                    id: "5",
-                    image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                    servicio: "Cambio de alternador",
-                    rubro: "Lubricentro",
-                    tipoServicio: "Cita/Reserva",
-                    costo: "123",
-                },
-            ],
-            perfiles: [
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-                    representante: 'Kerin Melendez',
-                    tallerMecanico: 'Taller Melendeez',
-                    id: '1'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-                    representante: 'Kerin Melendez',
-                    tallerMecanico: 'Taller Melendeez',
-                    id: '2'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-                    representante: 'Kerin Melendez',
-                    tallerMecanico: 'Taller Melendeez',
-                    id: '1'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-                    representante: 'Kerin Melendez',
-                    tallerMecanico: 'Taller Melendeez',
-                    id: '1'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-                    representante: 'Kerin Melendez',
-                    tallerMecanico: 'Taller Melendeez',
-                    id: '1'
-                },
-            ]
-        }
+
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const tab = ref(null);
+const rubros = ref([
+    {
+        label: "Mecanico",
+        value: "Mecanico"
     },
-    methods: {
-        verServicio(id) {
-            this.$router.push({ path: `/verServicio/${id}` });
-        },
+    {
+        label: "Electronico",
+        value: "Electronico"
     },
+    {
+        label: "Enderezado y Pintura",
+        value: "Enderezado y Pintura"
+    },
+    {
+        label: "General de Caja",
+        value: "General de Caja"
+    },
+    {
+        label: "Lubricentro",
+        value: "Lubricentro"
+    },
+    {
+        label: "Llanteria",
+        value: "Llanteria"
+    }
+]);
+const serviciosMecanicos = ref([
+    {
+        id: "1",
+        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+        servicio: "Cambio de alternador",
+        rubro: "Lubricentro",
+        tipoServicio: "Cita/Reserva",
+        costo: "123",
+    },
+    {
+        id: "2",
+        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+        servicio: "Cambio de aceite",
+        rubro: "Lubricentro",
+        tipoServicio: "Cita/Reserva",
+        costo: "123",
+    },
+    {
+        id: "3",
+        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+        servicio: "Cambio de luces",
+        rubro: "Lubricentro",
+        tipoServicio: "Cita/Reserva",
+        costo: "123",
+    },
+    {
+        id: "4",
+        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+        servicio: "Cambio de alternador",
+        rubro: "Lubricentro",
+        tipoServicio: "Cita/Reserva",
+        costo: "123",
+    },
+    {
+        id: "5",
+        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+        servicio: "Cambio de alternador",
+        rubro: "Lubricentro",
+        tipoServicio: "Cita/Reserva",
+        costo: "123",
+    },
+]);
+const perfiles = ref([
+    {
+        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
+        representante: 'Kerin Melendez',
+        tallerMecanico: 'Taller Melendeez',
+        id: '1'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
+        representante: 'Kerin Melendez',
+        tallerMecanico: 'Taller Melendeez',
+        id: '2'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
+        representante: 'Kerin Melendez',
+        tallerMecanico: 'Taller Melendeez',
+        id: '1'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
+        representante: 'Kerin Melendez',
+        tallerMecanico: 'Taller Melendeez',
+        id: '1'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
+        representante: 'Kerin Melendez',
+        tallerMecanico: 'Taller Melendeez',
+        id: '1'
+    },
+]);
+
+const verServicio = (id) => {
+    router.push({ path: `/verServicio/${id}` });
 }
 </script>
 
