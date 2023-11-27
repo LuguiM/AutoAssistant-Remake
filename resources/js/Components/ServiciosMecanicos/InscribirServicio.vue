@@ -5,11 +5,11 @@
         </div>
 
         <v-tabs v-model="ServicioTab" fixed-tabs bg-color="secondary" color="primary">
-            <v-tab>
+            <v-tab value="informacion">
                 <v-icon>mdi-car-info</v-icon>
                 Informacion General
             </v-tab>
-            <v-tab>
+            <v-tab value="horariosMontos">
                 <v-icon>mdi-car-clock</v-icon>
                 Horarios y Montos
             </v-tab>
@@ -63,14 +63,11 @@
                                         variant="outlined"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-select class="file" color="primary" label="Hora de apertura"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                                        variant="outlined"></v-select>
+                                    <flat-pickr :config="config" v-model="date" placeholder="Apertura" class="timepicker" />
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-select class="file" color="primary" label="Hora de cierre"
-                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                                        variant="outlined"></v-select>
+                                    <flat-pickr :config="config" v-model="date" placeholder="Hora de cierre"
+                                        class="timepicker" />
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field class="file" color="primary" label="Costo estimado"
@@ -79,6 +76,11 @@
                                 <v-col cols="12" md="6">
                                     <v-text-field class="file" color="primary" label="Costo de envio"
                                         variant="outlined"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" class="d-flex">
+                                    <v-btn prepend-icon="mdi-cancel" color="error">Cancelar</v-btn>
+                                    <v-spacer></v-spacer>
+                                    <v-btn type="submit" prepend-icon="mdi-car-wrench" color="primary">Inscribir servicio</v-btn>
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -89,14 +91,22 @@
     </v-container>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            ServicioTab: null,
-        }
-    }
-}
+
+<script setup>
+import { ref } from 'vue';
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+
+const date = ref(null);
+const ServicioTab = ref(null);
+
+const config = ref({
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "h:i K",
+    time_24hr: false,
+    disableMobile: "true"
+});
 </script>
 
 <style>
@@ -108,5 +118,19 @@ export default {
 .areaa .v-label.v-field-label {
     color: #1279C1 !important;
     font-weight: bold;
+}
+
+.timepicker {
+    border: #7A7A7A 1px solid;
+    width: 100%;
+    height: 56px;
+    padding-left: 10px;
+
+}
+
+.timepicker::placeholder {
+    padding-left: 10px;
+    color: #1279C1 !important;
+
 }
 </style>

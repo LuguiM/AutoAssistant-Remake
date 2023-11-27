@@ -54,25 +54,20 @@
     </v-app>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            items: [
-                { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
-                { nombre: 'Perfil', icon: 'mdi-account', ruta: '/homesite' },
-                { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
-                { nombre: 'Servicios Activos', icon: 'mdi-wrench-check', ruta: '/serviciosActivos' },
-                { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/servicios' },
-                { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
-                { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
-                { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
+<script setup>
+import { ref } from 'vue';
 
-            ],
-            drawer: true,
-        }
-    },
-}
+const items = ref([
+    { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
+    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/homesite' },
+    { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
+    { nombre: 'Servicios Activos', icon: 'mdi-wrench-check', ruta: '/serviciosActivos' },
+    { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/servicios' },
+    { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
+    { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
+    { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
+]);
+const drawer = ref(true);
 </script>
 <style>
 .bgBar {

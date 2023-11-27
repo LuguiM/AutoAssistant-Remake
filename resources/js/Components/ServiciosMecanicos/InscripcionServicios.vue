@@ -106,72 +106,68 @@
     </v-container>
 </template>
 
-<script>
-export default {
+<script setup>
+import { ref } from 'vue';
 
-    data() {
-        return {
-            requisitos: [
-                {
-                    title: "Nombre del taller",
-                    contenido: "Nombre del taller para identificarse.",
-                    requerido: "Obligatorio"
-                },
-                {
-                    title: "Dueño o representante",
-                    contenido: "Nombre del dueño o un representante del taller",
-                    requerido: "Obligatorio"
-                },
-                {
-                    title: "Rubro",
-                    contenido: "Area en la que trabajaran",
-                    requerido: "Obligatorio",
-                },
-                {
-                    title: "Direccion",
-                    contenido: "Direccion del taller mecanico y puntos de referencias",
-                    requerido: "Obligatorio"
-                },
-                {
-                    title: "Servicios que ofrecen",
-                    contenido: "Nombre dle servicio que ofrece el taller",
-                    requerido: "Obligatorio"
-                },
-                {
-                    title: "Descripcion dle servicio",
-                    contenido: "Breve descripcion sobre el servicio que se brinda.",
-                    requerido: "Opcional",
-                },
-                {
-                    title: "Tipo de servicio",
-                    contenido: "El tipo de servicio que ofrecera ya sea adomicilio o con citas previas",
-                    requerido: "Obligatorio"
-                },
-                {
-                    title: "Horario de atencion",
-                    contenido: "Horarios de atencion a cliente",
-                    requerido: "Obligatorio"
-                },
-                {
-                    title: "Numero de contacto",
-                    contenido: "Numero telefonico para contactar",
-                    requerido: "Opcional"
-                },
-                {
-                    title: "Logo o imagen del servicio",
-                    contenido: "Logotipo que represente el taller o una imagen que represente el servicio.",
-                    requerido: "Obligatorio"
-                },
-                {
-                    title: "Acreditaciones",
-                    contenido: "Imagenes de certificaciones, especializaciones o reconocimientos, Maximo 4",
-                    requerido: "Opcional"
-                }
-            ]
-        }
+const requisitos = ref([
+    {
+        title: "Nombre del taller",
+        contenido: "Nombre del taller para identificarse.",
+        requerido: "Obligatorio"
+    },
+    {
+        title: "Dueño o representante",
+        contenido: "Nombre del dueño o un representante del taller",
+        requerido: "Obligatorio"
+    },
+    {
+        title: "Rubro",
+        contenido: "Area en la que trabajaran",
+        requerido: "Obligatorio",
+    },
+    {
+        title: "Direccion",
+        contenido: "Direccion del taller mecanico y puntos de referencias",
+        requerido: "Obligatorio"
+    },
+    {
+        title: "Servicios que ofrecen",
+        contenido: "Nombre dle servicio que ofrece el taller",
+        requerido: "Obligatorio"
+    },
+    {
+        title: "Descripcion dle servicio",
+        contenido: "Breve descripcion sobre el servicio que se brinda.",
+        requerido: "Opcional",
+    },
+    {
+        title: "Tipo de servicio",
+        contenido: "El tipo de servicio que ofrecera ya sea adomicilio o con citas previas",
+        requerido: "Obligatorio"
+    },
+    {
+        title: "Horario de atencion",
+        contenido: "Horarios de atencion a cliente",
+        requerido: "Obligatorio"
+    },
+    {
+        title: "Numero de contacto",
+        contenido: "Numero telefonico para contactar",
+        requerido: "Opcional"
+    },
+    {
+        title: "Logo o imagen del servicio",
+        contenido: "Logotipo que represente el taller o una imagen que represente el servicio.",
+        requerido: "Obligatorio"
+    },
+    {
+        title: "Acreditaciones",
+        contenido: "Imagenes de certificaciones, especializaciones o reconocimientos, Maximo 4",
+        requerido: "Opcional"
     }
+]);
 
-}
+
 </script>
 
 <style>
