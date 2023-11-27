@@ -22,7 +22,7 @@ export default createVuetify({
                 defaultFont: 'Museo Sans Regular, sans-serif',
                 colors: {
                     primary: '#1279C1',
-                    secondary: '#30a4f1',
+                    secondary: '#303134',
                     bold: '#000000',
                     error: '#FF3E1D',
 

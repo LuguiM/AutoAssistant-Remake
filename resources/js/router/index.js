@@ -58,6 +58,11 @@ const routes = [
                 name: 'inscripcionServicios',
                 path: '/inscripcionServicios',
                 component: () => import('../Components/ServiciosMecanicos/InscripcionServicios.vue')
+            },
+            {
+                name: 'inscribirServicio',
+                path: '/inscribirServicio',
+                component: () => import('../Components/ServiciosMecanicos/InscribirServicio.vue')
             }
 
         ]

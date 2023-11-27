@@ -3,7 +3,7 @@
 body {
     font-family: 'Inder', sans-serif !important;
     text-transform: none !important;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
 
 .v-container {
