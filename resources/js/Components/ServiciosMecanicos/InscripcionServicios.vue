@@ -40,75 +40,60 @@
                 <h2>Servicios Inscritos</h2>
             </v-col>
 
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="6" v-for="inscripcion in serviciosInscritos" :key="inscripcion.id">
                 <v-card class="inscritoCard">
-                    <v-row>
-                        <v-col cols="12" md="4">
-                            <v-img style="height: 100%;" class=""
-                                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
-                        </v-col>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="12" md="4">
+                                <v-img :src="inscripcion.img"></v-img>
+                            </v-col>
 
-                        <v-col cols="12" md="8">
-
-                            <v-card-title class="text-h5 font-weight-bold item-texto">
-                                Intermitente y luces de emergencia
-                            </v-card-title>
-                            <v-card-subtitle>
-                                Creado: 12/09/2023
-                            </v-card-subtitle>
-
-                            <v-card-actions class="text-center">
-                                <v-btn class=" bg-primary" prepend-icon="mdi-square-edit-outline">
-                                    Modificar
-                                </v-btn>
-                                <v-btn class="bg-error" prepend-icon="mdi-delete-outline  ">
-                                    Eliminar
-                                </v-btn>
-                            </v-card-actions>
-
-                        </v-col>
-                    </v-row>
+                            <v-col cols="12" md="8">
+                                <v-card-title class="text-h5 font-weight-bold item-texto">
+                                    {{ inscripcion.title }}
+                                </v-card-title>
+                                <v-card-subtitle>
+                                    Creado: {{ inscripcion.created_at }}
+                                </v-card-subtitle>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions class="text-center">
+                        <v-btn class=" bg-primary" prepend-icon="mdi-square-edit-outline"
+                            :to="{ path: '/modificarServicio/' + inscripcion.id }">
+                            Modificar
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn class="bg-error" prepend-icon="mdi-delete-outline" @click="eliminarServicio(inscripcion.id)">
+                            Eliminar
+                        </v-btn>
+                    </v-card-actions>
                 </v-card>
-
-            </v-col>
-            <v-col cols="12" sm="6">
-                <v-card class="inscritoCard">
-                    <v-row>
-                        <v-col cols="12" md="4">
-                            <v-img style="height: 100%;" class=""
-                                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
-                        </v-col>
-
-                        <v-col cols="12" md="8">
-
-                            <v-card-title class="text-h5 font-weight-bold item-texto">
-                                Intermitente y luces de emergencia
-                            </v-card-title>
-                            <v-card-subtitle>
-                                Creado: 12/09/2023
-                            </v-card-subtitle>
-
-                            <v-card-actions class="text-center">
-                                <v-btn class=" bg-primary" prepend-icon="mdi-square-edit-outline">
-                                    Modificar
-                                </v-btn>
-                                <v-btn class="bg-error" prepend-icon="mdi-delete-outline  ">
-                                    Eliminar
-                                </v-btn>
-                            </v-card-actions>
-
-                        </v-col>
-                    </v-row>
-                </v-card>
-
             </v-col>
         </v-row>
+
+        <v-dialog width="auto" v-model="eliminarModal">
+            <v-card class="text-center bg-greyDark">
+                <v-card-title class="text-primary font-weight-bold">Eliminar servicio</v-card-title>
+                <v-divider class="border-opacity-100" color="primary"></v-divider>
+                <v-card-text>¿Esta seguro de querer eliminar este servicio?</v-card-text>
+                <v-card-text class="pt-0">Esta accion sera irreversible</v-card-text>
+                <v-card-actions class="mt-3">
+                    <v-btn class="bg-primary" @click="inscripcionEliminada">Confimar</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn class="bg-error" @click="eliminarModal = false">Cancelar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 
+
+let eliminarModal = ref(false);
+let idServicio = ref(null);
 const requisitos = ref([
     {
         title: "Nombre del taller",
@@ -167,6 +152,33 @@ const requisitos = ref([
     }
 ]);
 
+const serviciosInscritos = ref([
+    {
+        id: '1',
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        title: 'Intermitente y luces de emergencia',
+        created_at: '12/09/2023',
+
+    },
+    {
+        id: '2',
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        title: 'Intermitente y luces de emergencia',
+        created_at: '12/09/2023',
+
+    }
+])
+
+const eliminarServicio = (id) => {
+    eliminarModal.value = true;
+    idServicio.value = id;
+}
+
+const inscripcionEliminada = () => {
+    console.log('Se ha eliminado el servicio', idServicio.value);
+    eliminarModal.value = false;
+    idServicio.value = null;
+}
 
 </script>
 

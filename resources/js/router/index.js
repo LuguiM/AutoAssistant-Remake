@@ -63,6 +63,31 @@ const routes = [
                 name: 'inscribirServicio',
                 path: '/inscribirServicio',
                 component: () => import('../Components/ServiciosMecanicos/InscribirServicio.vue')
+            },
+            {
+                name: 'modificarServicio',
+                path: '/modificarServicio/:id',
+                component: () => import('../Components/ServiciosMecanicos/EditarServicio.vue')
+            },
+            {
+                name: 'conductorServicios',
+                path: '/serviciosContratados',
+                component: () => import('../Components/Contrataciones/ConductorServicios.vue')
+            },
+            {
+                name: 'mecanicosServicios',
+                path: '/serviciosActivos',
+                component: () => import('../Components/Contrataciones/MecanicoServicio.vue')
+            },
+            {
+                name: 'verPerfilMecanico',
+                path: '/perfilMecanico/:id',
+                component: () => import('../Components/PerfilMecanico/verPerfil.vue')
+            },
+            {
+                name: 'manuales',
+                path: '/manuales',
+                component: () => import('../Components/Manuales/manuales.vue')
             }
 
         ]

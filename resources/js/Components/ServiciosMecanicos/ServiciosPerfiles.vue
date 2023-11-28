@@ -87,7 +87,7 @@
 
                             <v-row>
                                 <v-col cols="12" md="3" v-for="perfil in perfiles">
-                                    <v-card class="text-center perfil-card">
+                                    <v-card class="text-center perfil-card" @click="verPerfil(perfil.id)">
                                         <v-avatar color="grey" size="190" class="mt-4">
                                             <v-img cover :src="perfil.img"></v-img>
                                         </v-avatar>
@@ -205,24 +205,28 @@ const perfiles = ref([
         img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
         representante: 'Kerin Melendez',
         tallerMecanico: 'Taller Melendeez',
-        id: '1'
+        id: '3'
     },
     {
         img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
         representante: 'Kerin Melendez',
         tallerMecanico: 'Taller Melendeez',
-        id: '1'
+        id: '4'
     },
     {
         img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
         representante: 'Kerin Melendez',
         tallerMecanico: 'Taller Melendeez',
-        id: '1'
+        id: '5'
     },
 ]);
 
 const verServicio = (id) => {
     router.push({ path: `/verServicio/${id}` });
+}
+
+const verPerfil = (id) => {
+    router.push({ path: `/perfilMecanico/${id}` });
 }
 </script>
 

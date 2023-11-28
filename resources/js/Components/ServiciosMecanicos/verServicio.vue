@@ -76,7 +76,8 @@
                                     </v-col>
 
                                     <v-col cols="12" class="d-flex justify-end">
-                                        <v-btn class="blueButton" prepend-icon="mdi-account">Perfil</v-btn>
+                                        <v-btn class="blueButton" prepend-icon="mdi-account"
+                                            @click="verPerfilMecanico(2)">Perfil</v-btn>
                                     </v-col>
                                     <v-col cols="12">
                                         <v-btn variant="outlined" block class="text-primary btnContratar"
@@ -94,7 +95,7 @@
         </v-row>
 
         <v-dialog v-model="contratarModal" width="auto">
-            <v-card width="550" style="background-color: #32525C;">
+            <v-card max-width="550" height="500" style="background-color: #32525C; color: #FFFFFF;">
                 <v-card-text>
                     <v-form>
                         <v-row>
@@ -102,26 +103,29 @@
                                 <h2 class="text-white">Contratar el servicio</h2>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn elevation="0" color="error" @click="contratarModal = false">X</v-btn>
+                                <v-btn elevation="0" class="bg-transparent" @click="contratarModal = false">
+                                    <v-icon>mdi-close-thick</v-icon>
+                                </v-btn>
                             </v-col>
                             <v-col cols="12">
-                                <v-text-field class="btnModal" color="white" label="Nombre del conductor*" 
-                                    required></v-text-field>
+                                <v-text-field class="btnModal" color="white" label="Nombre del conductor*" required
+                                    variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                                <v-text-field class="btnModal" label="Servicio a contratar*" variant="outlined"
+                                <v-text-field variant="outlined" class="btnModal" label="Servicio a contratar*"
                                     required></v-text-field>
                             </v-col>
                             <v-col cols="12">
                                 <VueDatePicker v-model="date" time-picker-inline teleport-center locale="es"
-                                    cancelText="Cancelar" selectText="Aceptar" placeholder="Fecha y hora" />
+                                    cancelText="Cancelar" class="pickerDate" selectText="Aceptar"
+                                    placeholder="Fecha y hora" />
                             </v-col>
                             <v-col cols="12">
-                                <v-select class="selectModal" label="Seleccione el tipo de servicio"
-                                    :items="['Adomilicio', 'Cita en taller']" variant="outlined"></v-select>
+                                <v-select variant="outlined" class="selectModal" label="Seleccione el tipo de servicio"
+                                    :items="['Adomilicio', 'Cita en taller']"></v-select>
                             </v-col>
                             <v-col cols="12">
-                                <v-btn color="primary">Contratar servicio</v-btn>
+                                <v-btn color="primary" type="submit" prepend-icon="mdi-car-cog">Contratar servicio</v-btn>
                             </v-col>
                         </v-row>
                     </v-form>
@@ -133,12 +137,19 @@
 </template>
 
 <script setup>
+
+// :to="{ path: '/verPiloto/' + piloto.id }" para cuando haya endpoint
+
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-
+const router = useRouter();
 const date = ref();
 const contratarModal = ref(false);
 
+const verPerfilMecanico = (id) => {
+    router.push({ path: `/perfilMecanico/${id}` });
+}
 </script>
 
 <style>
@@ -152,26 +163,12 @@ const contratarModal = ref(false);
     color: #FFFFFF !important;
 }
 
-.btnModal .v-field--variant-filled .v-field__overlay {
-    background-color: #FFFFFF;
-    color: #242424;
+.dp__input {
+    background-color: #32525C !important;
+    color: #FFFFFF;
 }
 
-.selectModal .v-input__control {
-    background-color: #FFFFFF;
-    color: #242424;
+.dp__input::placeholder {
+    color: #FFFFFF !important;
 }
-
-.dateTime {
-    border: #7A7A7A 1px solid;
-    width: 100%;
-    height: 56px;
-    padding-left: 10px;
-
-}
-
-.dateTime::placeholder {
-    padding-left: 10px;
-    color: #1279C1 !important;
-
-}</style>
+</style>

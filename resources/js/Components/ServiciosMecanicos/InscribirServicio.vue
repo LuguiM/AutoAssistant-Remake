@@ -68,11 +68,11 @@
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field class="file" color="primary" label="Costo estimado"
-                                        variant="outlined"></v-text-field>
+                                        variant="outlined" prefix="$"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field class="file" color="primary" label="Costo de envio"
-                                        variant="outlined"></v-text-field>
+                                        variant="outlined" prefix="$"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" class="d-sm-flex flex-xs-column">
                                     <v-btn prepend-icon="mdi-cancel" color="error">Cancelar</v-btn>
