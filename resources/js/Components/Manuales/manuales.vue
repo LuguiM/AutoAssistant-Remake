@@ -17,7 +17,7 @@
         </v-card>
         <v-row class="mt-3">
             <v-col cols="12">
-                <v-btn class="bg-primary" prepend-icon="mdi-book-plus-multiple" @click="newEditDialog = true">Agregar
+                <v-btn class="bg-primary" prepend-icon="mdi-book-plus-multiple" @click="newManual">Agregar
                     manual</v-btn>
             </v-col>
             <v-col cols="12">
@@ -38,7 +38,7 @@
                         <v-icon size="small" @click="editManual(item)">
                             mdi-pencil
                         </v-icon>
-                        <v-icon size="small" @click="deleteManual(item)">
+                        <v-icon size="small" @click="eliminarManual = true">
                             mdi-delete
                         </v-icon>
                     </template>
@@ -52,39 +52,52 @@
         <v-dialog v-model="newEditDialog">
             <v-card>
                 <v-card-title>
-                    <span class="text-h5">{{ formTitle }}</span>
+                    <span class="text-h5 font-weight-bold">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.marca" label="Marca"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.modelo" label="Modelo"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.anio" label="Año"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.tipoManual" label="Tipo de Manual"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.estado" label="Estado"></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-container>
+
+                    <v-row>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model="editedItem.marca" label="Marca"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model="editedItem.modelo" label="Modelo"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model="editedItem.anio" label="Año"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model="editedItem.tipoManual" label="Tipo de Manual"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model="editedItem.estado" label="Estado"></v-text-field>
+                        </v-col>
+                    </v-row>
+
                 </v-card-text>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text">
-                        Cancel
+                    <v-btn class="bg-primary" prepend-icon="mdi-book-check" @click="save">
+                        Guardar
                     </v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="save">
-                        Save
-                    </v-btn>
+                    <v-btn prepend-icon="mdi-cancel" class="bg-error" @click="cancel">Cancelar</v-btn>
+
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog width="auto" v-model="eliminarManual">
+            <v-card class="text-center bg-greyDark">
+                <v-card-title class="text-primary font-weight-bold">Eliminar Manual</v-card-title>
+                <v-divider class="border-opacity-100" color="primary"></v-divider>
+                <v-card-text>¿Esta seguro de querer eliminar este manual?</v-card-text>
+                <v-card-text class="pt-0">Esta accion sera irreversible</v-card-text>
+                <v-card-actions class="mt-3">
+                    <v-btn class="bg-primary">Confimar</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn class="bg-error" @click="eliminarManual = false">Cancelar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -95,9 +108,8 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-
+const eliminarManual = ref(false);
 const newEditDialog = ref(false);
-const editedIndex = ref(-1);
 const editedItem = ref(
     {
         id: '',
@@ -148,23 +160,27 @@ const items = ref([
     },
 ])
 
-const formTitle = computed(() => {
-    return editedIndex.value === -1 ? 'Nuevo Manual' : 'Editar Manual'
-})
+const formTitle = ref('');
 
-const editManual = (item) => {
-    editedIndex.value = items.indexOf(item)
-    editedItem.value = Object.assign({}, item)
+const newManual = () => {
+    formTitle.value = 'Nuevo Manual';
     newEditDialog.value = true;
 }
 
-const save = () => {
-    if (editedIndex.value > -1) {
-        Object.assign(items.value[editedIndex.value], editedItem.value)
-    } else {
-        items.value.push(editedItem.value)
-    }
+const editManual = (item) => {
+    newEditDialog.value = true;
+    formTitle.value = 'Editar Manual';
+    editedItem.value = item;
+}
+
+const cancel = () => {
     newEditDialog.value = false;
+    editedItem.value = defaultItem.value;
+}
+
+const save = () => {
+    newEditDialog.value = false;
+    editedItem.value = defaultItem.value;
 }
 
 

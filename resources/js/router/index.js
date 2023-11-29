@@ -85,6 +85,11 @@ const routes = [
                 component: () => import('../Components/PerfilMecanico/verPerfil.vue')
             },
             {
+                name: 'crearPerfilMecanico',
+                path: '/crearPerfilMecanico',
+                component: () => import('../Components/PerfilMecanico/crearPerfilMecanico.vue')
+            },
+            {
                 name: 'manuales',
                 path: '/manuales',
                 component: () => import('../Components/Manuales/manuales.vue')

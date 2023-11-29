@@ -66,6 +66,7 @@ const items = ref([
     { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
     { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/crearPerfilMecanico' },
 ]);
 const drawer = ref(true);
 </script>
