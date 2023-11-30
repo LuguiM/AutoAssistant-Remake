@@ -50,28 +50,32 @@
         </v-row>
 
         <v-dialog v-model="newEditDialog">
-            <v-card>
+            <v-card class="bg-greyDark">
                 <v-card-title>
-                    <span class="text-h5 font-weight-bold">{{ formTitle }}</span>
+                    <span class="text-h5 text-primary font-weight-bold">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
 
                     <v-row>
                         <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="editedItem.marca" label="Marca"></v-text-field>
+                            <v-text-field v-model="editedItem.marca" label="Marca" color="primary"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="editedItem.modelo" label="Modelo"></v-text-field>
+                            <v-text-field v-model="editedItem.modelo" label="Modelo" color="primary"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="editedItem.anio" label="Año"></v-text-field>
+                            <v-text-field v-model="editedItem.anio" label="Año" color="primary"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="editedItem.tipoManual" label="Tipo de Manual"></v-text-field>
+                            <v-text-field v-model="editedItem.tipoManual" label="Tipo de Manual"
+                                color="primary"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="editedItem.estado" label="Estado"></v-text-field>
+                            <v-text-field v-model="editedItem.estado" label="Estado" color="primary"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-file-input label="Archivo" color="primary"></v-file-input>
                         </v-col>
                     </v-row>
 
