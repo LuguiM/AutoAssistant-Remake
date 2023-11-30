@@ -6,14 +6,18 @@
 
         <v-row>
             <v-col cols="12" sm="4" class="d-flex justify-center">
-                <v-btn class="bg-primary" prepend-icon="mdi-account-cog">Actualizar Perfil</v-btn>
+                <v-btn class="bg-primary" prepend-icon="mdi-account-cog" :disabled="editarPerfil === true"
+                    @click="editarPerfil = true">Actualizar
+                    Perfil</v-btn>
             </v-col>
             <v-col cols="12" sm="4" class="d-flex justify-center">
-                <v-btn class="bg-terceary" prepend-icon="mdi-lock-reset" @click="cambiarContraModal = true">Cambiar
+                <v-btn class="bg-terceary" prepend-icon="mdi-lock-reset" :disabled="editarPerfil === true"
+                    @click="cambiarContraModal = true">Cambiar
                     contraseña</v-btn>
             </v-col>
             <v-col cols="12" sm="4" class="d-flex justify-center">
-                <v-btn class="bg-error" prepend-icon="mdi-account-remove" @click="eliminarPerfilModal = true">
+                <v-btn class="bg-error" prepend-icon="mdi-account-remove" :disabled="editarPerfil === true"
+                    @click="eliminarPerfilModal = true">
                     Eliminar cuenta
                 </v-btn>
             </v-col>
@@ -27,19 +31,38 @@
                                 <h4>Nombre:</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
-                                <h4>Kerin Melendez</h4>
+                                <v-text-field v-if="editarPerfil === true" label="Nombre de la cuenta"></v-text-field>
+                                <h4 v-else>Kerin Melendez</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
                                 <h4>Correo electronico:</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
-                                <h4>mio@gmail.com</h4>
+                                <v-text-field v-if="editarPerfil === true" label="Correo"></v-text-field>
+                                <h4 v-else>mio@gmail.com</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
                                 <h4>Edad:</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
-                                <h4>21</h4>
+                                <v-text-field v-if="editarPerfil === true" label="Edad"></v-text-field>
+                                <h4 v-else>21</h4>
+                            </v-col>
+                            <v-col cols="12" sm="3">
+                                <h4>Licencia:</h4>
+                            </v-col>
+                            <v-col cols="12" sm="3">
+                                <v-switch v-model="licencia" v-if="editarPerfil === true" hide-details true-value="Si"
+                                    false-value="No" :label="`${licencia}`"></v-switch>
+                                <h4 v-else>No</h4>
+                            </v-col>
+                            <v-col cols="12" sm="3">
+                                <h4>Numero de licencia:</h4>
+                            </v-col>
+                            <v-col cols="12" sm="3">
+                                <v-text-field v-if="editarPerfil === true && licencia === 'Si'"
+                                    label="Numero de licencia"></v-text-field>
+                                <h4 v-else>21</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
                                 <h4>Tipo de cuenta:</h4>
@@ -49,6 +72,10 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
+                    <v-card-actions v-if="editarPerfil === true">
+                        <v-btn class="bg-secondary">Guardar cambios</v-btn>
+                        <v-btn class="bg-error" @click="editarPerfil = false">Cancelar</v-btn>
+                    </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
@@ -57,7 +84,8 @@
         <v-dialog width="auto" v-model="cambiarContraModal" persistent>
             <v-card class="text-center bg-greyDark">
                 <v-card-title class="text-primary font-weight-bold">Cambiar contraseña</v-card-title>
-                <v-card-subtitle class="pt-0">Asegúrate de que tu cuenta esté usando una contraseña larga y aleatoria para mantenerla
+                <v-card-subtitle class="pt-0">Asegúrate de que tu cuenta esté usando una contraseña larga y aleatoria para
+                    mantenerla
                     segura</v-card-subtitle>
                 <v-divider class="border-opacity-100" color="primary"></v-divider>
                 <v-card-text>
@@ -113,6 +141,8 @@ import { ref } from 'vue';
 let eliminarPerfilModal = ref(false);
 const confirmarEliminar = ref(false);
 const cambiarContraModal = ref(false);
+const editarPerfil = ref(false);
+const licencia = ref('No');
 
 const eliminarPerfil = () => {
     confirmarEliminar.value = false
