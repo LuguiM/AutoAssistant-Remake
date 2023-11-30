@@ -30,6 +30,11 @@ const routes = [
                 component: () => import('../web/HomeCom.vue')
             },
             {
+                name: 'perfil',
+                path: '/perfilUsuario',
+                component: () => import('../Components/Perfil/VerPerfil.vue')
+            },
+            {
                 name: 'Pilotos',
                 path: '/Pilotos',
                 component: () => import('../Components/Pilotos/Pilotos.vue')

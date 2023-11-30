@@ -59,7 +59,7 @@ import { ref } from 'vue';
 
 const items = ref([
     { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
-    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/homesite' },
+    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
     { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
     { nombre: 'Servicios Contratados', icon: 'mdi-wrench-check', ruta: '/serviciosContratados' },
     { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
