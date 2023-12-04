@@ -11,8 +11,21 @@ const routes = [
                 path: 'principal',
                 component: () => import('../web/ContactoCom.vue'),
             },
-
+            {
+                name: 'PilotosWeb',
+                path: '/PilotosWeb',
+                component: () => import('../Components/Pilotos/Pilotos.vue')
+            },
+            {
+                name: 'servicios-mecanicosWeb',
+                path: '/servicios-mecanicosWeb',
+                component: () => import('../Components/ServiciosMecanicos/ServiciosPerfiles.vue')
+            },
         ],
+    },
+    {
+        path: '/IniciarSesion',
+        component: () => import('../web/Login.vue')
     },
     {
         path: '/App',

@@ -27,7 +27,9 @@ export default createVuetify({
                     bold: '#000000',
                     error: '#dc3545',
                     greenDark: '#32525C',
-                    greyDark: '#D9D9D9'
+                    greyDark: '#D9D9D9',
+                    grey2: '#6C747E',
+                    black:'#242424'
                 },
             },
         },

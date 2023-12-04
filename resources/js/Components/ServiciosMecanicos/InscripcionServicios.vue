@@ -193,10 +193,6 @@ const inscripcionEliminada = () => {
 
 }
 
-.item-texto {
-    white-space: normal !important;
-}
-
 .inscritoCard {
     background-color: #D9D9D9;
 }
