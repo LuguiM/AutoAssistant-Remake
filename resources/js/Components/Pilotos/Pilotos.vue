@@ -17,10 +17,10 @@
                                 class="inputStyle"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="4" class="d-flex align-center justify-center mb-5">
-                            <v-btn variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
+                            <v-btn  prepend-icon="mdi-magnify" class="mr-3 blueButton">
                                 Buscar
                             </v-btn>
-                            <v-btn variant="tonal" prepend-icon="mdi-trash-can" class="greyButton">
+                            <v-btn prepend-icon="mdi-trash-can" class="greyButton">
                                 Limpiar
                             </v-btn>
                         </v-col>
@@ -53,43 +53,36 @@
 
     </v-container>
 </template>
+<script setup>
+import { ref } from 'vue';
 
-<script>
-export default {
-
-    data() {
-        return {
-            pilotos: [
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Intermitente y luces de emergencia',
-                    id: '1'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Precion del aire',
-                    id: '2'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Servodireccion Electrica',
-                    id: '3'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Luz Antiniebla',
-                    id: '4'
-                },
-                {
-                    img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-                    titulo: 'Puertas abiertas',
-                    id: '5'
-                },
-            ]
-        }
-    }
-
-}
+const pilotos = ref([
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Intermitente y luces de emergencia',
+        id: '1'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Precion del aire',
+        id: '2'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Servodireccion Electrica',
+        id: '3'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Luz Antiniebla',
+        id: '4'
+    },
+    {
+        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+        titulo: 'Puertas abiertas',
+        id: '5'
+    },
+])
 </script>
 
 <style>

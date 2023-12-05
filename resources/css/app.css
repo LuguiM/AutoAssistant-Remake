@@ -4,6 +4,8 @@ body {
     font-family: 'Inder', sans-serif !important;
     text-transform: none !important;
     color: #FFFFFF !important;
+    background: url('../js/images/Fondos/fondo4.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
 }
 
 .v-container {
@@ -18,4 +20,8 @@ body {
 .blueButton {
     background-color: #1279C1 !important;
     color: #FFFFFF !important;
+}
+
+.item-texto {
+    white-space: normal !important;
 }

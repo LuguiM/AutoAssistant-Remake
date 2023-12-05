@@ -59,13 +59,14 @@ import { ref } from 'vue';
 
 const items = ref([
     { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
-    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/homesite' },
+    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
     { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
-    { nombre: 'Servicios Activos', icon: 'mdi-wrench-check', ruta: '/serviciosActivos' },
-    { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/servicios' },
+    { nombre: 'Servicios Contratados', icon: 'mdi-wrench-check', ruta: '/serviciosContratados' },
+    { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
     { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
     { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/crearPerfilMecanico' },
 ]);
 const drawer = ref(true);
 </script>
