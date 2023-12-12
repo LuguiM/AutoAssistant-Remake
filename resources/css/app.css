@@ -12,6 +12,11 @@ body {
     color: #FFFFFF;
 }
 
+.v-field--center-affix .v-label.v-field-label {
+    color: #1279C1;
+    font-weight: bold;
+}
+
 .greyButton {
     background-color: #6c757d !important;
     color: #FFFFFF !important;
@@ -24,4 +29,11 @@ body {
 
 .item-texto {
     white-space: normal !important;
+}
+
+.custom-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }

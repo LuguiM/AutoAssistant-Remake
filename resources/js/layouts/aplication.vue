@@ -39,6 +39,7 @@
             <v-img src="../images/Logos/sinLetrasLogo.png"></v-img>
 
 
+
             <v-spacer></v-spacer>
 
             <h5 style="padding: 5px 13px;">

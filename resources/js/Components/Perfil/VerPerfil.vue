@@ -31,21 +31,22 @@
                                 <h4>Nombre:</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true" label="Nombre de la cuenta"></v-text-field>
+                                <v-text-field v-if="editarPerfil === true" label="Nombre de la cuenta"
+                                    variant="solo"></v-text-field>
                                 <h4 v-else>Kerin Melendez</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
                                 <h4>Correo electronico:</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true" label="Correo"></v-text-field>
+                                <v-text-field v-if="editarPerfil === true" label="Correo" variant="solo"></v-text-field>
                                 <h4 v-else>mio@gmail.com</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
                                 <h4>Edad:</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true" label="Edad"></v-text-field>
+                                <v-text-field v-if="editarPerfil === true" label="Edad" variant="solo"></v-text-field>
                                 <h4 v-else>21</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
@@ -60,8 +61,8 @@
                                 <h4>Numero de licencia:</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true && licencia === 'Si'"
-                                    label="Numero de licencia"></v-text-field>
+                                <v-text-field v-if="editarPerfil === true && licencia === 'Si'" label="Numero de licencia"
+                                    variant="solo"></v-text-field>
                                 <h4 v-else>21</h4>
                             </v-col>
                             <v-col cols="12" sm="3">
@@ -89,9 +90,9 @@
                     segura</v-card-subtitle>
                 <v-divider class="border-opacity-100" color="primary"></v-divider>
                 <v-card-text>
-                    <v-text-field color="primary" label="Contraseña actual"></v-text-field>
-                    <v-text-field color="primary" label="Nueva contraseña"></v-text-field>
-                    <v-text-field color="primary" label="Repetir nueva contraseña"></v-text-field>
+                    <v-text-field color="primary" label="Contraseña actual" variant="solo"></v-text-field>
+                    <v-text-field color="primary" label="Nueva contraseña" variant="solo"></v-text-field>
+                    <v-text-field color="primary" label="Repetir nueva contraseña" variant="solo"></v-text-field>
                 </v-card-text>
                 <v-card-actions class="mt-3">
                     <v-btn class="bg-primary">Confimar</v-btn>
@@ -122,7 +123,7 @@
                 <v-divider class="border-opacity-100" color="primary"></v-divider>
                 <v-card-text>Ingrese su contraseña para eliminar su cuenta</v-card-text>
                 <v-card-text class="pt-0">
-                    <v-text-field color="primary" label="Contraseña"></v-text-field>
+                    <v-text-field color="primary" label="Contraseña" variant="solo"></v-text-field>
                 </v-card-text>
                 <v-card-actions class="mt-3">
                     <v-spacer></v-spacer>

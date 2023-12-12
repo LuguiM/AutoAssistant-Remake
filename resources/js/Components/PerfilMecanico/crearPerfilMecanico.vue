@@ -13,15 +13,15 @@
                     <v-card-title class="text-center">
                         <v-avatar image="https://cdn.vuetifyjs.com/images/cards/cooking.png" size="150"></v-avatar>
                         <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar"
-                            prepend-icon="mdi-camera" label="Avatar" color="primary"></v-file-input>
+                            prepend-icon="mdi-camera" label="Avatar" color="primary" variant="solo"></v-file-input>
                     </v-card-title>
                     <v-card-text>
                         <v-row>
                             <v-col cols="12" sm="6">
-                                <v-text-field label="Nombre del taller" color="primary"></v-text-field>
+                                <v-text-field label="Nombre del taller" color="primary" variant="solo"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="5">
-                                <v-text-field label="Nombre del propietario" color="primary"></v-text-field>
+                                <v-text-field label="Nombre del propietario" color="primary" variant="solo"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="1">
                                 <v-tooltip text="Establecer nombre de la cuenta">
@@ -33,10 +33,10 @@
 
                             </v-col>
                             <v-col cols="12" sm="6">
-                                <v-text-field label="Numero"></v-text-field>
+                                <v-text-field label="Numero" variant="solo" color="primary"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
-                                <v-text-field label="Dirección"></v-text-field>
+                                <v-text-field label="Dirección" color="primary" variant="solo"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-card-text>

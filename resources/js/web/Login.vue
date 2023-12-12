@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="custom-container">
         <v-row>
             <v-col cols="12" sm="6" offset-sm="3">
                 <v-card class="my-5 text-center bg-black" rounded="xl">

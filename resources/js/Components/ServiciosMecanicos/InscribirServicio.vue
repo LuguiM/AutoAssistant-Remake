@@ -15,32 +15,32 @@
             </v-tab>
         </v-tabs>
         <v-window v-model="ServicioTab">
-            <v-card rounded="0" elevation="0">
+            <v-card rounded="0" elevation="0" class="bg-greyDark">
                 <v-form>
                     <v-window-item value="informacion">
 
                         <v-card-text>
                             <v-row>
                                 <v-col cols="12">
-                                    <v-file-input color="primary" class="file" variant="outlined" show-size label="Logo*"
+                                    <v-file-input color="primary" class="file" variant="solo" show-size label="Logo*"
                                         accept="image/*"></v-file-input>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-select class="file" color="primary" v-model="selectedRubro" :items="rubros"
-                                        label="Rubro" variant="outlined"></v-select>
+                                        label="Rubro" variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-select class="file" color="primary" v-model="selectedServicio" :items="servicios"
-                                        label="Servicio" :disabled="!selectedRubro" variant="outlined"></v-select>
+                                        label="Servicio" :disabled="!selectedRubro" variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-select class="file" color="primary" label="Tipo de servicio"
                                         :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                                        variant="outlined"></v-select>
+                                        variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-textarea class="areaa" color="primary" label="Descripcion del servicio"
-                                        variant="outlined"></v-textarea>
+                                        variant="solo"></v-textarea>
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -52,11 +52,11 @@
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-select class="file" color="primary" label="Horario de Inicio" :items="dias"
-                                        variant="outlined"></v-select>
+                                        variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-select class="file" color="primary" label="Horario de Fin" :items="dias"
-                                        variant="outlined"></v-select>
+                                        variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <flat-pickr :config="config" v-model="date" placeholder="Hora de apertura"
@@ -68,11 +68,11 @@
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field class="file" color="primary" label="Costo estimado"
-                                        variant="outlined" prefix="$"></v-text-field>
+                                        variant="solo" prefix="$"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field class="file" color="primary" label="Costo de envio"
-                                        variant="outlined" prefix="$"></v-text-field>
+                                        variant="solo" prefix="$"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" class="d-sm-flex flex-xs-column">
                                     <v-btn prepend-icon="mdi-cancel" color="error">Cancelar</v-btn>
@@ -187,7 +187,9 @@ watch(() => {
 }
 
 .timepicker {
-    border: #7A7A7A 1px solid;
+    border: #ffffff 1px solid;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px #0000001a;
     width: 100%;
     height: 56px;
     padding-left: 10px;

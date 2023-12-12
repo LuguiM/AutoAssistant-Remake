@@ -95,12 +95,12 @@
         </v-row>
 
         <v-dialog v-model="contratarModal" width="auto">
-            <v-card max-width="550" height="500" style="background-color: #32525C; color: #FFFFFF;">
+            <v-card max-width="550" height="500" class="bg-greyDark">
                 <v-card-text>
                     <v-form>
                         <v-row>
                             <v-col cols="10">
-                                <h2 class="text-white">Contratar el servicio</h2>
+                                <h2 class="text-primary">Contratar el servicio</h2>
                             </v-col>
                             <v-col cols="2">
                                 <v-btn elevation="0" class="bg-transparent" @click="contratarModal = false">
@@ -109,10 +109,10 @@
                             </v-col>
                             <v-col cols="12">
                                 <v-text-field class="btnModal" color="white" label="Nombre del conductor*" required
-                                    variant="outlined"></v-text-field>
+                                    variant="solo"></v-text-field>
                             </v-col>
                             <v-col cols="12">
-                                <v-text-field variant="outlined" class="btnModal" label="Servicio a contratar*"
+                                <v-text-field variant="solo" class="btnModal" label="Servicio a contratar*"
                                     required></v-text-field>
                             </v-col>
                             <v-col cols="12">
@@ -121,7 +121,7 @@
                                     placeholder="Fecha y hora" />
                             </v-col>
                             <v-col cols="12">
-                                <v-select variant="outlined" class="selectModal" label="Seleccione el tipo de servicio"
+                                <v-select variant="solo" class="selectModal" label="Seleccione el tipo de servicio"
                                     :items="['Adomilicio', 'Cita en taller']"></v-select>
                             </v-col>
                             <v-col cols="12">
@@ -164,11 +164,10 @@ const verPerfilMecanico = (id) => {
 }
 
 .dp__input {
-    background-color: #32525C !important;
-    color: #FFFFFF;
+    box-shadow: 0 4px 8px #0000001a;
 }
 
 .dp__input::placeholder {
-    color: #FFFFFF !important;
+    color: #1279C1 !important;
 }
 </style>

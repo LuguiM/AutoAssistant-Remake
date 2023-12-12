@@ -28,6 +28,18 @@ const routes = [
         component: () => import('../web/Login.vue')
     },
     {
+        path: '/OpcionesRegistro',
+        component: () => import('../web/Registro/OpcionesRegistro.vue')
+    },
+    {
+        path: '/RegistroMecanicos',
+        component: () => import('../web/Registro/RegistroMecanico.vue')
+    },
+    {
+        path: '/RegistroConductores',
+        component: () => import('../web/Registro/RegistroConductor.vue')
+    },
+    {
         path: '/App',
         redirect: '/dashboard',
         component: () => import('../layouts/aplication.vue'),
