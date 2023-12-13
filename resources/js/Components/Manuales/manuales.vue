@@ -8,7 +8,7 @@
             <v-card-text>
                 <v-form class="d-flex align-center">
                     <v-text-field hide-details="auto" label="Buscar por marca" prepend-inner-icon="mdi-car-search"
-                        variant="outlined" class="pr-3"></v-text-field>
+                        variant="solo" class="pr-3"></v-text-field>
                     <v-btn prepend-icon="mdi-trash-can" class="greyButton">
                         Limpiar
                     </v-btn>

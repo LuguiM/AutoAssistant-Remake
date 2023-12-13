@@ -70,7 +70,7 @@
                                             <v-col cols="12" md="8">
                                                 <v-text-field label="Busqueda por nombre"
                                                     prepend-inner-icon="mdi-account-search"
-                                                    class="inputStyle"></v-text-field>
+                                                     variant="solo"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" md="4" class="d-flex align-center justify-center mb-5">
                                                 <v-btn variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">

@@ -41,7 +41,7 @@
                     </v-card-text>
 
                     <v-card-text>
-                        ¿Ya tienes una cuenta? <a href="#" class="text-white">Iniciar sesion</a>
+                        ¿Ya tienes una cuenta? <a class="text-white" href="/IniciarSesion">Iniciar sesion</a>
                     </v-card-text>
 
                     <v-card-text class="bg-white">
@@ -57,6 +57,13 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const IniciarSesion = () => {
+    router.push({ path: `/IniciarSesion` });
+}
 
 const rules = ref({
     required: value => !!value || 'Campo obligatorio.',

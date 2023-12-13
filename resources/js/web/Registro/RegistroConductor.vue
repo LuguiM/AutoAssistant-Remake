@@ -47,7 +47,7 @@
                     </v-card-text>
 
                     <v-card-text>
-                        ¿Ya tienes una cuenta? <a href="#" class="text-white">Iniciar sesion</a>
+                        ¿Ya tienes una cuenta? <a href="/IniciarSesion" class="text-white">Iniciar sesion</a>
                     </v-card-text>
 
                     <v-card-text class="bg-white">
@@ -78,6 +78,4 @@ const licenciaActive = ref('No');
 
 </script>
 
-<style>
-
-</style>
+<style></style>
