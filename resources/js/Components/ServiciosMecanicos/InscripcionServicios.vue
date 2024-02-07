@@ -90,7 +90,7 @@
 
 <script setup>
 import { ref } from 'vue';
-
+import notify from '@/plugins/notify.js'
 
 let eliminarModal = ref(false);
 let idServicio = ref(null);
@@ -169,6 +169,8 @@ const serviciosInscritos = ref([
     }
 ])
 
+
+
 const eliminarServicio = (id) => {
     eliminarModal.value = true;
     idServicio.value = id;
@@ -176,6 +178,7 @@ const eliminarServicio = (id) => {
 
 const inscripcionEliminada = () => {
     console.log('Se ha eliminado el servicio', idServicio.value);
+    notify('Se ha eliminado el servicio', 'success')
     eliminarModal.value = false;
     idServicio.value = null;
 }

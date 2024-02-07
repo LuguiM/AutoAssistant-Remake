@@ -15,7 +15,7 @@
 
             <v-divider></v-divider>
             <v-list nav density="compact">
-                <v-list-item class="font-weight-bold" v-for="item in items" :to="item.ruta" :prepend-icon="item.icon">
+                <v-list-item class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index" :prepend-icon="item.icon">
                     {{ item.nombre }}
                 </v-list-item>
             </v-list>
@@ -36,12 +36,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-img src="../images/Logos/sinLetrasLogo.png"></v-img>
-
-
-
-            <v-spacer></v-spacer>
-
+           
             <h5 style="padding: 5px 13px;">
                 <v-icon start icon="mdi-account-circle"></v-icon>
                 Kerin Melendez

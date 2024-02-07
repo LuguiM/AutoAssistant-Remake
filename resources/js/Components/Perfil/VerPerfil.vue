@@ -4,29 +4,28 @@
             <h3>Pefil de la cuenta</h3>
         </div>
 
-        <v-row>
-            <v-col cols="12" sm="4" class="d-flex justify-center">
+        <div class="d-flex flex-column" style="gap: 10px;">
+            <div class="d-flex flex-row mx-auto aling-items-center" style="gap: 10px;">
                 <v-btn class="bg-primary" prepend-icon="mdi-account-cog" :disabled="editarPerfil === true"
                     @click="editarPerfil = true">Actualizar
                     Perfil</v-btn>
-            </v-col>
-            <v-col cols="12" sm="4" class="d-flex justify-center">
-                <v-btn class="bg-terceary" prepend-icon="mdi-lock-reset" :disabled="editarPerfil === true"
+
+                    <v-btn class="bg-terceary" prepend-icon="mdi-lock-reset" :disabled="editarPerfil === true"
                     @click="cambiarContraModal = true">Cambiar
                     contraseña</v-btn>
-            </v-col>
-            <v-col cols="12" sm="4" class="d-flex justify-center">
-                <v-btn class="bg-error" prepend-icon="mdi-account-remove" :disabled="editarPerfil === true"
+
+                    <v-btn class="bg-error" prepend-icon="mdi-account-remove" :disabled="editarPerfil === true"
                     @click="eliminarPerfilModal = true">
                     Eliminar cuenta
                 </v-btn>
-            </v-col>
-            <v-col cols="12">
+            </div>
+           
+            <div>
                 <v-card class="bg-primary">
                     <v-card-title class="text-center text-h5">Informacion del perfil</v-card-title>
                     <v-divider color="black" :thickness="5"></v-divider>
                     <v-card-text>
-                        <v-row>
+                        <v-row align="center">
                             <v-col cols="12" sm="3">
                                 <h4>Nombre:</h4>
                             </v-col>
@@ -78,8 +77,8 @@
                         <v-btn class="bg-error" @click="editarPerfil = false">Cancelar</v-btn>
                     </v-card-actions>
                 </v-card>
-            </v-col>
-        </v-row>
+            </div>
+        </div>
 
         <!--Modal de cambiar contraseña-->
         <v-dialog width="auto" v-model="cambiarContraModal" persistent>
@@ -137,7 +136,7 @@
 
 <script setup>
 import { ref } from 'vue';
-
+import notify from '@/plugins/notify.js'
 
 let eliminarPerfilModal = ref(false);
 const confirmarEliminar = ref(false);
@@ -145,9 +144,12 @@ const cambiarContraModal = ref(false);
 const editarPerfil = ref(false);
 const licencia = ref('No');
 
+
+
 const eliminarPerfil = () => {
     confirmarEliminar.value = false
     eliminarPerfilModal.value = false
+    notify('Cuenta eliminada', 'success')
 }
 
 </script>

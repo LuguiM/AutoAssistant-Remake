@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-navigation-drawer v-model="drawer" class="bg-deep-purple" theme="dark" permanent>
-            <v-list v-for="item in items">
+            <v-list v-for="(item, index) in items" :key="index">
                 <v-list-item :to="item.ruta" :prepend-icon="item.icon">
                     {{ item.nombre }}
                 </v-list-item>
