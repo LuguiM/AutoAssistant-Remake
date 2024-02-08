@@ -78,7 +78,8 @@ const drawer = ref(true);
 }
 
 .bgMain {
-    background: url('../images/Fondos/fondo4.jpg') no-repeat center center fixed;
-    background-size: cover;
+    /* background: url('../images/Fondos/fondo4.jpg') no-repeat center center fixed;
+    background-size: cover; */
+    background-color:#32525C;
 }
 </style>

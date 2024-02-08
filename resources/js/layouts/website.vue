@@ -82,9 +82,9 @@ export default {
             items: [
                 { nombre: 'Inicio', icon: 'mdi-home', ruta: '/principal' },
                 { nombre: 'Nosotros', icon: 'mdi-account-box', ruta: '/s' },
-                { nombre: 'Servicio que ofrece', icon: 'mdi-car-wrench', ruta: '/d' },
+                { nombre: 'Nuestros servicios', icon: 'mdi-car-wrench', ruta: '/d' },
                 { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/PilotosWeb' },
-                { nombre: 'Busqueda de servicios', icon: 'mdi-car-search', ruta: '/servicios-mecanicosWeb' },
+                { nombre: 'Servicios mecanicos', icon: 'mdi-car-search', ruta: '/servicios-mecanicosWeb' },
                 { nombre: 'Requisitos', icon: 'mdi-playlist-check', ruta: '/w' },
                 { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/servicios' },
             ],

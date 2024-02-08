@@ -17,6 +17,10 @@ body {
     font-weight: bold;
 }
 
+.v-btn{
+    text-transform: none !important;
+}
+
 .greyButton {
     background-color: #6c757d !important;
     color: #FFFFFF !important;
@@ -36,4 +40,13 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+}
+
+.busquedaStyle {
+    background-color: #303134 !important;
+    color: #FFFFFF !important;
+}
+
+.gap-10{
+    gap: 10px;
 }

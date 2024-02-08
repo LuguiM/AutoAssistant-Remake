@@ -90,12 +90,6 @@ const pilotos = ref([
     color: #FFFFFF !important;
 }
 
-.busquedaStyle {
-    background-color: #303134;
-    color: #FFFFFF;
-}
-
-
 .card_piloto {
     height: 100%;
     max-width: 200px;

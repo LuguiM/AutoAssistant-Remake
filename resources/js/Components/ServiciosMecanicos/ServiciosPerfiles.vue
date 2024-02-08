@@ -7,7 +7,7 @@
             </v-tab>
             <v-tab value="perfiles">
                 <v-icon>mdi-account</v-icon>
-                Perfiles
+                Mecanicos
             </v-tab>
         </v-tabs>
         <v-window v-model="tab">
