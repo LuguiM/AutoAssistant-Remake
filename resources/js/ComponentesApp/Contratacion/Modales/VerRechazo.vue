@@ -31,8 +31,6 @@
 
 <script setup>
 import {ref, defineProps} from 'vue'
-import notify from '@/plugins/notify.js'
-
 
 const dialog = ref(false);
                    

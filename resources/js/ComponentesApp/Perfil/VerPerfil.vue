@@ -4,8 +4,8 @@
             <h3>Pefil de la cuenta</h3>
         </div>
 
-        <div class="d-flex flex-column" style="gap: 10px;">
-            <div class="d-flex flex-row mx-auto aling-items-center" style="gap: 10px;">
+        <div class="d-flex flex-column gap-10">
+            <div class="d-flex flex-column flex-sm-row mx-auto aling-items-center gap-10">
                 <v-btn class="bg-primary" prepend-icon="mdi-account-cog" :disabled="editarPerfil === true"
                     @click="editarPerfil = true">Actualizar
                     Perfil</v-btn>

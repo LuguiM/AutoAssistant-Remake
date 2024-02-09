@@ -14,12 +14,12 @@ const routes = [
             {
                 name: 'PilotosWeb',
                 path: '/PilotosWeb',
-                component: () => import('../Components/Pilotos/Pilotos.vue')
+                component: () => import('../ComponentesApp/Pilotos/Pilotos.vue')
             },
             {
                 name: 'servicios-mecanicosWeb',
                 path: '/servicios-mecanicosWeb',
-                component: () => import('../Components/ServiciosMecanicos/ServiciosPerfiles.vue')
+                component: () => import('../ComponentesApp/ServiciosMecanicos/ServiciosPerfiles.vue')
             },
         ],
     },
@@ -57,72 +57,72 @@ const routes = [
             {
                 name: 'perfil',
                 path: '/perfilUsuario',
-                component: () => import('../Components/Perfil/VerPerfil.vue')
+                component: () => import('../ComponentesApp/Perfil/VerPerfil.vue')
             },
             {
                 name: 'Pilotos',
                 path: '/Pilotos',
-                component: () => import('../Components/Pilotos/Pilotos.vue')
+                component: () => import('../ComponentesApp/Pilotos/Pilotos.vue')
             },
             {
                 name: 'verPiloto',
                 path: '/verPiloto/:id',
-                component: () => import('../Components/Pilotos/VerPiloto.vue')
+                component: () => import('../ComponentesApp/Pilotos/VerPiloto.vue')
             },
             {
                 name: 'crearPilotos',
                 path: '/crearPilotos',
-                component: () => import('../Components/Pilotos/CrearPiloto.vue')
+                component: () => import('../ComponentesApp/Pilotos/CrearPiloto.vue')
             },
             {
                 name: 'servicios-mecanicos',
                 path: '/servicios-mecanicos',
-                component: () => import('../Components/ServiciosMecanicos/ServiciosPerfiles.vue')
+                component: () => import('../ComponentesApp/ServiciosMecanicos/ServiciosPerfiles.vue')
             },
             {
                 name: 'verServicio',
                 path: '/verServicio/:id',
-                component: () => import('../Components/ServiciosMecanicos/verServicio.vue')
+                component: () => import('../ComponentesApp/ServiciosMecanicos/verServicio.vue')
             },
             {
                 name: 'inscripcionServicios',
                 path: '/inscripcionServicios',
-                component: () => import('../Components/ServiciosMecanicos/InscripcionServicios.vue')
+                component: () => import('../ComponentesApp/ServiciosMecanicos/InscripcionServicios.vue')
             },
             {
                 name: 'inscribirServicio',
                 path: '/inscribirServicio',
-                component: () => import('../Components/ServiciosMecanicos/InscribirServicio.vue')
+                component: () => import('../ComponentesApp/ServiciosMecanicos/InscribirServicio.vue')
             },
             {
                 name: 'modificarServicio',
                 path: '/modificarServicio/:id',
-                component: () => import('../Components/ServiciosMecanicos/EditarServicio.vue')
+                component: () => import('../ComponentesApp/ServiciosMecanicos/EditarServicio.vue')
             },
             {
                 name: 'conductorServicios',
                 path: '/serviciosContratados',
-                component: () => import('../Components/Contrataciones/ConductorServicios.vue')
+                component: () => import('../ComponentesApp/Contratacion/ConductorServicios.vue')
             },
             {
                 name: 'mecanicosServicios',
                 path: '/serviciosActivos',
-                component: () => import('../Components/Contrataciones/MecanicoServicio.vue')
+                component: () => import('../ComponentesApp/Contratacion/MecanicoServicio.vue')
             },
             {
                 name: 'verPerfilMecanico',
                 path: '/perfilMecanico/:id',
-                component: () => import('../Components/PerfilMecanico/verPerfil.vue')
+                component: () => import('../ComponentesApp/PerfilMecanico/verPerfil.vue')
             },
             {
                 name: 'crearPerfilMecanico',
                 path: '/crearPerfilMecanico',
-                component: () => import('../Components/PerfilMecanico/crearPerfilMecanico.vue')
+                component: () => import('../ComponentesApp/PerfilMecanico/crearPerfilMecanico.vue')
             },
             {
                 name: 'manuales',
                 path: '/manuales',
-                component: () => import('../Components/Manuales/manuales.vue')
+                component: () => import('../ComponentesApp/Manuales/manuales.vue')
             }
 
         ]
