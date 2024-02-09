@@ -14,40 +14,66 @@
             <v-window-item value="servicios">
                 <v-container fluid>
                     <v-row>
-                        <v-col cols="12" md="3">
+                        <v-col cols="12">
                             <v-card class="rubroFilter" variant="outlined">
-                                <v-card-title class="text-center">Rubros de talleres</v-card-title>
-                                <v-card-text>
+                                <v-card-title class="text-center">Filtros por rubro</v-card-title>
+                                <v-card-text class="d-flex flex-wrap ">
                                     <v-checkbox v-for="rubro in rubros" :label="rubro.label" :value="rubro.value"
                                         hide-details></v-checkbox>
                                 </v-card-text>
+                                <v-card-actions>
+                                    <v-btn variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
+                                        Filtrar
+                                    </v-btn>
+                                    <v-btn variant="tonal" prepend-icon="mdi-trash-can" class="greyButton">
+                                        Limpiar
+                                    </v-btn>
+                                </v-card-actions>
                             </v-card>
                         </v-col>
-                        <v-col cols="12" md="9">
+                        <v-col cols="12">
                             <v-row>
-                                <v-col v-for="servicio in serviciosMecanicos" cols="12" md="3">
-                                    <v-card variant="outlined" class="servicio_card" @click="verServicio(servicio.id)">
-                                        <v-img class="" :src="servicio.image"></v-img>
-
-                                        <v-card-title class="servicio_title text-center pb-0">
-                                            {{ servicio.servicio }}
-                                        </v-card-title>
-                                        <v-card-text>
-                                            <div>
-                                                <strong>Rubro:</strong> {{ servicio.rubro }}
-                                            </div>
-                                            <div>
-                                                <strong>Tipo de servicio:</strong> {{ servicio.tipoServicio }}
-                                            </div>
-                                        </v-card-text>
-
-                                        <v-card-text class="bg-primary">
-                                            <div class="d-flex">
-                                                <strong>Costo: $</strong> {{ servicio.costo }}
-                                            </div>
-                                        </v-card-text>
+                                <v-col v-for="servicio in serviciosMecanicos" cols="12" sm="6" md="6">
+                                    <v-card class="text-center perfil-card">
+                                        <div @click="verServicio(servicio.id)" class="card-body">
+                                            <v-row>
+                                                <v-col cols="12" md="4">
+                                                    <v-avatar color="grey" size="120" class="mt-4">
+                                                    <v-img cover :src="servicio.image"></v-img>
+                                                    </v-avatar>
+                                                </v-col>
+                                                <v-col cols="12" md="8">
+                                                    <v-card-title class="text-start">
+                                                        {{ servicio.servicio}}
+                                                    </v-card-title>
+                                                    <v-card-subtitle class="pt-0 text-start">
+                                                        <v-icon>mdi-car-cog</v-icon>
+                                                        {{ servicio.rubro }}
+                                                    </v-card-subtitle>
+                                                    <v-card-text class="text-end">
+                                                        <div>
+                                                            <v-icon>mdi-star-cog-outline</v-icon>
+                                                            {{ servicio.tipoServicio }}
+                                                        </div>
+                                                        <div>
+                                                            <v-icon>mdi-currency-usd</v-icon> {{ servicio.costo }}
+                                                        </div>
+                                                    </v-card-text>
+                                                </v-col>
+                                            </v-row>
+                                        </div>
+                                        <v-card-actions class="bg-primary card-text d-flex justify-center" @click="verPerfil(servicio.id)">
+                                                <v-avatar color="info" size="x-small">
+                                                    <v-img
+                                                        src="https://cdn.vuetifyjs.com/images/john.jpg"
+                                                        alt="John"
+                                                    ></v-img>
+                                                </v-avatar> 
+                                                <p> Taller Melendez</p>
+                                        </v-card-actions>
 
                                     </v-card>
+                                    
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -152,7 +178,7 @@ const serviciosMecanicos = ref([
         image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
         servicio: "Cambio de alternador",
         rubro: "Lubricentro",
-        tipoServicio: "Cita/Reserva",
+        tipoServicio: "Adomicilio",
         costo: "123",
     },
     {
@@ -168,7 +194,7 @@ const serviciosMecanicos = ref([
         image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
         servicio: "Cambio de luces",
         rubro: "Lubricentro",
-        tipoServicio: "Cita/Reserva",
+        tipoServicio: "Adomicilio",
         costo: "123",
     },
     {
@@ -184,7 +210,7 @@ const serviciosMecanicos = ref([
         image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
         servicio: "Cambio de alternador",
         rubro: "Lubricentro",
-        tipoServicio: "Cita/Reserva",
+        tipoServicio: "Adomicilio",
         costo: "123",
     },
 ]);
@@ -261,5 +287,13 @@ const verPerfil = (id) => {
     border: #242424 solid 3px;
     background: linear-gradient(to bottom right, #242424, #1279C1);
     color: #FFFFFF;
+}
+.card-body:hover{
+    cursor: pointer !important;
+}
+
+.card-text:hover{
+    cursor: pointer !important;
+    background-color: #242424 !important;
 }
 </style>

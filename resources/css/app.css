@@ -20,6 +20,10 @@ body {
 .v-btn{
     text-transform: none !important;
 }
+.v-card-title {
+    overflow:visible !important;
+    white-space: normal !important;
+}
 
 .greyButton {
     background-color: #6c757d !important;
