@@ -3,7 +3,7 @@
         <template v-slot:activator="{ props }">
             <v-btn v-if="prop.type === 'text'" v-bind="props" class="bg-primary"  prepend-icon="mdi-comment-eye-outline">Motivo de rechazo</v-btn>
 
-            <v-btn v-else v-bind="props" variant="flat" density="compact" icon="mdi-eye-outline"></v-btn>
+            <v-btn v-else v-bind="props" variant="flat" density="compact" icon="mdi-comment-eye-outline"></v-btn>
 
         </template>
 
