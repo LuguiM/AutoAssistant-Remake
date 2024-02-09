@@ -15,6 +15,10 @@
             <v-card class="text-center bg-greyDark">
                 <v-card-title class="text-primary font-weight-bold">{{ prop.title }} servicio</v-card-title>
                 <v-divider class="border-opacity-100" color="primary"></v-divider>
+
+                <v-card-text class="text-h4" v-if="prop.title === 'Cancelar'"><v-icon color="error">mdi-delete-outline</v-icon></v-card-text>
+                <v-card-text class="text-h4" v-else><v-icon color="error">mdi-close-circle-outline</v-icon></v-card-text>
+
                 <v-card-text>¿Esta seguro de querer <span class="text-lowercase">{{ prop.title }}</span> este servicio?</v-card-text>
                 <v-card-text v-if="prop.title === 'Rechazar'" class="pt-0">Deje un motivo para poder rechazar el servicio </v-card-text>
                 <v-card-text v-else class="pt-0">Esta accion sera irreversible</v-card-text>

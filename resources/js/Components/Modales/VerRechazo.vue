@@ -13,7 +13,7 @@
                 <v-card-text class="pt-0">El servicio solicitado fue rechazado por el siguiente motivo</v-card-text>
 
                 <v-card-text>
-                    <v-textarea readonly label="Observación" variant="solo" auto-grow
+                    <v-textarea readonly label="Motivo" variant="solo" auto-grow
                     rows="4"
                     row-height="30" v-model="observacion">
                     </v-textarea>

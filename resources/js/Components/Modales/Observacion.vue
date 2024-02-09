@@ -1,13 +1,13 @@
 <template>
     <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }" v-if="prop.type ==='text'">
-            <v-btn v-if="prop.title === 'Ver'" v-bind="props" class="bg-primary"  prepend-icon="mdi-comment-eye-outline">Ver observación</v-btn>
+            <v-btn v-if="prop.title === 'Ver'" v-bind="props" class="bg-primary"  prepend-icon="mdi-comment-search-outline">Ver observación</v-btn>
 
             <v-btn v-else v-bind="props" class="bg-grey2" prepend-icon="mdi-eye-outline">Observación</v-btn>
 
         </template>
         <template v-slot:activator="{ props }" v-else="prop.type ==='icon'">
-            <v-btn v-if="prop.title === 'Ver'" v-bind="props" variant="flat" density="compact" icon="mdi-comment-eye-outline"></v-btn>
+            <v-btn v-if="prop.title === 'Ver'" v-bind="props" variant="flat" density="compact" icon="mdi-comment-search-outline"></v-btn>
             <v-btn v-else v-bind="props" variant="flat" density="compact" icon="mdi-eye-outline"></v-btn>
         </template>
 

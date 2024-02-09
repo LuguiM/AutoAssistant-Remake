@@ -9,6 +9,7 @@
             <v-card class="text-center bg-greyDark">
                 <v-card-title class="text-primary font-weight-bold">Aceptar servicio</v-card-title>
                 <v-divider class="border-opacity-100" color="primary"></v-divider>
+                <v-card-text class="text-h4"><v-icon color="success">mdi-check-circle-outline</v-icon></v-card-text>
                 <v-card-text>¿Esta seguro de aceptar este servicio?</v-card-text>
 
                 <v-card-actions class="mt-3">
