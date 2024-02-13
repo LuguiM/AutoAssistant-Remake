@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Estados extends Model
 {
     use HasFactory;
-//     protected $table = 'mi_tabla_personalizada';
+    //     protected $table = 'mi_tabla_personalizada';
 // protected $primaryKey = 'mi_clave_primaria_personalizada';
 
+    protected $table = 'estados';
 
     protected $fillable = [
         'estado',
