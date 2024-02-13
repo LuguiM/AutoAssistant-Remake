@@ -11,4 +11,10 @@ class Pilotos extends Model
     use HasFactory;
 
     protected $table = 'pilotos';
+
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'imagen',
+    ];
 }
