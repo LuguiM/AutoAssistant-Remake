@@ -2,54 +2,58 @@
     <v-container class="custom-container">
         <v-row>
             <v-col cols="12" sm="6" offset-sm="3">
-                <v-card class="my-5 text-center bg-black" rounded="xl">
+                <v-card class="my-5  bg-black" rounded="xl">
                     <v-card-subtitle class="text-start ma-4">
                         <p class="text-white">Volver</p>
                     </v-card-subtitle>
-                    <v-card-title>
+                    <v-card-title class="text-center">
                         <v-img src="../images/Logos/sinLetrasLogo.png" height="100"></v-img>
                         <h5>AutoAssistant</h5>
                     </v-card-title>
-                    <v-card-title class="text-uppercase font-weight-black">
+                    <v-card-title class="text-uppercase text-center font-weight-black">
                         Creacion de cuenta
                     </v-card-title>
                     <v-card-text class="mx-sm-6">
-                            <v-text-field v-model="form.nombre" label="*Nombre" base-color="primary" :rules="[rules.required]" variant="solo"
+                        <v-form @submit.prevent="sendForm()" validate-on="submit lazy">
+                            <v-text-field v-model="form.nombre" label="Nombre" base-color="primary" :rules="[rules.required]" variant="solo"
                                 rounded="xl" color="primary"></v-text-field>
 
-                            <v-text-field v-model="form.edad" label="*Edad" base-color="primary" :rules="[rules.required]" variant="solo"
-                                rounded="xl" color="primary" class="mt-3"></v-text-field>
+                            <v-text-field v-model="form.edad" label="Edad" base-color="primary" :rules="[rules.required]" variant="solo"
+                                rounded="xl" color="primary" class="mt-3" type="number"></v-text-field>
 
-                            <v-switch v-model="form.licencia" color="primary" hide-details true-value="Si" false-value="No"
-                                :label="`¿Cuentas con licencia?: ${form.licencia || licenciaActive}`"></v-switch>
+                            <v-switch v-model="form.licencia" color="primary" hide-details 
+                                :label="`¿Cuentas con licencia? `"></v-switch>
 
-                            <v-text-field v-if="form.licencia === 'Si'" label="Numero de licencia" :rules="[rules.required]"
+                            <v-text-field v-if="form.licencia === true" v-model="form.numero_licencia" label="Numero de licencia" :rules="[rules.required]"
                                 rounded="xl" variant="solo" color="primary" hint="Formato de licencia: XXXX-XXXXXX-XXX-X"
                                 class="mt-3"></v-text-field>
 
-                            <v-text-field label="*Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
+                            <v-text-field v-model="form.correo" label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
                                 color="primary" class="mt-3"></v-text-field>
 
-                            <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                            <v-text-field v-model="password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                                 :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
-                                label="*Contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
-                                color="primary" hint="*La contraseña debe ser mayor a 8 digitos entre numeros y letras"
+                                label="Contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
+                                color="primary" hint="La contraseña debe ser mayor a 8 digitos entre numeros y letras"
                                 class="mt-3"></v-text-field>
 
-                            <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                            <v-text-field v-model="repeatPassword" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                                 :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
-                                label="*Confirmar contraseña" :rules="[rules.required, rules.counter]" rounded="xl"
-                                variant="solo" color="primary" hint="*Las contraseñas deben de coincidir."
-                                class="mt-3"></v-text-field>
+                                label="Confirmar contraseña" :rules="[rules.required, rules.counter]" rounded="xl"
+                                variant="solo" color="primary"
+                                class="mt-3" @input="validarPassword()"></v-text-field>
+                            
+                            <p v-if="validPassword" class="text-error">Las contraseñas no son iguales</p>
 
-                            <v-btn @click="registro()"  block rounded="xl" class="bg-primary mt-3">Registrar</v-btn>
+                            <v-btn :loading="cargando" type="submit" block rounded="xl" class="bg-primary mt-3">Registrar</v-btn>
+                        </v-form>
                     </v-card-text>
 
-                    <v-card-text>
+                    <v-card-text class="text-center">
                         ¿Ya tienes una cuenta? <a href="/IniciarSesion" class="text-white">Iniciar sesion</a>
                     </v-card-text>
 
-                    <v-card-text class="bg-white">
+                    <v-card-text class="bg-white text-center">
                         <h3 class="text-primary">Registrate con Google</h3>
                         <v-btn class="ma-2" color="primary" icon="mdi-google" variant="outlined"></v-btn>
                     </v-card-text>
@@ -67,6 +71,10 @@ import { useAuthStore } from '../../Stores/auth'
 const authStore = useAuthStore();
 
 const form = ref({})
+const password = ref('')
+const repeatPassword = ref('')
+const validPassword = ref(false)
+const cargando = ref(false)
 
 const rules = ref({
     required: value => !!value || 'Campo obligatorio.',
@@ -78,12 +86,26 @@ const rules = ref({
 
 });
 const visible = ref(false);
-const licenciaActive = ref('No');
 
-const registro = () =>{
-   authStore.register(form.value)
-   cosole.log('click')
+const validarPassword = () =>{
+    if(password.value == repeatPassword.value){
+        validPassword.value = false;
+    }else{
+        validPassword.value = true;
+    }
 }
+
+const sendForm = async () => {
+    cargando.value = true;
+    
+    if (await authStore.register(form.value)) {
+        form.value.password = password.value;
+    } else {
+        cargando.value = false;
+    }
+}
+
+
 
 </script>
 

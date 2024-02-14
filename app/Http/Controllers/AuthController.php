@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\ConductorData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -14,8 +15,8 @@ class AuthController extends Controller
     {
         $rules = [
             'nombre' => 'required|string|max:90',
-            'edad' => 'required',
-            'rol' => 'required|string',
+            'edad' => 'required|integer',
+            'rol' => 'string',
             'correo' => 'required|string|max:100',
             'password' => 'required|string'
         ];
@@ -27,15 +28,37 @@ class AuthController extends Controller
                 'errors' => $validator->errors()->all()
             ], 400);
         }
-        $user = new User([
-            'nombre' => $request->nombre,
-            'edad' => $request->edad,
-            'rol' => $request->rol,
-            'correo' => $request->correo,
-            'password' => Hash::make($request->password),
-        ]);
 
+        $licencia = $request->input('licencia');
+        $numero_licencia = $request->input('numero_licencia');
+        $rol = $request->input('rol');
+
+        $rolConductor = isset($licencia) ? "conductor" : "futuro_conductor"; 
+
+        $rolUser = "";
+
+        if($rol == "mecanico_independiente" || $rol == "taller_mecanico"){
+            $rolUser = $rol;
+        }else{
+            $rolUser = $rolConductor;
+        }
+
+        $user = new User();
+
+        $user->nombre = $request->nombre;
+        $user->edad = $request->edad;
+        $user->rol = $rolUser;
+        $user->correo = $request->correo;
+        $user->password = Hash::make($request->password);
         $user->save();
+
+        if (isset($licencia)) { 
+            $conductorData = new ConductorData();
+            $conductorData->licencia = $licencia;
+            $conductorData->numero_licencia = $numero_licencia;
+            $conductorData->user_id = $user->id;
+            $conductorData->save();
+        }
 
         return response()->json([
             'status' => true,
