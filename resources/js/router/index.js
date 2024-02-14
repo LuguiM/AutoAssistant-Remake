@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '../Stores/auth';
 
 const routes = [
+
+    //Routas de sitio web publicas
     {
         path: '/',
         redirect: '/principal',
@@ -22,23 +25,32 @@ const routes = [
                 component: () => import('../ComponentesApp/ServiciosMecanicos/ServiciosPerfiles.vue')
             },
         ],
+        meta: { requiresAuth: false }
     },
+
+    //Rutas publicas
     {
         path: '/IniciarSesion',
-        component: () => import('../web/Login.vue')
+        component: () => import('../web/Login.vue'),
+        meta: { requiresAuth: false }
     },
     {
         path: '/OpcionesRegistro',
-        component: () => import('../web/Registro/OpcionesRegistro.vue')
+        component: () => import('../web/Registro/OpcionesRegistro.vue'),
+        meta: { requiresAuth: false }
     },
     {
         path: '/RegistroMecanicos',
-        component: () => import('../web/Registro/RegistroMecanico.vue')
+        component: () => import('../web/Registro/RegistroMecanico.vue'),
+        meta: { requiresAuth: false }
     },
     {
         path: '/RegistroConductores',
-        component: () => import('../web/Registro/RegistroConductor.vue')
+        component: () => import('../web/Registro/RegistroConductor.vue'),
+        meta: { requiresAuth: false }
     },
+
+    //Rutas que requiren Iniciar Sesion
     {
         path: '/App',
         redirect: '/dashboard',
@@ -125,13 +137,35 @@ const routes = [
                 component: () => import('../ComponentesApp/Manuales/manuales.vue')
             }
 
-        ]
+        ],
+        meta: { requiresAuth: true }
     }
 ];
+
+
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes
 });
+
+router.beforeEach(async (to) => {
+    const auth = useAuthStore();
+    const requiresAuth = to.meta.requiresAuth;
+
+    if (requiresAuth && !auth.user) {
+        return '/IniciarSesion';
+    }
+});
+
+// router.beforeEach( async(to) =>{
+//     const publicPages = ['/IniciarSesion','/OpcionesRegistro','/principal', ]
+//     const authRequired = !publicPages.includes(to.path)
+//     const auth = useAuthStore()
+//     if(authRequired && !auth.user){
+//         auth.returnUrl = to.fullPath
+//         return '/IniciarSesion'
+//     }
+// })
 
 export default router;

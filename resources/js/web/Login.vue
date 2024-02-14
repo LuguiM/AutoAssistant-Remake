@@ -11,15 +11,17 @@
                         Iniciar Sesion
                     </v-card-title>
                     <v-card-text class="mx-sm-6">
-                        <v-text-field label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
-                            color="primary"></v-text-field>
+                        <v-form @submit="$event => authStore.login(form)">
+                            <v-text-field label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
+                                color="primary" v-model="form.correo"></v-text-field>
 
-                        <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                            :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
-                            label="Ingresar contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
-                            color="primary" hint="*La contraseña debe ser mayor a 8 digitos" class="mt-3"></v-text-field>
-                        <v-btn block rounded="xl" class="bg-primary mt-3">Iniciar Sesion</v-btn>
+                            <v-text-field v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                                :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
+                                label="Ingresar contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
+                                color="primary" hint="*La contraseña debe ser mayor a 8 digitos" class="mt-3"></v-text-field>
 
+                            <v-btn block rounded="xl" class="bg-primary mt-3">Iniciar Sesion</v-btn>
+                        </v-form>
                     </v-card-text>
                     <v-card-text class="d-sm-flex pt-0 align-center">
                         <v-checkbox label="Recuerdame" hide-details="auto"></v-checkbox>
@@ -42,6 +44,12 @@
 
 <script setup>
 import { ref } from 'vue';
+
+import { useAuthStore } from '../Stores/auth'
+
+const authStore = useAuthStore();
+
+const form = ref({})
 
 const rules = ref({
     required: value => !!value || 'Campo obligatorio.',

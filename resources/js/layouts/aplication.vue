@@ -15,14 +15,15 @@
 
             <v-divider></v-divider>
             <v-list nav density="compact">
-                <v-list-item class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index" :prepend-icon="item.icon">
+                <v-list-item class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index"
+                    :prepend-icon="item.icon">
                     {{ item.nombre }}
                 </v-list-item>
             </v-list>
 
             <template v-slot:append>
                 <div class="pa-2 ">
-                    <v-btn block class="bgBar" flat>
+                    <v-btn block class="bgBar" flat @click="$event => authStore.logout()">
                         <v-icon start icon="mdi-exit-to-app"></v-icon>
                         Cerrar Sesión
                     </v-btn>
@@ -36,10 +37,10 @@
 
             <v-spacer></v-spacer>
 
-           
+
             <h5 style="padding: 5px 13px;">
                 <v-icon start icon="mdi-account-circle"></v-icon>
-                Kerin Melendez
+                {{ authStore.user.nombre }}
             </h5>
         </v-app-bar>
 
@@ -52,6 +53,9 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useAuthStore } from '../Stores/auth'
+
+const authStore = useAuthStore();
 
 const items = ref([
     { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
@@ -80,6 +84,6 @@ const drawer = ref(true);
 .bgMain {
     /* background: url('../images/Fondos/fondo4.jpg') no-repeat center center fixed;
     background-size: cover; */
-    background-color:#32525C;
+    background-color: #32525C;
 }
 </style>
