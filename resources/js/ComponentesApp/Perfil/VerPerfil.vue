@@ -21,50 +21,50 @@
             </div>
            
             <div class="d-flex justify-center mx-auto">
-                <v-card class="bg-primary elevation-24" min-width="248" max-width="500">
+                <v-card class="bg-primary elevation-24" min-width="235" max-width="600">
                     <v-card-title class="text-h5">Información</v-card-title>
                     <v-divider color="black" :thickness="5"></v-divider>
                     <v-card-text>
                         <v-row align="center">
-                            <v-col cols="12" class="d-flex gap-10">
+                            <v-col cols="12" class="d-flex ">
                                 <h4 class="mr-5"><v-icon>mdi-account</v-icon></h4>
                                 <v-text-field v-model="datosPerfil.nombre" v-if="editarPerfil === true" label="Nombre de la cuenta"
                                     variant="solo"></v-text-field>
                                 <h4 v-else>{{ authStore.user.nombre }}</h4>
                             </v-col>
                         
-                            <v-col cols="12" class="d-flex gap-10">
+                            <v-col cols="12" class="d-flex ">
                                 <h4 class="mr-5"><v-icon>mdi-mail</v-icon></h4>
                                 <v-text-field v-model="datosPerfil.correo" v-if="editarPerfil === true" label="Correo" variant="solo"></v-text-field>
                                 <h4 v-else>{{ authStore.user.correo }} </h4>
                             </v-col>
                             
-                            <v-col cols="12" class="d-flex gap-10">
+                            <v-col cols="12" class="d-flex " v-if="authStore.user.rol == 'futuro_conductor' || authStore.user.rol == 'conductor' ">
                                 <h4 class="mr-5"><v-icon>mdi-cake-variant</v-icon></h4>
                                 <v-text-field v-model="datosPerfil.edad" v-if="editarPerfil === true" label="Edad" variant="solo"></v-text-field>
                                 <h4 v-else>{{ datosPerfil.edad }} años</h4>
                             </v-col>
                             
-                            <v-col cols="12" class="d-flex gap-10" v-if="authStore.user.rol == 'futuro_conductor' || authStore.user.rol == 'conductor' ">
+                            <v-col cols="12" class="d-flex" v-if="authStore.user.rol == 'futuro_conductor' || authStore.user.rol == 'conductor' ">
                                 <h4 class="mr-5"><v-icon>mdi-smart-card</v-icon></h4>
-                                <h4 v-if="conductorData.licencia == true">¿Licencia? Si</h4>
+                                <h4 v-if="conductorData?.licencia == true">¿Licencia? Si</h4>
 
                                 <h4 v-else>¿Licencia? No</h4>
                             </v-col>
                             
-                            <v-col cols="2" class="d-flex gap-10" v-if="conductorData.licencia == true && authStore.user.rol == 'futuro_conductor' || authStore.user.rol == 'conductor' ">
+                            <v-col cols="2" class="d-flex " v-if="conductorData?.licencia === true && (authStore.user.rol === 'futuro_conductor' || authStore.user.rol === 'conductor')">
                                 <h4 class="mr-5"><v-icon>mdi-card-account-details</v-icon></h4>
                                 <v-text-field v-model="conductorData.numero_licencia" v-if="editarPerfil === true && conductorData.licencia == true" label="Numero de licencia"
                                     variant="solo"></v-text-field>
                                 <h4 v-else>{{conductorData.numero_licencia}}</h4>
                             </v-col>
                             
-                            <v-col cols="12" class="d-flex gap-10">
+                            <v-col cols="12" class="d-flex">
                                 <h4 class="mr-5"><v-icon>mdi-badge-account</v-icon></h4>
                                 <h4>{{ authStore.user.rol }}</h4>
                             </v-col>
                             
-                            <v-col cols="12" class="d-flex gap-10">
+                            <v-col cols="12" class="d-flex">
                                 <h4 class="mr-5"><v-icon>mdi-lock-reset</v-icon></h4>
                                 <v-btn class="text-decoration-underline px-0" variant="text" :disabled="editarPerfil === true"
                                 @click="cambiarContraModal = true">Cambiar
