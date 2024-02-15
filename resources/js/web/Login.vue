@@ -11,7 +11,7 @@
                         Iniciar Sesion
                     </v-card-title>
                     <v-card-text class="mx-sm-6">
-                        <v-form @submit="$event => authStore.login(form)">
+                        <v-form @submit.prevent="sendLogin()" validate-on="submit lazy">
                             <v-text-field label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
                                 color="primary" v-model="form.correo"></v-text-field>
 
@@ -20,7 +20,7 @@
                                 label="Ingresar contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
                                 color="primary" hint="*La contraseña debe ser mayor a 8 digitos" class="mt-3"></v-text-field>
 
-                            <v-btn block rounded="xl" class="bg-primary mt-3">Iniciar Sesion</v-btn>
+                            <v-btn :loading="cargando" type="submit" block rounded="xl" class="bg-primary mt-3">Iniciar Sesion</v-btn>
                         </v-form>
                     </v-card-text>
                     <v-card-text class="d-sm-flex pt-0 align-center">
@@ -28,7 +28,7 @@
                         <a href="#" class="text-white">¿Contraseña olvidada?</a>
                     </v-card-text>
                     <v-card-text class="pt-0">
-                        ¿No tienes cuenta? <a href="#" class="text-white">Crear cuenta</a>
+                        ¿No tienes cuenta? <a href="/OpcionesRegistro" class="text-white">Crear cuenta</a>
                     </v-card-text>
 
                     <v-card-text class="bg-white">
@@ -44,12 +44,14 @@
 
 <script setup>
 import { ref } from 'vue';
-
 import { useAuthStore } from '../Stores/auth'
 
 const authStore = useAuthStore();
 
 const form = ref({})
+const cargando = ref(false)
+const visible = ref(false);
+
 
 const rules = ref({
     required: value => !!value || 'Campo obligatorio.',
@@ -60,7 +62,16 @@ const rules = ref({
     },
 
 });
-const visible = ref(false);
+
+
+const sendLogin = async () =>{
+    try{
+        cargando.value = true;
+        await authStore.login(form.value);
+    } finally {
+        cargando.value = false;
+    }
+}
 
 </script>
 

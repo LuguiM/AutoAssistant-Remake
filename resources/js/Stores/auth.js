@@ -30,9 +30,9 @@ export const useAuthStore = defineStore('auth', {
             await this.getToken();
             await axios.post('/api/auth/register', form).then(
                 (res) => {
-                    notify(res, 'success')
+                    let msg = res.data.message
+                    notify(msg, 'success')
                     setTimeout(() => this.router.push('/IniciarSesion'), 2000)
-                    this.router.push('/IniciarSesion')
                 }
             ).catch(
                 (errors) => {

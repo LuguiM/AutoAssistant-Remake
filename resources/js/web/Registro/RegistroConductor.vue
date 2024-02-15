@@ -24,9 +24,9 @@
                             <v-switch v-model="form.licencia" color="primary" hide-details 
                                 :label="`¿Cuentas con licencia? `"></v-switch>
 
-                            <v-text-field v-if="form.licencia === true" v-model="form.numero_licencia" label="Numero de licencia" :rules="[rules.required]"
+                            <v-text-field v-if="form.licencia === true" v-model="form.numero_licencia" label="Numero de licencia" :rules="[rules.required, rules.numero_licencia]"
                                 rounded="xl" variant="solo" color="primary" hint="Formato de licencia: XXXX-XXXXXX-XXX-X"
-                                class="mt-3"></v-text-field>
+                                class="mt-3" @input="limpiarLicencia()"></v-text-field>
 
                             <v-text-field v-model="form.correo" label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
                                 color="primary" class="mt-3"></v-text-field>
@@ -78,13 +78,17 @@ const cargando = ref(false)
 
 const rules = ref({
     required: value => !!value || 'Campo obligatorio.',
-    counter: value => value.length >= 8 || 'Ingrese una contraseña mayor a 8 digitos',
+    counter: value => value.length >= 8 || 'Ingrese una contraseña mayor a 8 dígitos',
     email: value => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(value) || 'Correo invalido.'
+        return pattern.test(value) || 'Correo inválido.'
     },
-
+    numero_licencia: value => {
+        const pattern = /^\d{4}-\d{6}-\d{3}-\d{1}$/
+        return pattern.test(value) || 'El número de licencia debe tener el formato: XXXX-XXXXXX-XXX-X'
+    }
 });
+
 const visible = ref(false);
 
 const validarPassword = () =>{
@@ -95,15 +99,23 @@ const validarPassword = () =>{
     }
 }
 
+const limpiarLicencia = ()=>{
+    if(form.value.licencia == false){
+        form.value.numero_licencia = '';
+    }
+}
+
 const sendForm = async () => {
-    cargando.value = true;
-    
-    if (await authStore.register(form.value)) {
+    try {
+        cargando.value = true;
+        limpiarLicencia();
         form.value.password = password.value;
-    } else {
+        await authStore.register(form.value);
+    } finally {
         cargando.value = false;
     }
 }
+
 
 
 

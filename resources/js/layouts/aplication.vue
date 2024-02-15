@@ -15,7 +15,15 @@
 
             <v-divider></v-divider>
             <v-list nav density="compact">
-                <v-list-item class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index"
+                <v-list-item v-show="authStore.user.rol == 'conductor' || authStore.user.rol == 'futuro_conductor'" class="font-weight-bold" v-for="(item, index) in rutasConductor" :to="item.ruta" :key="index"
+                    :prepend-icon="item.icon">
+                    {{ item.nombre }}
+                </v-list-item>
+                <v-list-item v-show="authStore.user.rol == 'Mecanico Independiente' || authStore.user.rol == 'Taller Mecanico'" class="font-weight-bold" v-for="(item, index) in rutasMecanico" :to="item.ruta" :key="index"
+                    :prepend-icon="item.icon">
+                    {{ item.nombre }}
+                </v-list-item>
+                <v-list-item v-show="authStore.user.rol == 'admin'" class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index"
                     :prepend-icon="item.icon">
                     {{ item.nombre }}
                 </v-list-item>
@@ -67,6 +75,24 @@ const items = ref([
     { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
     { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/crearPerfilMecanico' },
+]);
+
+const rutasConductor = ref([
+    { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
+    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
+    { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
+    { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
+    { nombre: 'Servicios Contratados', icon: 'mdi-wrench-check', ruta: '/serviciosContratados' },
+]);
+
+const rutasMecanico = ref([
+    { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
+    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
+    { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
+    { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/crearPerfilMecanico' },
+    { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
+    { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
 ]);
 const drawer = ref(true);
 </script>

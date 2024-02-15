@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <div class="text-center mb-5 text-uppercase">
-            <h3>Pefil de la cuenta</h3>
+            <h3>Perfil de la cuenta</h3>
         </div>
 
         <div class="d-flex flex-column gap-10">
@@ -20,59 +20,60 @@
                 </v-btn>
             </div>
            
-            <div>
-                <v-card class="bg-primary">
-                    <v-card-title class="text-center text-h5">Informacion del perfil</v-card-title>
+            <div class="d-flex justify-center mx-auto">
+                <v-card class="bg-primary elevation-24" min-width="248" max-width="500">
+                    <v-card-title class="text-h5">Información</v-card-title>
                     <v-divider color="black" :thickness="5"></v-divider>
                     <v-card-text>
                         <v-row align="center">
-                            <v-col cols="12" sm="3">
-                                <h4>Nombre:</h4>
-                            </v-col>
-                            <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true" label="Nombre de la cuenta"
+                            <v-col cols="12" class="d-flex gap-10">
+                                <h4 class="mr-5"><v-icon>mdi-account</v-icon></h4>
+                                <v-text-field v-model="datosPerfil.nombre" v-if="editarPerfil === true" label="Nombre de la cuenta"
                                     variant="solo"></v-text-field>
-                                <h4 v-else>Kerin Melendez</h4>
+                                <h4 v-else>{{ datosPerfil.nombre }}</h4>
                             </v-col>
-                            <v-col cols="12" sm="3">
-                                <h4>Correo electronico:</h4>
+                        
+                            <v-col cols="12" class="d-flex gap-10">
+                                <h4 class="mr-5"><v-icon>mdi-mail</v-icon></h4>
+                                <v-text-field v-model="datosPerfil.correo" v-if="editarPerfil === true" label="Correo" variant="solo"></v-text-field>
+                                <h4 v-else>{{ datosPerfil.correo }}</h4>
                             </v-col>
-                            <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true" label="Correo" variant="solo"></v-text-field>
-                                <h4 v-else>mio@gmail.com</h4>
+                            
+                            <v-col cols="12" class="d-flex gap-10">
+                                <h4 class="mr-5"><v-icon>mdi-cake-variant</v-icon></h4>
+                                <v-text-field v-model="datosPerfil.edad" v-if="editarPerfil === true" label="Edad" variant="solo"></v-text-field>
+                                <h4 v-else>{{ datosPerfil.edad }} años</h4>
                             </v-col>
-                            <v-col cols="12" sm="3">
-                                <h4>Edad:</h4>
+                            
+                            <v-col cols="12" class="d-flex gap-10">
+                                <h4 class="mr-5"><v-icon>mdi-smart-card</v-icon></h4>
+                                <h4 v-if="conductorData.licencia == true">¿Licencia? Si</h4>
+
+                                <h4 v-else>¿Licencia? No</h4>
                             </v-col>
-                            <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true" label="Edad" variant="solo"></v-text-field>
-                                <h4 v-else>21</h4>
-                            </v-col>
-                            <v-col cols="12" sm="3">
-                                <h4>Licencia:</h4>
-                            </v-col>
-                            <v-col cols="12" sm="3">
-                                <v-switch v-model="licencia" v-if="editarPerfil === true" hide-details true-value="Si"
-                                    false-value="No" :label="`${licencia}`"></v-switch>
-                                <h4 v-else>No</h4>
-                            </v-col>
-                            <v-col cols="12" sm="3">
-                                <h4>Numero de licencia:</h4>
-                            </v-col>
-                            <v-col cols="12" sm="3">
-                                <v-text-field v-if="editarPerfil === true && licencia === 'Si'" label="Numero de licencia"
+                            
+                            <v-col cols="2" class="d-flex gap-10">
+                                <h4 class="mr-5"><v-icon>mdi-card-account-details</v-icon></h4>
+                                <v-text-field v-model="conductorData.numero_licencia" v-if="editarPerfil === true && conductorData.licencia == true" label="Numero de licencia"
                                     variant="solo"></v-text-field>
-                                <h4 v-else>21</h4>
+                                <h4 v-else>{{conductorData.numero_licencia}}</h4>
                             </v-col>
-                            <v-col cols="12" sm="3">
-                                <h4>Tipo de cuenta:</h4>
+                            
+                            <v-col cols="12" class="d-flex gap-10">
+                                <h4 class="mr-5"><v-icon>mdi-badge-account</v-icon></h4>
+                                <h4>{{ datosPerfil.rol }}</h4>
                             </v-col>
-                            <v-col cols="12" sm="3">
-                                <h4>Admin</h4>
+                            
+                            <v-col cols="12" class="d-flex gap-10">
+                                <h4 class="mr-5"><v-icon>mdi-lock-reset</v-icon></h4>
+                                <v-btn class="text-decoration-underline px-0" variant="text" :disabled="editarPerfil === true"
+                                @click="cambiarContraModal = true">Cambiar
+                                contraseña</v-btn>
                             </v-col>
+                            
                         </v-row>
                     </v-card-text>
-                    <v-card-actions v-if="editarPerfil === true">
+                    <v-card-actions v-if="editarPerfil == true">
                         <v-btn class="bg-secondary">Guardar cambios</v-btn>
                         <v-btn class="bg-error" @click="editarPerfil = false">Cancelar</v-btn>
                     </v-card-actions>
@@ -135,15 +136,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import notify from '@/plugins/notify.js'
+import { ref, onMounted } from 'vue';
+import notify from '@/plugins/notify.js';
+import { getData } from '@/plugins/api.js'
+import { useAuthStore } from '@/Stores/auth';
+
+
+
+const authStore = useAuthStore();
+
 
 let eliminarPerfilModal = ref(false);
 const confirmarEliminar = ref(false);
 const cambiarContraModal = ref(false);
 const editarPerfil = ref(false);
 const licencia = ref('No');
-
+const datosPerfil = ref({});
+const conductorData = ref({});
 
 
 const eliminarPerfil = () => {
@@ -151,6 +160,24 @@ const eliminarPerfil = () => {
     eliminarPerfilModal.value = false
     notify('Cuenta eliminada', 'success')
 }
+
+const getPerfil = async () => {
+
+    const id = authStore.authUser.id
+
+    const data = await getData(('users/' + id));
+
+    datosPerfil.value = data;
+    conductorData.value = data.conductor_data
+
+    console.log(datosPerfil.value)
+
+}
+
+
+onMounted( ()=> {
+    getPerfil()
+});
 
 </script>
 

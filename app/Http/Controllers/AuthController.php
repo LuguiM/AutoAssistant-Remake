@@ -15,10 +15,11 @@ class AuthController extends Controller
     {
         $rules = [
             'nombre' => 'required|string|max:90',
-            'edad' => 'required|integer',
+            'edad' => 'integer',
             'rol' => 'string',
-            'correo' => 'required|string|max:100',
-            'password' => 'required|string'
+            'correo' => 'required|string|max:100|email|unique:users,correo',
+            'password' => 'required|string',
+            'numero_licencia' => 'nullable|regex:/^\d{4}-\d{6}-\d{3}-\d{1}$/'
         ];
 
         $validator = Validator::make($request->input(), $rules);
@@ -32,12 +33,13 @@ class AuthController extends Controller
         $licencia = $request->input('licencia');
         $numero_licencia = $request->input('numero_licencia');
         $rol = $request->input('rol');
+        $edad = $request->input('edad');
 
-        $rolConductor = isset($licencia) ? "conductor" : "futuro_conductor"; 
+        $rolConductor = isset($numero_licencia) && !empty($numero_licencia) ? "conductor" : "futuro_conductor";
 
         $rolUser = "";
 
-        if($rol == "mecanico_independiente" || $rol == "taller_mecanico"){
+        if($rol == "Mecanico Independiente" || $rol == "Taller Mecanico"){
             $rolUser = $rol;
         }else{
             $rolUser = $rolConductor;
@@ -45,14 +47,16 @@ class AuthController extends Controller
 
         $user = new User();
 
+        if(isset($edad)){
+            $user->edad = $edad;
+        }
         $user->nombre = $request->nombre;
-        $user->edad = $request->edad;
         $user->rol = $rolUser;
         $user->correo = $request->correo;
         $user->password = Hash::make($request->password);
         $user->save();
 
-        if (isset($licencia)) { 
+        if (isset($numero_licencia) && !empty($numero_licencia)) {
             $conductorData = new ConductorData();
             $conductorData->licencia = $licencia;
             $conductorData->numero_licencia = $numero_licencia;

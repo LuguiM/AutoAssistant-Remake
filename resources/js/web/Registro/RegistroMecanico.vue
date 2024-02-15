@@ -14,30 +14,33 @@
                         Creacion de cuenta
                     </v-card-title>
                     <v-card-text class="mx-sm-6">
-                        <v-text-field label="Nombre" base-color="primary" :rules="[rules.required]" variant="solo"
-                            rounded="xl" color="primary"></v-text-field>
+                        <v-form @submit.prevent="sendForm()" validate-on="submit lazy">
+                            <v-text-field v-model="form.nombre" label="Nombre" base-color="primary" :rules="[rules.required]" variant="solo"
+                                rounded="xl" color="primary"></v-text-field>
 
-                        <v-select clearable label="¿Como se identifica?"
-                            :items="['Taller Mecanico', 'Mecanico Independiente']" :rules="[rules.required]" variant="solo"
-                            color="primary" rounded="xl" class="mt-3"></v-select>
+                            <v-select v-model="form.rol" clearable label="¿Como se identifica?"
+                                :items="['Taller Mecanico', 'Mecanico Independiente']" :rules="[rules.required]" variant="solo"
+                                color="primary" rounded="xl" class="mt-3"></v-select>
 
-                        <v-text-field label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
-                            color="primary" class="mt-3"></v-text-field>
+                            <v-text-field v-model="form.correo" label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
+                                color="primary" class="mt-3"></v-text-field>
 
-                        <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                            :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
-                            label="Contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
-                            color="primary" hint="*La contraseña debe ser mayor a 8 digitos entre numeros y letras"
-                            class="mt-3"></v-text-field>
+                            <v-text-field v-model="password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                                :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
+                                label="Contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
+                                color="primary" hint="*La contraseña debe ser mayor a 8 digitos entre numeros y letras"
+                                class="mt-3"></v-text-field>
 
-                        <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                            :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
-                            label="Confirmar contraseña" :rules="[rules.required, rules.counter]" rounded="xl"
-                            variant="solo" color="primary" hint="*Las contraseñas deben de coincidir."
-                            class="mt-3"></v-text-field>
+                            <v-text-field v-model="repeatPassword" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                                :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
+                                label="Confirmar contraseña" :rules="[rules.required, rules.counter]" rounded="xl"
+                                variant="solo" color="primary" hide-details
+                                class="mt-3"  @input="validarPassword()"></v-text-field>
 
-                        <v-btn block rounded="xl" class="bg-primary mt-3">Registrar</v-btn>
+                            <p v-if="validPassword" class="text-error">Las contraseñas no son iguales</p>
 
+                            <v-btn :loading="cargando" type="submit" block rounded="xl" class="bg-primary mt-5">Registrar</v-btn>
+                        </v-form>
                     </v-card-text>
 
                     <v-card-text>
@@ -58,8 +61,17 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../../Stores/auth'
+
 
 const router = useRouter();
+const authStore = useAuthStore();
+
+const form = ref({})
+const password = ref('')
+const repeatPassword = ref('')
+const validPassword = ref(false)
+const cargando = ref(false)
 
 const IniciarSesion = () => {
     router.push({ path: `/IniciarSesion` });
@@ -75,6 +87,24 @@ const rules = ref({
 
 });
 const visible = ref(false);
+
+const validarPassword = () =>{
+    if(password.value == repeatPassword.value){
+        validPassword.value = false;
+    }else{
+        validPassword.value = true;
+    }
+}
+
+const sendForm = async () => {
+    try {
+        cargando.value = true;
+        form.value.password = password.value;
+        await authStore.register(form.value);
+    } finally {
+        cargando.value = false;
+    }
+}
 
 </script>
 
