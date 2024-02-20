@@ -12,3 +12,5 @@ Crear y configurar el archivo .env
 npm run dev
 
 php artisan serve
+
+php artisan storage:link

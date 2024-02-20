@@ -16,6 +16,7 @@ class PerfilMecanico extends Model
         'nombre_taller',
         'representante',
         'direccion',
+        'numero',
         'user_id'
     ];
 

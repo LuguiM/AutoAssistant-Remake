@@ -132,6 +132,12 @@ const routes = [
                 component: () => import('../ComponentesApp/PerfilMecanico/crearPerfilMecanico.vue')
             },
             {
+                name: 'perfilMecanico',
+                path: '/perfilMecanico',
+                component: () => import('../ComponentesApp/PerfilMecanico/showOrEdit.vue'),
+
+            },
+            {
                 name: 'manuales',
                 path: '/manuales',
                 component: () => import('../ComponentesApp/Manuales/manuales.vue')

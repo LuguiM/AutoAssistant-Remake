@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\controllers\PerfilMecanicoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +24,14 @@ Route::post('auth/login', [AuthController::class, 'login']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('auth/logout', [AuthController::class, 'logout']);
 
-    //Routas para el perfil del usuario
+    //Rutas para el perfil del usuario
     Route::get('users/{id}', [UserController::class, 'showUser']);
+
+    //Rutas para perfil mecanico
+    Route::get('verificarPerfil/{id}', [PerfilMecanicoController::class,'verificarPerfil']);
+    Route::post('perfilMecanico/crear', [PerfilMecanicoController::class,'store']);
+
+
 });
 
 

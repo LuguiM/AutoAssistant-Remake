@@ -90,7 +90,7 @@ const rutasMecanico = ref([
     { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
     { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
-    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/crearPerfilMecanico' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/perfilMecanico' },
     { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
     { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
 ]);
