@@ -9,24 +9,24 @@
                 <v-btn class="greyButton" prepend-icon="mdi-arrow-left-circle">Regresar</v-btn>
             </v-col>
             <v-col cols="12">
-                <v-card class="bg-greyDark">
+                <v-card class="bg-greyDark mx-auto" min-width="235" max-width="600">
                     <v-form @submit.prevent="postPerfil()" validate-on="submit lazy">
                         <v-card-title class="text-center">
                             <v-avatar :image="selectedImage" size="150"></v-avatar>
                             <v-file-input @change="handleImageChange" accept="image/png, image/jpeg"
-                                prepend-icon="mdi-image" label="Logo" color="primary" variant="solo"
+                                prepend-icon="mdi-image" label="Logo*" color="primary" variant="solo"
                                 hide-details></v-file-input>
                             <p v-if="errorImage" class="text-error text-start text-subtitle-1">*Debe ser una imagen</p>
                         </v-card-title>
                         <v-card-text class="mt-5">
                             <v-row>
-                                <v-col cols="12" sm="6">
-                                    <v-text-field label="Nombre del taller" v-model="form.nombre_taller" color="primary"
+                                <v-col cols="12"  v-if="authStore.user.rol == 'Taller Mecanico'">
+                                    <v-text-field label="Nombre del taller*" :rules="[rules.required]" v-model="form.nombre_taller" color="primary"
                                         variant="solo"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="5">
-                                    <v-text-field label="Nombre del representante" v-model="form.representante"
-                                        color="primary" variant="solo"></v-text-field>
+                                <v-col cols="12" sm="10" >
+                                    <v-text-field :rules="[rules.required]" label="Nombre del representante*"
+                                        v-model="form.representante" color="primary" variant="solo"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="1">
                                     <v-tooltip text="Establecer nombre de la cuenta">
@@ -37,11 +37,12 @@
                                     </v-tooltip>
 
                                 </v-col>
-                                <v-col cols="12" sm="6">
-                                    <v-text-field v-model="form.numero" label="Numero de contacto" variant="solo"
-                                        color="primary"></v-text-field>
+                                <v-col cols="12" >
+                                    <v-text-field v-model="telefono" @input="formatoTelefono" label="Numero de contacto*"
+                                        variant="solo" color="primary" :rules="[rules.required, rules.telefono]"
+                                        hint="Formato para telefono XXXX-XXXX"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="6">
+                                <v-col cols="12">
                                     <v-text-field v-model="form.direcion" label="Dirección" color="primary"
                                         variant="solo"></v-text-field>
                                 </v-col>
@@ -69,14 +70,19 @@ const authStore = useAuthStore();
 
 
 const selectedImage = ref('https://fakeimg.pl/600x400?text=logo/imagen');
-const rules = [
+const rules = ref({
+    required: value => !!value || 'Campo obligatorio.',
+    telefono: v => /^\d{4}-\d{4}$/.test(v) || 'El formato del teléfono es inválido (XXXX-XXXX)',
+});
+const rulesImage = [
     (v) => !!v || 'Campo obligatorio',
     (v) => (v && v.type.startsWith('image/')) || 'Debe ser una imagen'
 ];
 const errorImage = ref(false);
-const image = ref(null);
+const image = ref('');
 const form = ref({});
 const cargando = ref(false);
+const telefono = ref('');
 
 
 
@@ -95,6 +101,12 @@ const handleImageChange = (event) => {
     }
 };
 
+const formatoTelefono = () => {
+    telefono.value = telefono.value.replace(/-/g, '')
+    if (telefono.value.length >= 4) {
+        telefono.value = telefono.value.slice(0, 4) + '-' + telefono.value.slice(4);
+    }
+}
 
 
 const postPerfil = async () => {
@@ -108,9 +120,10 @@ const postPerfil = async () => {
             };
             reader.onerror = error => reject(error);
         });
+        form.value.numero = telefono.value
         form.value.user_id = authStore.user.id
         cargando.value = true;
-        await postData('perfilMecanico/crear', form.value, { headers: { 'Content-Type': 'application/json' } },'/perfilMecanico');
+        await postData('perfilMecanico/crear', form.value, { headers: { 'Content-Type': 'application/json' } }, '/perfilMecanico');
     } finally {
         cargando.value = false;
     }

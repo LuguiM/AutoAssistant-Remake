@@ -1,5 +1,5 @@
 <template>
-    <v-overlay class="align-center justify-center" v-if="loading" :model-value="loading">
+    <v-overlay contained class="align-center justify-center" v-if="loading" v-model="loading">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
@@ -26,8 +26,10 @@
                         Información
                     </v-card-title>
                     <v-card-text class="d-flex justify-center">
-                        <v-img :width="300" aspect-ratio="1/1" cover
-                            :src="infoPerfil.logo"></v-img>
+
+                        <v-avatar color="grey" size="190" class="mt-4">
+                            <v-img cover :src="infoPerfil.logo"></v-img>
+                        </v-avatar>
                     </v-card-text>
                     <v-card-text class="mx-5">
                         <v-row>
@@ -68,7 +70,7 @@
 
 
                     <v-list lines="two" v-if="infoPerfil.servicios.length">
-                        <v-list-item class="pb-0" v-for="servicio in infoPerfil.servicios" >
+                        <v-list-item class="pb-0" v-for="servicio in infoPerfil.servicios">
                             <v-card class="text-center perfil-card" hover>
                                 <div @click="verServicio(servicio.id)" class="card-body">
                                     <v-row>
@@ -107,11 +109,12 @@
 
                             </v-card>
                         </v-list-item>
-                       
+
 
                     </v-list>
-                    <v-alert v-else class="m-9" variant="tonal" color="error"  text="No se encontraron servicios disponiblees">
-                        </v-alert>
+                    <v-alert v-else class="m-9" variant="tonal" color="error"
+                        text="No se encontraron servicios disponiblees">
+                    </v-alert>
                 </v-card>
             </v-col>
         </v-row>

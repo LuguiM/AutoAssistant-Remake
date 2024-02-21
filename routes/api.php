@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\controllers\PerfilMecanicoController;
+use App\Http\controllers\ServiciosMecanicosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('verificarPerfil/{id}', [PerfilMecanicoController::class,'verificarPerfil']);
     Route::post('perfilMecanico/crear', [PerfilMecanicoController::class,'store']);
     Route::get('perfilMecanico/{id}', [PerfilMecanicoController::class ,'show']);
+
+    
+    //Rutas para servicio mecanicos
+    Route::get('servicio-mecanico',[ServiciosMecanicosController::class, 'index']);
+    Route::get('servicio-mecanico/inscritos/{id}',[ServiciosMecanicosController::class, 'serviciosInscritos']);
+    Route::post('servicio-mecanico',[ServiciosMecanicosController::class,'store']);
 
 
 });

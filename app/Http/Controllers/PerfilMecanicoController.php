@@ -39,7 +39,7 @@ class PerfilMecanicoController extends Controller
             'nombre_taller' => 'nullable|string',
             'representante' => 'required|string',
             'direcion' => 'nullable|string',
-            'numero' => 'required|integer'
+            'numero' => 'required'
         ];
 
         $validator = Validator::make($request->input(), $rules);
@@ -76,13 +76,19 @@ class PerfilMecanicoController extends Controller
         $perfilMecanico->numero = $request->numero;
         $perfilMecanico->representante = $request->representante;
         $perfilMecanico->user_id = $request->user_id;
-        $perfilMecanico->save();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Pefil mecanico creado con exito',
-        ], 200);
-
+        if( $perfilMecanico->save()){
+            return response()->json([
+                'status' => true,
+                'message' => 'Pefil mecanico creado con exito',
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Ocurrio un error al crear el perfil',
+            ], 400);
+        }
+       
     }
 
 

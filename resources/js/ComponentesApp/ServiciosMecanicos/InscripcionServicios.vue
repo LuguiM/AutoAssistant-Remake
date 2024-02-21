@@ -31,6 +31,8 @@
             </v-expansion-panel>
         </v-expansion-panels>
 
+        
+
         <v-btn block class="mt-5 bg-primary" prepend-icon="mdi-car-wrench" :to="{ path: '/inscribirServicio' }">
             Inscribir servicio mecanico
         </v-btn>
@@ -40,7 +42,9 @@
                 <h2>Servicios Inscritos</h2>
             </v-col>
 
-            <v-col cols="12" sm="6" v-for="inscripcion in serviciosInscritos" :key="inscripcion.id">
+            
+
+            <v-col cols="12" sm="6" v-if="status" v-for="inscripcion in serviciosInscritos" :key="inscripcion.id">
                 <v-card class="inscritoCard">
                     <v-card-text>
                         <v-row>
@@ -70,6 +74,10 @@
                     </v-card-actions>
                 </v-card>
             </v-col>
+            <v-col v-else cols="12">
+                <v-alert color="error" icon="$error" :text="message">
+                </v-alert>
+            </v-col>
         </v-row>
 
         <v-dialog width="auto" v-model="eliminarModal">
@@ -89,8 +97,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import notify from '@/plugins/notify.js'
+import { ref, onMounted  } from 'vue';
+import notify from '@/plugins/notify.js';
+import { getData } from '@/plugins/api.js';
+import { useAuthStore } from '@/Stores/auth';
+
+const authStore = useAuthStore();
+
 
 let eliminarModal = ref(false);
 let idServicio = ref(null);
@@ -152,22 +165,30 @@ const requisitos = ref([
     }
 ]);
 
-const serviciosInscritos = ref([
-    {
-        id: '1',
-        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-        title: 'Intermitente y luces de emergencia',
-        created_at: '12/09/2023',
+const serviciosInscritos = ref([])
+const loading = ref(true);
+const status = ref(false);
+const message = ref('');
 
-    },
-    {
-        id: '2',
-        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-        title: 'Intermitente y luces de emergencia',
-        created_at: '12/09/2023',
 
+const serviciosMecanicos = async () => {
+    try {
+        const id = authStore.user.perfilMecanico
+        const data = await getData(('servicio-mecanico/inscritos/' + id));
+        status.value = data.status;
+        serviciosInscritos.value = data.data;
+        console.log('data', serviciosInscritos.value)
+
+        if (!data.status) {
+            status.value = data.status
+            message.value = data.message
+        }
+    } catch (error) {
+        notify(error.message, 'error');
+    } finally {
+        loading.value = false;
     }
-])
+}
 
 
 
@@ -182,6 +203,10 @@ const inscripcionEliminada = () => {
     eliminarModal.value = false;
     idServicio.value = null;
 }
+
+onMounted(() => {
+    serviciosMecanicos()
+});
 
 </script>
 

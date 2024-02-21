@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\PerfilMecanico;
 use App\Models\ConductorData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -93,6 +94,13 @@ class AuthController extends Controller
         }
 
         $user = User::where('correo', $request->correo)->first();
+
+        $perfil = PerfilMecanico::where('user_id', $user->id)->first();
+        
+
+        if($perfil){
+            $user->perfilMecanico = $perfil->id;
+        }
         return response()->json([
             'status' => true,
             'message' => 'Usuario logeado correctamente',
