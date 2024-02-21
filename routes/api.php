@@ -30,6 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Rutas para perfil mecanico
     Route::get('verificarPerfil/{id}', [PerfilMecanicoController::class,'verificarPerfil']);
     Route::post('perfilMecanico/crear', [PerfilMecanicoController::class,'store']);
+    Route::get('perfilMecanico/{id}', [PerfilMecanicoController::class ,'show']);
 
 
 });

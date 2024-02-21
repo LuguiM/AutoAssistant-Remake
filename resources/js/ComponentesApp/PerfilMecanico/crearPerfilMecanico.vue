@@ -42,7 +42,7 @@
                                         color="primary"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="6">
-                                    <v-text-field v-model="form.direccion" label="Dirección" color="primary"
+                                    <v-text-field v-model="form.direcion" label="Dirección" color="primary"
                                         variant="solo"></v-text-field>
                                 </v-col>
                             </v-row>
@@ -64,7 +64,7 @@
 import { ref } from 'vue';
 import { postData } from '@/plugins/api.js'
 import { useAuthStore } from '@/Stores/auth';
-import notify from '@/plugins/notify.js';
+
 const authStore = useAuthStore();
 
 
@@ -99,35 +99,24 @@ const handleImageChange = (event) => {
 
 const postPerfil = async () => {
     try {
-        const formData = new FormData();
-
-        // Agrega el archivo al objeto FormData
-        formData.append('logo', image.value);
-
-        // Agrega otros datos del formulario, si los hay
-        formData.append('nombre_taller', form.value.nombre_taller);
-        formData.append('representante', form.value.representante);
-        formData.append('numero', form.value.numero);
-        formData.append('direccion', form.value.direccion);
-
-        console.log(image.value)
+        const reader = new FileReader();
+        reader.readAsDataURL(image.value);
+        await new Promise((resolve, reject) => {
+            reader.onload = () => {
+                form.value.logo = reader.result;
+                resolve();
+            };
+            reader.onerror = error => reject(error);
+        });
+        form.value.user_id = authStore.user.id
         cargando.value = true;
-        const data = await postData('perfilMecanico/crear', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-
-        if (data.errors) {
-            let error = data.errors.join('\n')
-            notify(error, 'error');
-            console.log(image.value)
-
-        } else {
-            notify(data.message, 'success');
-        }
-    } catch (error) {
-        notify(error.message, 'warning');
+        await postData('perfilMecanico/crear', form.value, { headers: { 'Content-Type': 'application/json' } },'/perfilMecanico');
     } finally {
         cargando.value = false;
     }
 }
+
+
 
 </script>
 

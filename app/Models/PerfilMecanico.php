@@ -15,7 +15,7 @@ class PerfilMecanico extends Model
         'logo',
         'nombre_taller',
         'representante',
-        'direccion',
+        'direcion',
         'numero',
         'user_id'
     ];
@@ -24,5 +24,10 @@ class PerfilMecanico extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function servicioMecanico()
+    {
+        return $this->hasMany(ServicioMecanico::class);
     }
 }
