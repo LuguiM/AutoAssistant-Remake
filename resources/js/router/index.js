@@ -2,7 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../Stores/auth';
 
 const routes = [
-
+    {
+        path: "/:notFound",
+        component: () => import('../web/ContactoCom.vue'),
+    },
     //Routas de sitio web publicas
     {
         path: '/',
@@ -12,7 +15,7 @@ const routes = [
             {
                 name: 'principal',
                 path: 'principal',
-                component: () => import('../web/ContactoCom.vue'),
+                component: () => import('../web/HomeCom.vue'),
             },
             {
                 name: 'PilotosWeb',
@@ -59,7 +62,7 @@ const routes = [
             {
                 name: 'dashboard',
                 path: '/dashboard',
-                component: () => import('../web/ContactoCom.vue'),
+                component: () => import('../web/HomeCom.vue'),
             },
             {
                 name: 'homesite',
@@ -123,7 +126,7 @@ const routes = [
             },
             {
                 name: 'verPerfilMecanico',
-                path: '/perfilMecanico/:id',
+                path: '/verPerfilMecanico/:id',
                 component: () => import('../ComponentesApp/PerfilMecanico/verPerfil.vue')
             },
             {

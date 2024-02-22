@@ -5,7 +5,14 @@ import notify from '../plugins/notify'
 const authStore = useAuthStore();
 
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.authToken;
+// Interceptor para actualizar las cabeceras de autorización en cada solicitud
+axios.interceptors.request.use(config => {
+  const token = authStore.authToken;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export const getData = async (endpoint) => {
   try {

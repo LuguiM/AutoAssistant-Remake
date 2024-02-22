@@ -4,60 +4,35 @@
             <h3>Inscripcion de servicios</h3>
         </div>
 
-        <v-expansion-panels>
-            <v-expansion-panel class="bg-primary">
-                <v-expansion-panel-title>Requisitos de Mecanicos</v-expansion-panel-title>
-                <v-expansion-panel-text>
-                    <v-list lines="two" class="py-0">
-                        <v-list-item v-for="requisito in requisitos" :key="requisito.title" class="itemsRequisitos">
-                            <v-list-item-title class="item-texto">
-                                {{ requisito.title }}
-                            </v-list-item-title>
-                            <v-list-item-subtitle class="item-texto">
-                                {{ requisito.contenido }}
-                            </v-list-item-subtitle>
-                            <template v-slot:append>
-                                <v-chip variant="flat" color="green" v-if="requisito.requerido == 'Opcional'">
-                                    {{ requisito.requerido }}
-                                </v-chip>
-                                <v-chip variant="flat" color="red" v-else>
-                                    {{ requisito.requerido }}
-                                </v-chip>
+        <div class="d-flex flex-column flex-sm-row justify-space-between aling-center">
+            <v-btn class="mt-5 bg-greyDark" prepend-icon="mdi-car-wrench" @click="requisitosModal = true">
+                Requisitos de inscripcion
+            </v-btn>
 
-                            </template>
-                        </v-list-item>
-                    </v-list>
-                </v-expansion-panel-text>
-            </v-expansion-panel>
-        </v-expansion-panels>
-
-        
-
-        <v-btn block class="mt-5 bg-primary" prepend-icon="mdi-car-wrench" :to="{ path: '/inscribirServicio' }">
-            Inscribir servicio mecanico
-        </v-btn>
+            <v-btn class="mt-5 bg-primary" prepend-icon="mdi-car-wrench" :to="{ path: '/inscribirServicio' }">
+                Inscribir servicio mecanico
+            </v-btn>
+        </div>
 
         <v-row class="mt-5">
             <v-col cols="12">
                 <h2>Servicios Inscritos</h2>
             </v-col>
 
-            
-
             <v-col cols="12" sm="6" v-if="status" v-for="inscripcion in serviciosInscritos" :key="inscripcion.id">
                 <v-card class="inscritoCard">
                     <v-card-text>
                         <v-row>
                             <v-col cols="12" md="4">
-                                <v-img :src="inscripcion.img"></v-img>
+                                <v-img :src="inscripcion.logo"></v-img>
                             </v-col>
 
                             <v-col cols="12" md="8">
                                 <v-card-title class="text-h5 font-weight-bold item-texto">
-                                    {{ inscripcion.title }}
+                                    {{ inscripcion.servicio }}
                                 </v-card-title>
                                 <v-card-subtitle>
-                                    Creado: {{ inscripcion.created_at }}
+                                    Fecha de creación: {{ formatFecha(inscripcion.created_at) }}
                                 </v-card-subtitle>
                             </v-col>
                         </v-row>
@@ -73,12 +48,18 @@
                         </v-btn>
                     </v-card-actions>
                 </v-card>
+
+
             </v-col>
+
             <v-col v-else cols="12">
                 <v-alert color="error" icon="$error" :text="message">
                 </v-alert>
             </v-col>
         </v-row>
+        <v-pagination v-model="currentPage" :length="last_page" @click="cargarServicios" class="my-4"></v-pagination>
+
+
 
         <v-dialog width="auto" v-model="eliminarModal">
             <v-card class="text-center bg-greyDark">
@@ -93,14 +74,43 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="requisitosModal" width="auto">
+            <v-card class="bg-greyDark">
+                <v-card-title class="d-flex justify-space-between aling-center">
+                    <h3> Requisitos </h3>
+                    <v-btn variant="plain" icon @click="requisitosModal = false"><v-icon>mdi-close</v-icon></v-btn>
+                </v-card-title>
+                <v-list lines="two" class="py-0">
+                    <v-list-item v-for="requisito in requisitos" :key="requisito.title" class="itemsRequisitos">
+                        <v-list-item-title class="item-texto">
+                            {{ requisito.title }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle class="item-texto">
+                            {{ requisito.contenido }}
+                        </v-list-item-subtitle>
+                        <template v-slot:append>
+                            <v-chip variant="flat" color="green" v-if="requisito.requerido == 'Opcional'">
+                                {{ requisito.requerido }}
+                            </v-chip>
+                            <v-chip variant="flat" color="red" v-else>
+                                {{ requisito.requerido }}
+                            </v-chip>
+
+                        </template>
+                    </v-list-item>
+                </v-list>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted } from 'vue';
 import notify from '@/plugins/notify.js';
 import { getData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
+import { format } from 'date-fns';
 
 const authStore = useAuthStore();
 
@@ -164,20 +174,23 @@ const requisitos = ref([
         requerido: "Opcional"
     }
 ]);
-
+const requisitosModal = ref(false);
 const serviciosInscritos = ref([])
 const loading = ref(true);
 const status = ref(false);
 const message = ref('');
+const currentPage = ref(1);
+const last_page = ref(null);
 
 
 const serviciosMecanicos = async () => {
     try {
         const id = authStore.user.perfilMecanico
-        const data = await getData(('servicio-mecanico/inscritos/' + id));
+        const data = await getData(('servicio-mecanico/inscritos/' + id + '?page=' + currentPage.value));
         status.value = data.status;
-        serviciosInscritos.value = data.data;
-        console.log('data', serviciosInscritos.value)
+        serviciosInscritos.value = data.data.data;
+        currentPage.value = data.data.current_page;
+        last_page.value = data.data.last_page;
 
         if (!data.status) {
             status.value = data.status
@@ -190,6 +203,13 @@ const serviciosMecanicos = async () => {
     }
 }
 
+const cargarServicios = async () => {
+    await serviciosMecanicos();
+}
+
+const formatFecha = (fecha) => {
+    return format(new Date(fecha), 'dd/MM/yyyy');
+};
 
 
 const eliminarServicio = (id) => {

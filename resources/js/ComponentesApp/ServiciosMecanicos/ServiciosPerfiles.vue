@@ -32,19 +32,31 @@
                             </v-card>
                         </v-col>
                         <v-col cols="12">
-                            <v-row>
+                            <v-row v-if="loading" class="fill-height" align-content="center" justify="center">
+                                <v-col class="text-subtitle-1 text-center" cols="12">
+                                    Cargando servicios
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-progress-linear indeterminate rounded height="6"></v-progress-linear>
+                                </v-col>
+                            </v-row>
+
+                            <v-alert v-else-if="!status" color="error" icon="$error" :text="message">
+                            </v-alert>
+
+                            <v-row v-else-if="status">
                                 <v-col v-for="servicio in serviciosMecanicos" cols="12" sm="6" md="6">
                                     <v-card class="text-center perfil-card" hover>
                                         <div @click="verServicio(servicio.id)" class="card-body">
                                             <v-row>
                                                 <v-col cols="12" md="4">
                                                     <v-avatar color="grey" size="120" class="mt-4">
-                                                    <v-img cover :src="servicio.image"></v-img>
+                                                        <v-img cover :src="servicio.logo"></v-img>
                                                     </v-avatar>
                                                 </v-col>
                                                 <v-col cols="12" md="8">
                                                     <v-card-title class="text-start">
-                                                        {{ servicio.servicio}}
+                                                        {{ servicio.servicio }}
                                                     </v-card-title>
                                                     <v-card-subtitle class="pt-0 text-start">
                                                         <v-icon>mdi-car-cog</v-icon>
@@ -53,31 +65,32 @@
                                                     <v-card-text class="text-end">
                                                         <div>
                                                             <v-icon>mdi-star-cog-outline</v-icon>
-                                                            {{ servicio.tipoServicio }}
+                                                            {{ servicio.tipo_servicio }}
                                                         </div>
                                                         <div>
-                                                            <v-icon>mdi-currency-usd</v-icon> {{ servicio.costo }}
+                                                            <v-icon>mdi-currency-usd</v-icon> {{ servicio.precio }}
                                                         </div>
                                                     </v-card-text>
                                                 </v-col>
                                             </v-row>
                                         </div>
-                                        <v-card-actions class="bg-primary card-text d-flex justify-center" @click="verPerfil(servicio.id)">
-                                                <v-avatar color="info" size="x-small">
-                                                    <v-img
-                                                        src="https://cdn.vuetifyjs.com/images/john.jpg"
-                                                        alt="John"
-                                                    ></v-img>
-                                                </v-avatar> 
-                                                <p> Taller Melendez</p>
+                                        <v-card-actions class="bg-primary card-text d-flex justify-center gap-10"
+                                            @click="verPerfil(servicio.id)">
+                                            <v-avatar color="info" size="x-small" style="border:1px solid #FFFFFF;">
+                                                <v-img :src="servicio.perfil_mecanico.logo"
+                                                    :alt="servicio.perfil_mecanico.representante"></v-img>
+                                            </v-avatar>
+                                            <p>{{ servicio.perfil_mecanico.representante }}</p>
                                         </v-card-actions>
 
                                     </v-card>
-                                    
+
                                 </v-col>
                             </v-row>
                         </v-col>
                     </v-row>
+                    <v-pagination v-model="currentPage" :length="last_page" @click="cargarServicios"
+                        class="my-4"></v-pagination>
                 </v-container>
             </v-window-item>
 
@@ -85,7 +98,7 @@
                 <v-container fluid>
                     <v-row>
                         <v-col cols="12">
-                            <v-card class="busquedaPerfil mb-5">
+                            <v-card class="busquedaPerfil">
                                 <v-card-title class="text-center">
                                     Busqueda de perfiles
                                 </v-card-title>
@@ -95,8 +108,7 @@
                                         <v-row>
                                             <v-col cols="12" md="8">
                                                 <v-text-field label="Busqueda por nombre"
-                                                    prepend-inner-icon="mdi-account-search"
-                                                     variant="solo"></v-text-field>
+                                                    prepend-inner-icon="mdi-account-search" variant="solo"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" md="4" class="d-flex align-center justify-center mb-5">
                                                 <v-btn variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
@@ -110,21 +122,34 @@
                                     </v-form>
                                 </v-card-Text>
                             </v-card>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-row v-if="loadingPerfil" class="fill-height" align-content="center" justify="center">
+                                <v-col class="text-subtitle-1 text-center" cols="12">
+                                    Cargando Perfiles
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-progress-linear indeterminate rounded height="6"></v-progress-linear>
+                                </v-col>
+                            </v-row>
 
-                            <v-row>
-                                <v-col cols="12" md="3" v-for="perfil in perfiles">
+                            <v-alert v-else-if="!statusPerfil" color="error" icon="$error" :text="messagePerfil">
+                            </v-alert>
+
+                            <v-row v-else-if="statusPerfil">
+                                <v-col cols="12" sm="6" md="3" v-for="perfil in perfiles">
                                     <v-card class="text-center perfil-card" @click="verPerfil(perfil.id)" hover>
                                         <v-avatar color="grey" size="190" class="mt-4">
-                                            <v-img cover :src="perfil.img"></v-img>
+                                            <v-img cover :src="perfil.logo"></v-img>
                                         </v-avatar>
 
                                         <v-card-text>
                                             <v-icon>mdi-account</v-icon>
-                                            Representante: {{ perfil.representante }}
+                                            Representante <br> {{ perfil.representante }}
                                         </v-card-text>
                                         <v-card-text class="pt-0">
-                                            <v-icon>mdi-car-cog</v-icon>
-                                            Taller Mecanico: {{ perfil.tallerMecanico }}
+                                            <v-icon>mdi-car-cog</v-icon> 
+                                            Taller Mecanico <br> {{ perfil.nombre_taller }}
                                         </v-card-text>
 
                                     </v-card>
@@ -133,6 +158,8 @@
                         </v-col>
                     </v-row>
                 </v-container>
+                <v-pagination v-model="currentPagePerfil" :length="last_pagePerfil" @click="cargarPerfiles"
+                    class="my-4"></v-pagination>
             </v-window-item>
         </v-window>
     </v-container>
@@ -141,8 +168,12 @@
 
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { getData } from '@/plugins/api.js';
+import { useAuthStore } from '@/Stores/auth';
+
+const authStore = useAuthStore();
 
 const router = useRouter();
 const tab = ref(null);
@@ -172,88 +203,79 @@ const rubros = ref([
         value: "Llanteria"
     }
 ]);
-const serviciosMecanicos = ref([
-    {
-        id: "1",
-        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        servicio: "Cambio de alternador",
-        rubro: "Lubricentro",
-        tipoServicio: "Adomicilio",
-        costo: "123",
-    },
-    {
-        id: "2",
-        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        servicio: "Cambio de aceite",
-        rubro: "Lubricentro",
-        tipoServicio: "Cita/Reserva",
-        costo: "123",
-    },
-    {
-        id: "3",
-        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        servicio: "Cambio de luces",
-        rubro: "Lubricentro",
-        tipoServicio: "Adomicilio",
-        costo: "123",
-    },
-    {
-        id: "4",
-        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        servicio: "Cambio de alternador",
-        rubro: "Lubricentro",
-        tipoServicio: "Cita/Reserva",
-        costo: "123",
-    },
-    {
-        id: "5",
-        image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        servicio: "Cambio de alternador",
-        rubro: "Lubricentro",
-        tipoServicio: "Adomicilio",
-        costo: "123",
-    },
-]);
-const perfiles = ref([
-    {
-        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-        representante: 'Kerin Melendez',
-        tallerMecanico: 'Taller Melendeez',
-        id: '1'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-        representante: 'Kerin Melendez',
-        tallerMecanico: 'Taller Melendeez',
-        id: '2'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-        representante: 'Kerin Melendez',
-        tallerMecanico: 'Taller Melendeez',
-        id: '3'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-        representante: 'Kerin Melendez',
-        tallerMecanico: 'Taller Melendeez',
-        id: '4'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
-        representante: 'Kerin Melendez',
-        tallerMecanico: 'Taller Melendeez',
-        id: '5'
-    },
-]);
+const serviciosMecanicos = ref([]);
+const perfiles = ref([]);
+
+const loading = ref(true);
+const status = ref(false);
+const message = ref('');
+const currentPage = ref(1);
+const last_page = ref(null);
+
+const loadingPerfil = ref(true);
+const statusPerfil = ref(false);
+const messagePerfil = ref('');
+const currentPagePerfil = ref(1);
+const last_pagePerfil = ref(null);
+
+const getServicios = async () => {
+    try {
+        const data = await getData(('servicio-mecanico' + '?page=' + currentPage.value));
+        status.value = data.status;
+        serviciosMecanicos.value = data.data.data;
+        currentPage.value = data.data.current_page;
+        last_page.value = data.data.last_page;
+
+        if (!data.status) {
+            status.value = data.status
+            message.value = data.message
+        }
+    } catch (error) {
+        notify(error.message, 'error');
+    } finally {
+        loading.value = false;
+    }
+}
+
+const getPerfiles = async () => {
+    try {
+        const data = await getData(('perfilMecanico' + '?page=' + currentPagePerfil.value));
+        statusPerfil.value = data.status;
+        perfiles.value = data.data.data;
+        currentPagePerfil.value = data.data.current_page;
+        last_pagePerfil.value = data.data.last_page;
+
+        if (!data.status) {
+            statusPerfil.value = data.status
+            messagePerfil.value = data.message
+        }
+    } catch (error) {
+        notify(error.message, 'error');
+    } finally {
+        loadingPerfil.value = false;
+    }
+}
+
+const cargarServicios = async () => {
+    await serviciosMecanicos();
+}
+const cargarPerfiles = async () => {
+    await perfiles();
+}
 
 const verServicio = (id) => {
     router.push({ path: `/verServicio/${id}` });
 }
 
+
 const verPerfil = (id) => {
-    router.push({ path: `/perfilMecanico/${id}` });
+    router.push({ path: `/verperfilMecanico/${id}` });
 }
+
+onMounted(() => {
+    getServicios();
+    getPerfiles();
+});
 </script>
 
 <style>
@@ -288,11 +310,12 @@ const verPerfil = (id) => {
     background: linear-gradient(to bottom right, #242424, #1279C1);
     color: #FFFFFF;
 }
-.card-body:hover{
+
+.card-body:hover {
     cursor: pointer !important;
 }
 
-.card-text:hover{
+.card-text:hover {
     cursor: pointer !important;
     background-color: #242424 !important;
 }

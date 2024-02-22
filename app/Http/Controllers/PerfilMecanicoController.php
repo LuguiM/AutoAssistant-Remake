@@ -30,7 +30,22 @@ class PerfilMecanicoController extends Controller
         ], 200);
     }
 
+    public function index()
+    {
+        $perfiles = PerfilMecanico::paginate(10);
 
+        if ($perfiles->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No se encontraron servicios mecánicos',
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $perfiles
+        ], 200);
+    }
 
     public function store(Request $request)
     {

@@ -16,7 +16,7 @@
         </div>
 
         <v-row>
-            <v-col cols="12">
+            <v-col cols="12" v-if="prop.mode == 'conductor'">
                 <v-btn class="greyButton" prepend-icon="mdi-arrow-left-circle">Regresar</v-btn>
             </v-col>
             <v-col cols="12" sm="4">
@@ -76,7 +76,7 @@
                                     <v-row>
                                         <v-col cols="12" md="4">
                                             <v-avatar color="grey" size="120" class="mt-4">
-                                                <v-img cover :src="servicio.image"></v-img>
+                                                <v-img cover :src="servicio.logo"></v-img>
                                             </v-avatar>
                                         </v-col>
                                         <v-col cols="12" md="8">
@@ -90,10 +90,10 @@
                                             <v-card-text class="text-end">
                                                 <div>
                                                     <v-icon>mdi-star-cog-outline</v-icon>
-                                                    {{ servicio.tipoServicio }}
+                                                    {{ servicio.tipo_servicio }}
                                                 </div>
                                                 <div>
-                                                    <v-icon>mdi-currency-usd</v-icon> {{ servicio.costo }}
+                                                    <v-icon>mdi-currency-usd</v-icon> {{ servicio.precio }}
                                                 </div>
                                             </v-card-text>
                                         </v-col>
@@ -140,13 +140,11 @@ const prop = defineProps({
         required: false,
         default: null
     }
-
-})
+});
 
 const infoPerfil = ref({});
-
 const loading = ref(true);
-const status = ref(false)
+const status = ref(false);
 const message = ref('');
 
 const perfilMecanico = async (id) => {
@@ -154,35 +152,35 @@ const perfilMecanico = async (id) => {
         const data = await getData(('perfilMecanico/' + id));
         status.value = data.status;
         infoPerfil.value = data.data;
-        console.log('data', infoPerfil.value)
+        console.log('data', infoPerfil.value);
 
         if (!data.status) {
-            status.value = data.status
-            message.value = data.message
+            status.value = data.status;
+            message.value = data.message;
         }
     } catch (error) {
         notify(error.message, 'error');
     } finally {
         loading.value = false;
     }
-}
+};
 
 const verServicio = (id) => {
     router.push({ path: `/verServicio/${id}` });
-}
+};
 
 const verPerfil = (id) => {
     router.push({ path: `/perfilMecanico/${id}` });
-}
-
+};
 
 onMounted(() => {
-    if (prop.id = ! null) {
+    if (prop.id !== null) {
         perfilMecanico(prop.id)
     } else {
         perfilMecanico(router.params.id)
     }
 });
+
 </script>
 
 <style>

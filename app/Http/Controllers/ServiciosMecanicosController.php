@@ -59,14 +59,14 @@ class ServiciosMecanicosController extends Controller
             "logo" => "required",
             "rubro" => "required",
             "servicio" => "required",
-            "tipo_Servicio" => "required",
+            "tipo_servicio" => "required",
             "descripcion" => "required",
             "dia_inicio" => "required",
             "dia_fin" => "required",
-            "hora_apertura" => "required|time",
-            "hora_cierre" => "required|time",
-            "precio" => "required|decimal",
-            "precio_adomicilio" => "required|decimal",
+            "hora_apertura" => "required",
+            "hora_cierre" => "required",
+            "precio" => "required",
+            "precio_adomicilio" => "required",
         ];
 
         $validator = Validator::make($request->input(), $rules);
@@ -98,6 +98,8 @@ class ServiciosMecanicosController extends Controller
         $servicioMecanico->hora_cierre = $request->hora_cierre;
         $servicioMecanico->precio = $request->precio;
         $servicioMecanico->precio_adomicilio = $request->precio_adomicilio;
+        $servicioMecanico->perfil_mecanico_id = $request->perfil_mecanico_id;
+
 
 
         if ($servicioMecanico->save()) {
