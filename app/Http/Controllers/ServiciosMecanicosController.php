@@ -120,7 +120,19 @@ class ServiciosMecanicosController extends Controller
      */
     public function show($id)
     {
-        //
+        $servicios = ServicioMecanico::with('perfilMecanico')->find($id);
+
+        if (!$servicios) {
+            return response()->json([
+                'status' => false,
+                'message' => 'El servicio mecanico solicitado no se ha encontrado o no esta disponible',
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $servicios
+        ], 200);
     }
 
     /**

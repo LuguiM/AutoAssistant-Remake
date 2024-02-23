@@ -104,7 +104,7 @@
                                     <v-avatar color="info" size="x-small">
                                         <v-img :src="infoPerfil.logo" alt="John"></v-img>
                                     </v-avatar>
-                                    <p>{{ infoPerfil.nombre_taller }}</p>
+                                    <p>{{ infoPerfil.nombre_taller || infoPerfil.representante }}</p>
                                 </v-card-actions>
 
                             </v-card>

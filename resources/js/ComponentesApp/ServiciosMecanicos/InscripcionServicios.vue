@@ -24,7 +24,7 @@
                     <v-card-text>
                         <v-row>
                             <v-col cols="12" md="4">
-                                <v-img :src="inscripcion.logo"></v-img>
+                                <v-img height="76" :src="inscripcion.logo"></v-img>
                             </v-col>
 
                             <v-col cols="12" md="8">

@@ -41,6 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('servicio-mecanico',[ServiciosMecanicosController::class, 'index']);
     Route::get('servicio-mecanico/inscritos/{id}',[ServiciosMecanicosController::class, 'serviciosInscritos']);
     Route::post('servicio-mecanico',[ServiciosMecanicosController::class,'store']);
+    Route::get('servicio-mecanico/{id}',[ServiciosMecanicosController::class, 'show']);
+
 
 
 });
