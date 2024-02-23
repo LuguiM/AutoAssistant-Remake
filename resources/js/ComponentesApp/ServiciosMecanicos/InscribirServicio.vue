@@ -78,9 +78,9 @@
                                     <v-text-field v-model="form.precio_adomicilio" class="file" color="primary" label="Costo de recargo por adomicilio"
                                         variant="solo" prefix="$"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" class="d-sm-flex flex-xs-column">
+                                <v-col cols="12" class="d-flex flex-xs-row justify-space-between">
                                     <v-btn prepend-icon="mdi-cancel" color="error">Cancelar</v-btn>
-                                    <v-spacer></v-spacer>
+                                    
                                     <v-btn :loading="cargando" type="submit" prepend-icon="mdi-car-wrench" color="primary">Inscribir
                                         servicio</v-btn>
                                 </v-col>
@@ -186,7 +186,9 @@ const handleImageChange = (event) => {
     const file = event.target.files[0];
     console.log("Archivo seleccionado:", file);
     image.value = file;
-    if (file) {
+    
+    // Verificar si el archivo es una instancia de Blob
+    if (file instanceof Blob) {
         if (file.type.startsWith('image/')) {
             selectedImage.value = URL.createObjectURL(file);
             errorImage.value = false;
@@ -194,8 +196,14 @@ const handleImageChange = (event) => {
             errorImage.value = true;
             console.warn('Debe seleccionar una imagen');
         }
+    } else {
+        // Manejar el caso cuando no se selecciona un archivo válido (no un Blob)
+        console.warn('Debe seleccionar un archivo válido');
+        // Limpiar la imagen seleccionada o realizar cualquier otra acción necesaria
+        selectedImage.value = null;
     }
 };
+
 
 const getPerfil = async () => {
     try {

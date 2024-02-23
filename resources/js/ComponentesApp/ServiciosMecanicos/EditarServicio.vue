@@ -1,81 +1,111 @@
-<template>
-    <v-container>
-        <div class="text-center mb-5 text-uppercase">
-            <h3>Modificacion del Servicio</h3>
-        </div>
 
-        <v-card elevation="0" class="bg-greyDark">
-            <v-form>
-                <v-card-text>
-                    <v-row>
-                        <v-col cols="12" md="4">
-                            <v-img src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-img>
-                        </v-col>
-                        <v-col cols="12" md="8" class="d-flex align-center">
-                            <v-file-input color="primary" class="file" variant="solo" show-size label="Logo*"
-                                accept="image/*"></v-file-input>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-select class="file" color="primary" v-model="selectedRubro" :items="rubros" label="Rubro"
-                                variant="solo"></v-select>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-select class="file" color="primary" v-model="selectedServicio" :items="servicios"
-                                label="Servicio" :disabled="!selectedRubro" variant="solo"></v-select>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-select class="file" color="primary" label="Tipo de servicio"
-                                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                                variant="solo"></v-select>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-textarea class="areaa" color="primary" label="Descripcion del servicio"
-                                variant="solo"></v-textarea>
-                        </v-col>
+        <template>
 
-                        <v-col cols="12" md="6">
-                            <v-select class="file" color="primary" label="Horario de Inicio" :items="dias"
-                                variant="solo"></v-select>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <v-select class="file" color="primary" label="Horario de Fin" :items="dias"
-                                variant="solo"></v-select>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <flat-pickr :config="config" v-model="date" placeholder="Hora de apertura" class="timepicker" />
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <flat-pickr :config="config" v-model="date" placeholder="Hora de cierre" class="timepicker" />
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <v-text-field class="file" color="primary" label="Costo estimado" variant="solo"
-                                prefix="$"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <v-text-field class="file" color="primary" label="Costo de envio" variant="solo"
-                                prefix="$"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" class="d-sm-flex flex-xs-column">
-                            <v-btn prepend-icon="mdi-cancel" color="error">Cancelar</v-btn>
-                            <v-spacer></v-spacer>
-                            <v-btn type="submit" prepend-icon="mdi-car-wrench" color="primary">
-                                Guardar Cambios
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
+                <v-dialog width="1000" v-model="dialog" rounded="xl">
+                <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" class=" bg-primary" prepend-icon="mdi-square-edit-outline">
+                            Modificar
+                        </v-btn>
+                </template>
 
-            </v-form>
-        </v-card>
-    </v-container>
-</template>
+                <template v-slot:default="{ isActive }">
+                    <v-card  class="bg-greyDark">
+                        <v-card-title class="d-flex justify-space-between aling-center">
+                            <h3> Modificación del servicio </h3>
+                            <v-btn variant="plain" icon @click="dialog= false"><v-icon>mdi-close</v-icon></v-btn>
+                        </v-card-title>
+                        
+                        <v-form @submit.prevent="postServicio()" validate-on="submit lazy">
+                            <v-card-text>
+                                <v-row>
+                                    <v-col cols="12" class="d-flex justify-center align-center gap-10 flex-column flex-sm-row">
+                                        <v-avatar :image="selectedImage" size="150"></v-avatar>
+
+                                        <v-file-input @change="handleImageChange" accept="image/png, image/jpeg"
+                                        prepend-icon="mdi-image" label="Logo*" color="primary" variant="solo"
+                                        hide-details></v-file-input>
+                                        <p v-if="errorImage" class="text-error text-start text-subtitle-1">*Debe ser una imagen</p>
+                                    </v-col>
+                                    <v-col cols="12" md="4">
+                                        <v-select class="file" color="primary" v-model="selectedRubro" :items="rubros"
+                                            label="Rubro" variant="solo"></v-select>
+                                    </v-col>
+                                    <v-col cols="12" md="4">
+                                        <v-select class="file" color="primary" v-model="selectedServicio" :items="servicios"
+                                            label="Servicio" :disabled="!selectedRubro" variant="solo"></v-select>
+                                    </v-col>
+                                    <v-col cols="12" md="4">
+                                        <v-select v-model="form.tipo_servicio" class="file" color="primary" label="Tipo de servicio"
+                                            :items="['Adomicilio','Reserva/Cita']"
+                                            variant="solo"></v-select>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-textarea v-model="form.descripcion" class="areaa" color="primary" label="Descripcion del servicio"
+                                            variant="solo">
+                                        </v-textarea>
+                                    </v-col>
+
+                                    <v-col cols="12" md="6">
+                                        <v-select v-model="form.dia_inicio" class="file" color="primary" label="Horario de Inicio" :items="dias"
+                                            variant="solo"></v-select>
+                                    </v-col>
+                                    <v-col cols="12" md="6">
+                                        <v-select v-model="form.dia_fin" class="file" color="primary" label="Horario de Fin" :items="dias"
+                                            variant="solo"></v-select>
+                                    </v-col>
+                                    <v-col cols="12" md="6">
+                                        <flat-pickr :config="config" v-model="form.hora_apertura" placeholder="Hora de apertura"
+                                            class="timepicker" />
+                                    </v-col>
+                                    <v-col cols="12" md="6">
+                                        <flat-pickr :config="config" v-model="form.hora_cierre" placeholder="Hora de cierre"
+                                            class="timepicker" />
+                                    </v-col>
+                                    <v-col cols="12" md="6">
+                                        <v-text-field v-model="form.precio" class="file" color="primary" label="Costo del servicio" variant="solo"
+                                            prefix="$"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" md="6">
+                                        <v-text-field v-model="form.precio_adomicilio" class="file" color="primary" label="Costo de recargo por adomicilio" variant="solo"
+                                            prefix="$"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" class="d-flex flex-xs-row justify-space-between">
+                                        <v-btn prepend-icon="mdi-cancel" color="error" @click="dialog = false">Cancelar</v-btn>
+                                        
+                                        <v-btn :loading="cargando" type="submit" prepend-icon="mdi-car-wrench" color="primary">
+                                            Guardar
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+
+                        </v-form>
+                    </v-card>
+                    
+                </template>
+                </v-dialog>
+            
+        </template>
+  
 
 <script setup>
-import { ref, watch, } from 'vue';
+import { ref, watch, onMounted, defineProps} from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+import { getData ,putData } from '@/plugins/api.js';
+import { useAuthStore } from '@/Stores/auth';
+import notify from '@/plugins/notify.js';
+
+const props = defineProps({
+    id: {
+        type: Number,
+        required: false,
+        default: null
+    }
+});
 
 const date = ref(null);
+const dialog = ref(false);
 
 const config = ref({
     enableTime: true,
@@ -146,11 +176,89 @@ const rubros = Object.keys(rubroPorServicio.value);
 const servicios = ref([]);
 const selectedRubro = ref(null);
 const selectedServicio = ref(null);
+const selectedImage = ref('');
+const errorImage = ref(false);
+const cargando = ref(false);
+const image = ref('');
+const idServicio = ref('');
+const form = ref({})
+
+const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    console.log("Archivo seleccionado:", file);
+    
+    // Verificar si el archivo es una instancia de Blob
+    if (file instanceof Blob) {
+        image.value = file;
+
+        if (file.type.startsWith('image/')) {
+            selectedImage.value = URL.createObjectURL(file);
+            errorImage.value = false;
+        } else {
+            errorImage.value = true;
+            console.warn('Debe seleccionar una imagen');
+        }
+    } else {
+        // Manejar el caso cuando no se selecciona un archivo válido (no un Blob)
+        console.warn('Debe seleccionar un archivo válido');
+        // Limpiar la imagen seleccionada o realizar cualquier otra acción necesaria
+        selectedImage.value = null;
+    }
+};
+
+
+const getServicio = async () => {
+    try {
+        const id = props.id;
+        const data = await getData(('servicio-mecanico/' + id));
+
+        if (!data.status) {
+            notify('No se encontro el servicio', 'info')
+            setTimeout(() => router.push({ path: 'inscripcionServicios' }), 3000)
+        }
+        form.value=data.data;
+        selectedImage.value = form.value.logo
+        selectedRubro.value = form.value.rubro
+        selectedServicio.value = form.value.servicio
+        idServicio.value = data.data.id
+        
+    } catch (error) {
+        notify(error.message, 'error');
+    } 
+};
+
+const postServicio = async () => {
+    try {
+        if (image.value instanceof Blob) {
+            const reader = new FileReader();
+            reader.readAsDataURL(image.value);
+            await new Promise((resolve, reject) => {
+                reader.onload = () => {
+                    form.value.logo = reader.result;
+                    resolve();
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+        form.value.rubro = selectedRubro.value
+        form.value.servicio = selectedServicio.value
+        // form.value.perfil_mecanico_id = idServicio.value
+        cargando.value = true;
+        console.log(form.value)
+        await putData(('servicio-mecanico/' + idServicio.value), form.value, { headers: { 'Content-Type': 'application/json' } }, '/inscripcionServicios');
+    } finally {
+        cargando.value = false;
+    }
+}
 
 watch(() => {
     return selectedRubro.value;
 }, (newRubro) => {
     servicios.value = newRubro ? rubroPorServicio.value[newRubro] : [];
+});
+
+onMounted(() => {
+    getServicio();
 });
 </script>
 

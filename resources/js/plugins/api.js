@@ -44,3 +44,19 @@ export const postData = async (endpoint, data, headers = {}, redirect = null) =>
   });;
 
 };
+
+export const putData = async (endpoint, data, headers = {}, redirect = null) => {
+  await axios.put(`/api/${endpoint}`, data, { headers }).then(
+    (res) => {
+      let msg = res.data.message
+      notify(msg, 'success')
+      if(redirect != null){
+        setTimeout(() => window.location.href = redirect, 2000)
+      }
+    }
+  ).catch((error) => {
+    let desc = error.response.data.errors.join('\n');
+    notify(desc, 'error');
+  });;
+
+};

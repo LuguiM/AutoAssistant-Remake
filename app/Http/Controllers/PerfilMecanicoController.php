@@ -157,7 +157,60 @@ class PerfilMecanicoController extends Controller
 
     public function update(Request $request, string $id)
     {
+        $rules = [
+            'logo' => 'required',
+            'nombre_taller' => 'nullable|string',
+            'representante' => 'required|string',
+            'direcion' => 'nullable|string',
+            'numero' => 'required'
+        ];
 
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()->all()
+            ], 400);
+        }
+
+        $nombreTaller = $request->input('nombre_taller');
+        $direccion = $request->input('direcion');
+
+        $perfilMecanico = new PerfilMecanico();
+
+
+        if (isset($nombreTaller)) {
+            $perfilMecanico->nombre_taller = $nombreTaller;
+        }
+        if (isset($direccion) || !empty($direccion)) {
+            $perfilMecanico->direcion = $direccion;
+        }
+
+        $base64Image = $request->input('logo');
+        $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+        $extension = 'png';
+        $fileName = $request->input('representante') . '_' . uniqid() . '.' . $extension;
+        $storedFileName = 'public/perfilMecanico/' . $fileName;
+        Storage::put($storedFileName, $image);
+        $path = Storage::url($storedFileName);
+        
+        $perfilMecanico->logo = $path;
+        $perfilMecanico->nombre_taller = $request->nombre_taller;
+        $perfilMecanico->numero = $request->numero;
+        $perfilMecanico->representante = $request->representante;
+        $perfilMecanico->user_id = $request->user_id;
+
+        if( $perfilMecanico->save()){
+            return response()->json([
+                'status' => true,
+                'message' => 'Pefil mecanico creado con exito',
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Ocurrio un error al crear el perfil',
+            ], 400);
+        }
     }
 
     /**

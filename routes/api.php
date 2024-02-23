@@ -42,6 +42,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('servicio-mecanico/inscritos/{id}',[ServiciosMecanicosController::class, 'serviciosInscritos']);
     Route::post('servicio-mecanico',[ServiciosMecanicosController::class,'store']);
     Route::get('servicio-mecanico/{id}',[ServiciosMecanicosController::class, 'show']);
+    Route::put('servicio-mecanico/{id}',[ServiciosMecanicosController::class, 'update']);
+    Route::delete('servicio-mecanico/delete/{id}',[ServiciosMecanicosController::class, 'destroy']);
+
+
 
 
 

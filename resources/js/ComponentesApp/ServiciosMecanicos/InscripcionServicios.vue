@@ -38,10 +38,7 @@
                         </v-row>
                     </v-card-text>
                     <v-card-actions class="text-center">
-                        <v-btn class=" bg-primary" prepend-icon="mdi-square-edit-outline"
-                            :to="{ path: '/modificarServicio/' + inscripcion.id }">
-                            Modificar
-                        </v-btn>
+                        <editarServicio :id="inscripcion.id"></editarServicio>
                         <v-spacer></v-spacer>
                         <v-btn class="bg-error" prepend-icon="mdi-delete-outline" @click="eliminarServicio(inscripcion.id)">
                             Eliminar
@@ -106,6 +103,7 @@
 </template>
 
 <script setup>
+import editarServicio from './EditarServicio.vue'
 import { ref, onMounted } from 'vue';
 import notify from '@/plugins/notify.js';
 import { getData } from '@/plugins/api.js';
