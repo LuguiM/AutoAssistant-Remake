@@ -53,11 +53,11 @@
             </v-col>
 
             <v-col v-else cols="12">
-                <v-alert color="error" icon="$error" :text="message">
+                <v-alert color="error" icon="$error" :text="message || 'No se encontraron servicios mecánicos inscritos'">
                 </v-alert>
             </v-col>
         </v-row>
-        <v-pagination v-model="currentPage" :length="last_page" @click="cargarServicios" class="my-4"></v-pagination>
+        <v-pagination v-if="status" v-model="currentPage" :length="last_page" @click="cargarServicios" class="my-4"></v-pagination>
 
 
 
@@ -111,6 +111,9 @@ import notify from '@/plugins/notify.js';
 import { getData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
 import { format } from 'date-fns';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const authStore = useAuthStore();
 
@@ -182,19 +185,37 @@ const message = ref('');
 const currentPage = ref(1);
 const last_page = ref(null);
 
-
-const serviciosMecanicos = async () => {
+const getPerfil = async () => {
     try {
-        const id = authStore.user.perfilMecanico
+        const id = authStore.authUser.id;
+        const data = await getData(('verificarPerfil/' + id));
+
+        if (!data.status) {
+            notify('No se encontro perfil mecanico', 'info')
+            setTimeout(() => router.push({ path: 'perfilMecanico' }), 3000)
+        }
+
+        serviciosMecanicos(data.id);
+        
+    } catch (error) {
+        notify(error.message, 'error');
+    } 
+};
+
+const serviciosMecanicos = async (id) => {
+    try {
+        
         const data = await getData(('servicio-mecanico/inscritos/' + id + '?page=' + currentPage.value));
-        status.value = data.status;
-        serviciosInscritos.value = data.data.data;
-        currentPage.value = data.data.current_page;
-        last_page.value = data.data.last_page;
+
 
         if (!data.status) {
             status.value = data.status
             message.value = data.message
+        } else {
+            status.value = data.status;
+            serviciosInscritos.value = data.data.data;
+            currentPage.value = data.data.current_page;
+            last_page.value = data.data.last_page;
         }
     } catch (error) {
         notify(error.message, 'error');
@@ -225,7 +246,7 @@ const inscripcionEliminada = () => {
 }
 
 onMounted(() => {
-    serviciosMecanicos()
+    getPerfil()
 });
 
 </script>

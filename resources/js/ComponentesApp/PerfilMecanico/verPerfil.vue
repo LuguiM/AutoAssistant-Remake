@@ -100,11 +100,11 @@
                                     </v-row>
                                 </div>
                                 <v-card-actions v-if="prop.mode == 'conductor'"
-                                    class="bg-primary card-text d-flex justify-center" @click="verPerfil(servicio.id)">
+                                    class="bg-primary card-text d-flex justify-center" @click="verPerfil(infoPerfil.id)">
                                     <v-avatar color="info" size="x-small">
-                                        <v-img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John"></v-img>
+                                        <v-img :src="infoPerfil.logo" alt="John"></v-img>
                                     </v-avatar>
-                                    <p> Taller Melendez</p>
+                                    <p>{{ infoPerfil.nombre_taller }}</p>
                                 </v-card-actions>
 
                             </v-card>
@@ -123,16 +123,18 @@
 
 <script setup>
 import { ref, defineProps, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import notify from '@/plugins/notify.js';
 import { getData } from '@/plugins/api.js';
 
 
-const router = useRouter();
+const router = useRoute();
+const routerPush = useRouter();
+
 const prop = defineProps({
     mode: {
         type: String,
-        required: true,
+        required: false,
         default: 'conductor'
     },
     id: {
@@ -165,19 +167,40 @@ const perfilMecanico = async (id) => {
     }
 };
 
+const perfil = async (id) => {
+    try {
+        const data = await getData(('perfilMecanico/perfiles/' + id));
+        status.value = data.status;
+        infoPerfil.value = data.data;
+        console.log('data', infoPerfil.value);
+
+        if (!data.status) {
+            status.value = data.status;
+            message.value = data.message;
+        }
+    } catch (error) {
+        notify(error.message, 'error');
+    } finally {
+        loading.value = false;
+    }
+};
+
 const verServicio = (id) => {
-    router.push({ path: `/verServicio/${id}` });
+    routerPush.push({ path: `/verServicio/${id}` });
 };
 
 const verPerfil = (id) => {
-    router.push({ path: `/perfilMecanico/${id}` });
+    routerPush.push({ path: `/verPerfilMecanico/${id}` });
 };
 
 onMounted(() => {
     if (prop.id !== null) {
         perfilMecanico(prop.id)
     } else {
-        perfilMecanico(router.params.id)
+        console.log('router.params:', router.params);
+        //console.log('router.params.id:', router.params.id);
+
+        perfil(router.params.id)
     }
 });
 

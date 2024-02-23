@@ -5,9 +5,20 @@
         </div>
 
         <v-row>
+            <v-col cols="12" class="mx-auto" v-if="banner">
+                <v-alert
+                v-model="banner"
+                closable
+                close-label="Close Alert"
+                type="info"
+                >
+                Necesitas un perfil mecanico para poder inscribir servicios
+                </v-alert>
+            </v-col>
             <v-col cols="12">
                 <v-btn class="greyButton" prepend-icon="mdi-arrow-left-circle">Regresar</v-btn>
             </v-col>
+           
             <v-col cols="12">
                 <v-card class="bg-greyDark mx-auto" min-width="235" max-width="600">
                     <v-form @submit.prevent="postPerfil()" validate-on="submit lazy">
@@ -83,6 +94,7 @@ const image = ref('');
 const form = ref({});
 const cargando = ref(false);
 const telefono = ref('');
+const banner = ref(true);
 
 
 

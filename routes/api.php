@@ -33,6 +33,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('perfilMecanico', [PerfilMecanicoController::class, 'index']);
     Route::post('perfilMecanico/crear', [PerfilMecanicoController::class,'store']);
     Route::get('perfilMecanico/{id}', [PerfilMecanicoController::class ,'show']);
+    Route::get('perfilMecanico/perfiles/{id}', [PerfilMecanicoController::class ,'showPerfil']);
+
 
     
     //Rutas para servicio mecanicos

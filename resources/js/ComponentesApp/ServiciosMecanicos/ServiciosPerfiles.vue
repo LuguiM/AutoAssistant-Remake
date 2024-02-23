@@ -46,7 +46,7 @@
 
                             <v-row v-else-if="status">
                                 <v-col v-for="servicio in serviciosMecanicos" cols="12" sm="6" md="6">
-                                    <v-card class="text-center perfil-card" hover>
+                                    <v-card class="text-center perfil-card"  hover>
                                         <div @click="verServicio(servicio.id)" class="card-body">
                                             <v-row>
                                                 <v-col cols="12" md="4">
@@ -75,7 +75,7 @@
                                             </v-row>
                                         </div>
                                         <v-card-actions class="bg-primary card-text d-flex justify-center gap-10"
-                                            @click="verPerfil(servicio.id)">
+                                            @click="verPerfil(servicio.perfil_mecanico.id)">
                                             <v-avatar color="info" size="x-small" style="border:1px solid #FFFFFF;">
                                                 <v-img :src="servicio.perfil_mecanico.logo"
                                                     :alt="servicio.perfil_mecanico.representante"></v-img>
@@ -171,6 +171,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getData } from '@/plugins/api.js';
+import notify from '@/plugins/notify.js';
 import { useAuthStore } from '@/Stores/auth';
 
 const authStore = useAuthStore();
@@ -269,7 +270,7 @@ const verServicio = (id) => {
 
 
 const verPerfil = (id) => {
-    router.push({ path: `/verperfilMecanico/${id}` });
+    router.push({ name: 'verPerfilMecanico', params: { id: id } })
 }
 
 onMounted(() => {

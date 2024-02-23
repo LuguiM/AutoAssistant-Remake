@@ -95,10 +95,10 @@
 
 
 <script setup>
-import { ref, watch, } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import { postData } from '@/plugins/api.js';
+import { getData ,postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
 
 const authStore = useAuthStore();
@@ -180,6 +180,7 @@ const selectedImage = ref('https://fakeimg.pl/600x400?text=logo/imagen');
 const errorImage = ref(false);
 const cargando = ref(false);
 const image = ref('');
+const idMecanico = ref('')
 
 const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -196,6 +197,23 @@ const handleImageChange = (event) => {
     }
 };
 
+const getPerfil = async () => {
+    try {
+        const id = authStore.authUser.id;
+        const data = await getData(('verificarPerfil/' + id));
+
+        if (!data.status) {
+            notify('No se encontro perfil mecanico', 'info')
+            setTimeout(() => router.push({ path: 'perfilMecanico' }), 3000)
+        }
+
+        idMecanico.value = data.id
+        
+    } catch (error) {
+        notify(error.message, 'error');
+    } 
+};
+
 const postServicio = async () => {
     try {
         const reader = new FileReader();
@@ -209,7 +227,7 @@ const postServicio = async () => {
         });
         form.value.rubro = selectedRubro.value
         form.value.servicio = selectedServicio.value
-        form.value.perfil_mecanico_id = authStore.user.perfilMecanico
+        form.value.perfil_mecanico_id = idMecanico.value
         cargando.value = true;
         console.log(form.value)
         await postData('servicio-mecanico', form.value, { headers: { 'Content-Type': 'application/json' } }, '/inscripcionServicios');
@@ -222,6 +240,10 @@ watch(() => {
     return selectedRubro.value;
 }, (newRubro) => {
     servicios.value = newRubro ? rubroPorServicio.value[newRubro] : [];
+});
+
+onMounted(() => {
+    getPerfil();
 });
 </script>
 

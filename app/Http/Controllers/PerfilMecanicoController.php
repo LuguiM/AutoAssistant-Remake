@@ -26,6 +26,7 @@ class PerfilMecanicoController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Usuario con perfil mecanico',
+            'id' => $perfil->id,
             'alert' => 'success'
         ], 200);
     }
@@ -110,6 +111,29 @@ class PerfilMecanicoController extends Controller
     public function show($id)
     {
         $perfil = PerfilMecanico::where('user_id', $id)->first();
+
+        if (!$perfil) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Perfil mecánico no encontrado',
+            ], 404);
+        }
+
+        $perfilId = $perfil->id;
+
+        $servicios = ServicioMecanico::where('perfil_mecanico_id', $perfilId)->get();
+
+        $perfil->servicios = $servicios;
+
+        return response()->json([
+            'status' => true,
+            'data' => $perfil,
+        ], 200);
+    }
+
+    public function showPerfil($id)
+    {
+        $perfil = PerfilMecanico::find($id);
 
         if (!$perfil) {
             return response()->json([
