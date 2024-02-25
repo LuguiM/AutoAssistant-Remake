@@ -46,7 +46,7 @@
 
                             <v-row v-else-if="status">
                                 <v-col v-for="servicio in serviciosMecanicos" cols="12" sm="6" md="6">
-                                    <v-card class="text-center perfil-card"  hover>
+                                    <v-card class="text-center perfil-card" hover>
                                         <div @click="verServicio(servicio.id)" class="card-body">
                                             <v-row>
                                                 <v-col cols="12" md="4">
@@ -89,7 +89,7 @@
                             </v-row>
                         </v-col>
                     </v-row>
-                    <v-pagination v-model="currentPage" :length="last_page" @click="cargarServicios"
+                    <v-pagination v-if="status" v-model="currentPage" :length="last_page" @click="cargarServicios"
                         class="my-4"></v-pagination>
                 </v-container>
             </v-window-item>
@@ -148,7 +148,7 @@
                                             Representante <br> {{ perfil.representante }}
                                         </v-card-text>
                                         <v-card-text class="pt-0">
-                                            <v-icon>mdi-car-cog</v-icon> 
+                                            <v-icon>mdi-car-cog</v-icon>
                                             Taller Mecanico <br> {{ perfil.nombre_taller }}
                                         </v-card-text>
 
@@ -158,8 +158,8 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-pagination v-model="currentPagePerfil" :length="last_pagePerfil" @click="cargarPerfiles"
-                    class="my-4"></v-pagination>
+                <v-pagination v-if="statusPerfil" v-model="currentPagePerfil" :length="last_pagePerfil"
+                    @click="cargarPerfiles" class="my-4"></v-pagination>
             </v-window-item>
         </v-window>
     </v-container>
@@ -222,14 +222,15 @@ const last_pagePerfil = ref(null);
 const getServicios = async () => {
     try {
         const data = await getData(('servicio-mecanico' + '?page=' + currentPage.value));
-        status.value = data.status;
-        serviciosMecanicos.value = data.data.data;
-        currentPage.value = data.data.current_page;
-        last_page.value = data.data.last_page;
 
         if (!data.status) {
             status.value = data.status
             message.value = data.message
+        } else {
+            status.value = data.status;
+            serviciosMecanicos.value = data.data.data;
+            currentPage.value = data.data.current_page;
+            last_page.value = data.data.last_page;
         }
     } catch (error) {
         notify(error.message, 'error');
@@ -241,14 +242,15 @@ const getServicios = async () => {
 const getPerfiles = async () => {
     try {
         const data = await getData(('perfilMecanico' + '?page=' + currentPagePerfil.value));
-        statusPerfil.value = data.status;
-        perfiles.value = data.data.data;
-        currentPagePerfil.value = data.data.current_page;
-        last_pagePerfil.value = data.data.last_page;
 
         if (!data.status) {
             statusPerfil.value = data.status
             messagePerfil.value = data.message
+        } else {
+            statusPerfil.value = data.status;
+            perfiles.value = data.data.data;
+            currentPagePerfil.value = data.data.current_page;
+            last_pagePerfil.value = data.data.last_page;
         }
     } catch (error) {
         notify(error.message, 'error');
@@ -258,10 +260,10 @@ const getPerfiles = async () => {
 }
 
 const cargarServicios = async () => {
-    await serviciosMecanicos();
+    await getServicios();
 }
 const cargarPerfiles = async () => {
-    await perfiles();
+    await getPerfiles();
 }
 
 const verServicio = (id) => {
