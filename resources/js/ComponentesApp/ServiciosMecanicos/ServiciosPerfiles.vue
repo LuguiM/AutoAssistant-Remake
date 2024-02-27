@@ -18,14 +18,14 @@
                             <v-card class="rubroFilter" variant="outlined">
                                 <v-card-title class="text-center">Filtros por rubro</v-card-title>
                                 <v-card-text class="d-flex flex-wrap ">
-                                    <v-checkbox v-for="rubro in rubros" :label="rubro.label" :value="rubro.value"
+                                    <v-checkbox v-model="searchRubros" v-for="rubro in rubros" :label="rubro.label" :value="rubro.value"
                                         hide-details></v-checkbox>
                                 </v-card-text>
                                 <v-card-actions>
-                                    <v-btn variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
+                                    <v-btn @click="getServicios()" variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
                                         Filtrar
                                     </v-btn>
-                                    <v-btn variant="tonal" prepend-icon="mdi-trash-can" class="greyButton">
+                                    <v-btn @click="cleanServicios()" variant="tonal" prepend-icon="mdi-trash-can" class="greyButton">
                                         Limpiar
                                     </v-btn>
                                 </v-card-actions>
@@ -107,14 +107,14 @@
                                     <v-form>
                                         <v-row>
                                             <v-col cols="12" md="8">
-                                                <v-text-field label="Busqueda por nombre"
-                                                    prepend-inner-icon="mdi-account-search" variant="solo"></v-text-field>
+                                                <v-text-field v-model="searchPerfiles" label="Busqueda por taller mecanico o representante"
+                                                    prepend-inner-icon="mdi-account-search" variant="solo" ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" md="4" class="d-flex align-center justify-center mb-5">
-                                                <v-btn variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
+                                                <v-btn @click="getPerfiles()" variant="tonal" prepend-icon="mdi-magnify" class="mr-3 blueButton">
                                                     Buscar
                                                 </v-btn>
-                                                <v-btn variant="tonal" prepend-icon="mdi-trash-can" class="greyButton">
+                                                <v-btn @click="cleanPerfiles()" variant="tonal" prepend-icon="mdi-trash-can" class="greyButton">
                                                     Limpiar
                                                 </v-btn>
                                             </v-col>
@@ -147,9 +147,14 @@
                                             <v-icon>mdi-account</v-icon>
                                             Representante <br> {{ perfil.representante }}
                                         </v-card-text>
-                                        <v-card-text class="pt-0">
+                                        <v-card-text class="pt-0" v-if="perfil?.nombre_taller">
                                             <v-icon>mdi-car-cog</v-icon>
                                             Taller Mecanico <br> {{ perfil.nombre_taller }}
+                                        </v-card-text>
+                                        <v-card-text class="pt-0" v-else>
+                                            <v-icon>mdi-car-cog</v-icon>
+
+                                            Mecanico Independiente
                                         </v-card-text>
 
                                     </v-card>
@@ -212,16 +217,19 @@ const status = ref(false);
 const message = ref('');
 const currentPage = ref(1);
 const last_page = ref(null);
+const searchRubros = ref([]);
 
 const loadingPerfil = ref(true);
 const statusPerfil = ref(false);
 const messagePerfil = ref('');
 const currentPagePerfil = ref(1);
 const last_pagePerfil = ref(null);
+const searchPerfiles = ref('');
 
 const getServicios = async () => {
     try {
-        const data = await getData(('servicio-mecanico' + '?page=' + currentPage.value));
+    
+        const data = await getData(('servicio-mecanico' + '?page=' + currentPage.value + '&rubros=' + searchRubros.value));
 
         if (!data.status) {
             status.value = data.status
@@ -231,6 +239,7 @@ const getServicios = async () => {
             serviciosMecanicos.value = data.data.data;
             currentPage.value = data.data.current_page;
             last_page.value = data.data.last_page;
+            console.log(searchRubros.value)
         }
     } catch (error) {
         notify(error.message, 'error');
@@ -239,9 +248,14 @@ const getServicios = async () => {
     }
 }
 
+const cleanServicios = () => {
+    searchRubros.value = [];
+    getServicios()
+}
+
 const getPerfiles = async () => {
     try {
-        const data = await getData(('perfilMecanico' + '?page=' + currentPagePerfil.value));
+        const data = await getData(('perfilMecanico' + '?page=' + currentPagePerfil.value + '&search=' + searchPerfiles.value));
 
         if (!data.status) {
             statusPerfil.value = data.status
@@ -257,6 +271,11 @@ const getPerfiles = async () => {
     } finally {
         loadingPerfil.value = false;
     }
+}
+
+const cleanPerfiles = () => {
+    searchPerfiles.value = '';
+    getPerfiles()
 }
 
 const cargarServicios = async () => {

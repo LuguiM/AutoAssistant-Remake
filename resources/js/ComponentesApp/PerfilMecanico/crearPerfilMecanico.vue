@@ -6,19 +6,14 @@
 
         <v-row>
             <v-col cols="12" class="mx-auto" v-if="banner">
-                <v-alert
-                v-model="banner"
-                closable
-                close-label="Close Alert"
-                type="info"
-                >
-                Necesitas un perfil mecanico para poder inscribir servicios
+                <v-alert v-model="banner" closable close-label="Close Alert" type="info">
+                    Necesitas un perfil mecanico para poder inscribir servicios
                 </v-alert>
             </v-col>
             <v-col cols="12">
                 <v-btn class="greyButton" prepend-icon="mdi-arrow-left-circle">Regresar</v-btn>
             </v-col>
-           
+
             <v-col cols="12">
                 <v-card class="bg-greyDark mx-auto" min-width="235" max-width="600">
                     <v-form @submit.prevent="postPerfil()" validate-on="submit lazy">
@@ -31,11 +26,11 @@
                         </v-card-title>
                         <v-card-text class="mt-5">
                             <v-row>
-                                <v-col cols="12"  v-if="authStore.user.rol == 'Taller Mecanico'">
-                                    <v-text-field label="Nombre del taller*" :rules="[rules.required]" v-model="form.nombre_taller" color="primary"
-                                        variant="solo"></v-text-field>
+                                <v-col cols="12" v-if="authStore.user.rol == 'Taller Mecanico'">
+                                    <v-text-field label="Nombre del taller*" :rules="[rules.required]"
+                                        v-model="form.nombre_taller" color="primary" variant="solo"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="10" >
+                                <v-col cols="12" sm="10">
                                     <v-text-field :rules="[rules.required]" label="Nombre del representante*"
                                         v-model="form.representante" color="primary" variant="solo"></v-text-field>
                                 </v-col>
@@ -48,7 +43,7 @@
                                     </v-tooltip>
 
                                 </v-col>
-                                <v-col cols="12" >
+                                <v-col cols="12">
                                     <v-text-field v-model="telefono" @input="formatoTelefono" label="Numero de contacto*"
                                         variant="solo" color="primary" :rules="[rules.required, rules.telefono]"
                                         hint="Formato para telefono XXXX-XXXX"></v-text-field>

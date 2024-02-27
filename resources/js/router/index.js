@@ -62,7 +62,7 @@ const routes = [
             {
                 name: 'dashboard',
                 path: '/dashboard',
-                component: () => import('../web/HomeCom.vue'),
+                component: () => import('../ComponentesApp/dashboard.vue'),
             },
             {
                 name: 'homesite',

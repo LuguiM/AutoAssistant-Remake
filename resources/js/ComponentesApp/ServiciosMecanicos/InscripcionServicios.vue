@@ -65,7 +65,7 @@
                 <v-card-text>¿Esta seguro de querer eliminar este servicio?</v-card-text>
                 <v-card-text class="pt-0">Esta accion sera irreversible</v-card-text>
                 <v-card-actions class="mt-3">
-                    <v-btn class="bg-primary" @click="inscripcionEliminada">Confimar</v-btn>
+                    <v-btn :loading="cargandoDelete" class="bg-primary" @click="inscripcionEliminada">Confimar</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn class="bg-error" @click="eliminarModal = false">Cancelar</v-btn>
                 </v-card-actions>
@@ -106,7 +106,7 @@
 import editarServicio from './EditarServicio.vue'
 import { ref, onMounted } from 'vue';
 import notify from '@/plugins/notify.js';
-import { getData } from '@/plugins/api.js';
+import { getData, deleteData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
 import { format } from 'date-fns';
 import { useRouter } from 'vue-router';
@@ -182,6 +182,7 @@ const status = ref(false);
 const message = ref('');
 const currentPage = ref(1);
 const last_page = ref(null);
+const cargandoDelete = ref(false);
 
 const getPerfil = async () => {
     try {
@@ -236,11 +237,19 @@ const eliminarServicio = (id) => {
     idServicio.value = id;
 }
 
-const inscripcionEliminada = () => {
-    console.log('Se ha eliminado el servicio', idServicio.value);
-    notify('Se ha eliminado el servicio', 'success')
-    eliminarModal.value = false;
-    idServicio.value = null;
+const inscripcionEliminada = async() => {
+    try {
+        cargandoDelete.value = true;
+        await deleteData(('servicio-mecanico/delete/' + idServicio.value), { headers: { 'Content-Type': 'application/json' } });
+    } catch (error) {
+        notify(error.message, 'error');
+    }  finally {
+        cargandoDelete.value = true;
+        eliminarModal.value = false;
+        idServicio.value = null;
+        getPerfil()
+    }
+    
 }
 
 onMounted(() => {

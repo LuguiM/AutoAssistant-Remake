@@ -116,7 +116,7 @@
                                         variant="solo"></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field v-model="infoServicio.servicio" disabled variant="solo" class="btnModal" label="Servicio a contratar"
+                                    <v-text-field v-model="infoServicio.servicio" readonly variant="solo" class="btnModal" label="Servicio a contratar"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
@@ -126,7 +126,7 @@
                                 </v-col>
                                 <v-col cols="12">
                                     <v-select variant="solo" class="selectModal" label="Seleccione el tipo de servicio"
-                                        :items="['Adomilicio', 'Cita en taller']"></v-select>
+                                        :items="[infoServicio.tipo_servicio]"></v-select>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-btn color="primary" type="submit" prepend-icon="mdi-car-cog">Contratar

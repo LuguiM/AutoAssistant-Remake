@@ -12,17 +12,27 @@ use Illuminate\Support\Facades\Storage;
 
 class ServiciosMecanicosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $servicios = ServicioMecanico::with('perfilMecanico')->paginate(10);
+        $rubros = $request->get('rubros');
+
+        if (!empty($rubros)) {
+
+            $rubrosArray = explode(',', $rubros);
+            $rubrosArray = array_map('trim', $rubrosArray);
+
+            $servicios = ServicioMecanico::with('perfilMecanico')
+                ->whereIn('rubro', $rubrosArray)
+                ->paginate(10);
+
+        } else {
+            $servicios = ServicioMecanico::with('perfilMecanico')->paginate(10);
+        }
 
         if ($servicios->isEmpty()) {
             return response()->json([
                 'status' => false,
-                'message' => 'No se encontraron servicios mecánicos',
+                'message' => 'No se encontraron servicios mecánicos con los rubros seleccionados',
             ], 200);
         }
 
@@ -50,9 +60,6 @@ class ServiciosMecanicosController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $rules = [
@@ -115,9 +122,6 @@ class ServiciosMecanicosController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $servicios = ServicioMecanico::with('perfilMecanico')->find($id);
@@ -135,9 +139,6 @@ class ServiciosMecanicosController extends Controller
         ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $rules = [
@@ -167,7 +168,7 @@ class ServiciosMecanicosController extends Controller
         if ($request->has('logo') && strpos($request->input('logo'), 'data:image') === 0) {
             $base64Image = $request->input('logo');
             $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
-            $extension = 'png'; 
+            $extension = 'png';
             $fileName = $request->input('representante') . '_' . uniqid() . '.' . $extension;
             $storedFileName = 'public/servicioMecanico/' . $fileName;
             Storage::put($storedFileName, $image);
@@ -191,7 +192,7 @@ class ServiciosMecanicosController extends Controller
 
 
 
-        if ($servicioMecanico->save()) {
+        if ($servicioMecanico->update()) {
             return response()->json([
                 'status' => true,
                 'message' => 'Servicio mecanico actualizado con exito',
@@ -204,11 +205,21 @@ class ServiciosMecanicosController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $servicio = ServicioMecanico::find($id);
+
+
+        if ($servicio->delete()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Servicio mecanico eliminado',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Ocurrio un error al eliminar el servicio',
+            ], 400);
+        }
     }
 }

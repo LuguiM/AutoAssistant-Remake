@@ -60,3 +60,16 @@ export const putData = async (endpoint, data, headers = {}, redirect = null) => 
   });;
 
 };
+
+export const deleteData = async (endpoint,headers = {}) => {
+  await axios.delete(`/api/${endpoint}`, { headers }).then(
+    (res) => {
+      let msg = res.data.message
+      notify(msg, 'success')
+    }
+  ).catch((error) => {
+    let desc = error.response.data.errors;
+    notify(desc, 'error');
+  });;
+
+};

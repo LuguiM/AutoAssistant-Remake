@@ -16,7 +16,7 @@
         </v-tabs>
         <v-window v-model="ServicioTab">
             <v-card rounded="0" elevation="0" class="bg-greyDark">
-                <v-form @submit.prevent="postServicio()" validate-on="submit lazy">
+                <v-form v-model="formValidator" @submit.prevent="postServicio()" validate-on="submit lazy">
                     <v-window-item value="informacion">
                         <v-card-text>
                             <v-row>
@@ -81,7 +81,7 @@
                                 <v-col cols="12" class="d-flex flex-xs-row justify-space-between">
                                     <v-btn prepend-icon="mdi-cancel" color="error">Cancelar</v-btn>
                                     
-                                    <v-btn :loading="cargando" type="submit" prepend-icon="mdi-car-wrench" color="primary">Inscribir
+                                    <v-btn :disabled="!formValidator" :loading="cargando" type="submit" prepend-icon="mdi-car-wrench" color="primary">Inscribir
                                         servicio</v-btn>
                                 </v-col>
                             </v-row>
@@ -180,7 +180,8 @@ const selectedImage = ref('https://fakeimg.pl/600x400?text=logo/imagen');
 const errorImage = ref(false);
 const cargando = ref(false);
 const image = ref('');
-const idMecanico = ref('')
+const idMecanico = ref('');
+const formValidator = (false);
 
 const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -223,6 +224,7 @@ const getPerfil = async () => {
 };
 
 const postServicio = async () => {
+    if (!formValidator.value) return
     try {
         const reader = new FileReader();
         reader.readAsDataURL(image.value);

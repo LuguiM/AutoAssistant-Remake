@@ -31,14 +31,23 @@ class PerfilMecanicoController extends Controller
         ], 200);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $perfiles = PerfilMecanico::paginate(10);
+        $searchTerm = $request->input('search');
+
+        $query = PerfilMecanico::query();
+
+        if (!empty($searchTerm)) {
+            $query->where('representante', 'like', "%$searchTerm%")
+                ->orWhere('nombre_taller', 'like', "%$searchTerm%");
+        }
+
+        $perfiles = $query->paginate(10);
 
         if ($perfiles->isEmpty()) {
             return response()->json([
                 'status' => false,
-                'message' => 'No se encontraron servicios mecánicos',
+                'message' => 'No se encontraron perfiles mecánicos',
             ], 200);
         }
 
@@ -47,6 +56,7 @@ class PerfilMecanicoController extends Controller
             'data' => $perfiles
         ], 200);
     }
+
 
     public function store(Request $request)
     {
@@ -86,25 +96,25 @@ class PerfilMecanicoController extends Controller
         $storedFileName = 'public/perfilMecanico/' . $fileName;
         Storage::put($storedFileName, $image);
         $path = Storage::url($storedFileName);
-        
+
         $perfilMecanico->logo = $path;
         $perfilMecanico->nombre_taller = $request->nombre_taller;
         $perfilMecanico->numero = $request->numero;
         $perfilMecanico->representante = $request->representante;
         $perfilMecanico->user_id = $request->user_id;
 
-        if( $perfilMecanico->save()){
+        if ($perfilMecanico->save()) {
             return response()->json([
                 'status' => true,
                 'message' => 'Pefil mecanico creado con exito',
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Ocurrio un error al crear el perfil',
             ], 400);
         }
-       
+
     }
 
 
@@ -193,19 +203,19 @@ class PerfilMecanicoController extends Controller
         $storedFileName = 'public/perfilMecanico/' . $fileName;
         Storage::put($storedFileName, $image);
         $path = Storage::url($storedFileName);
-        
+
         $perfilMecanico->logo = $path;
         $perfilMecanico->nombre_taller = $request->nombre_taller;
         $perfilMecanico->numero = $request->numero;
         $perfilMecanico->representante = $request->representante;
         $perfilMecanico->user_id = $request->user_id;
 
-        if( $perfilMecanico->save()){
+        if ($perfilMecanico->save()) {
             return response()->json([
                 'status' => true,
                 'message' => 'Pefil mecanico creado con exito',
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Ocurrio un error al crear el perfil',

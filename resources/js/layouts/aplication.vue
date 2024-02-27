@@ -67,19 +67,19 @@ const authStore = useAuthStore();
 
 const items = ref([
     { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
-    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
+    { nombre: 'Perfil', icon: 'mdi-account-circle', ruta: '/perfilUsuario' },
     { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
     { nombre: 'Servicios Contratados', icon: 'mdi-wrench-check', ruta: '/serviciosContratados' },
     { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
     { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
     { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
-    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/crearPerfilMecanico' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account-cog', ruta: '/crearPerfilMecanico' },
 ]);
 
 const rutasConductor = ref([
     { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
-    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
+    { nombre: 'Perfil', icon: 'mdi-account-circle', ruta: '/perfilUsuario' },
     { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
     { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
     { nombre: 'Servicios Contratados', icon: 'mdi-wrench-check', ruta: '/serviciosContratados' },
@@ -87,10 +87,10 @@ const rutasConductor = ref([
 
 const rutasMecanico = ref([
     { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
-    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
+    { nombre: 'Perfil', icon: 'mdi-account-circle', ruta: '/perfilUsuario' },
     { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
-    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/perfilMecanico' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account-cog', ruta: '/perfilMecanico' },
     { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
     { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
 ]);
