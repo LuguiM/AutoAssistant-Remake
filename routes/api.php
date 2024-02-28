@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\controllers\PerfilMecanicoController;
 use App\Http\controllers\ServiciosMecanicosController;
+use App\Http\controllers\ContratacionesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('servicio-mecanico/{id}',[ServiciosMecanicosController::class, 'update']);
     Route::delete('servicio-mecanico/delete/{id}',[ServiciosMecanicosController::class, 'destroy']);
 
+    //Rutas de contratacion de servicio
+    Route::get('contrataciones/{id}',[ContratacionesController::class, 'index']);
+    Route::post('contratacion',[ContratacionesController::class,'store']);
 
 
 

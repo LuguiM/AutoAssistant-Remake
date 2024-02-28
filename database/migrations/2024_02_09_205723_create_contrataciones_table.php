@@ -13,13 +13,21 @@ return new class extends Migration
     {
         Schema::create('contrataciones', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_conductor');
-            $table->string('nombre_servicio');
             $table->string('tipo_servicio');
             $table->timestamp('fecha_contratacion');
+            $table->text('comentario')->nullable();
             $table->string('direccion')->nullable();
-            $table->unsignedBigInteger('solicitud_contratacion_id');
-            $table->foreign('solicitud_contratacion_id')->references('id')->on('solicitud_contratacion')->onDelete('cascade');
+            $table->unsignedBigInteger('servicio_id');
+            $table->unsignedBigInteger('conductor_id');
+            $table->unsignedBigInteger('mecanico_id');
+            $table->unsignedBigInteger('estado_id');
+
+            $table->foreign('servicio_id')->references('id')->on('servicios_mecanicos')->onDelete('cascade');
+            $table->foreign('conductor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('mecanico_id')->references('perfil_mecanico_id')
+            ->on('servicios_mecanicos')->onDelete('cascade');
+            $table->foreign('estado_id')->references('id')->on('estados')->onDelete('cascade');
+
 
             $table->timestamps();
         });

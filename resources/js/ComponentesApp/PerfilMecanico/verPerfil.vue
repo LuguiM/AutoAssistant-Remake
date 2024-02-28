@@ -1,7 +1,13 @@
 <template>
-    <v-overlay contained class="align-center justify-center" v-if="loading" v-model="loading">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
+    
+    <v-row v-if="loading" v-model="loading" class="fill-height" align-content="center" justify="center">
+            <v-col class="text-subtitle-1 text-center text-white" cols="12">
+                Cargando datos...
+            </v-col>
+            <v-col cols="6">
+                <v-progress-linear color="white" indeterminate rounded height="6"></v-progress-linear>
+            </v-col>
+        </v-row>
 
     <v-container v-else-if="!status">
         <v-alert color="error" icon="$error" :text="message">

@@ -18,8 +18,15 @@
             <v-col cols="12">
                 <h2>Servicios Inscritos</h2>
             </v-col>
-
-            <v-col cols="12" sm="6" v-if="status" v-for="inscripcion in serviciosInscritos" :key="inscripcion.id">
+            <v-row v-if="loading" v-model="loading" class="fill-height" align-content="center" justify="center">
+            <v-col class="text-subtitle-1 text-center" cols="12">
+                Cargando contrataciones
+            </v-col>
+            <v-col cols="6">
+                <v-progress-linear indeterminate rounded height="6"></v-progress-linear>
+            </v-col>
+        </v-row>
+            <v-col cols="12" sm="6" v-else-if="status" v-for="inscripcion in serviciosInscritos" :key="inscripcion.id">
                 <v-card class="inscritoCard">
                     <v-card-text>
                         <v-row>
@@ -50,7 +57,7 @@
             </v-col>
 
             <v-col v-else cols="12">
-                <v-alert color="error" icon="$error" :text="message || 'No se encontraron servicios mecánicos inscritos'">
+                <v-alert type="error" :text="message || 'No se encontraron servicios mecánicos inscritos'">
                 </v-alert>
             </v-col>
         </v-row>

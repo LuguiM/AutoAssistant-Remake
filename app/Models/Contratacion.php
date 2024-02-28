@@ -12,17 +12,36 @@ class Contratacion extends Model
     protected $table = 'contrataciones';
 
     protected $fillable = [
-        'nombre_conductor',
-        'nombre_servicio',
         'tipo_servicio',
         'fecha_contratacion',
+        'comentario',
         'direccion',
-        'solicitud_contratacion_id'
+        'servicio_id',
+        'conductor_id',
+        'mecanico_id',
+        'estado_id'
     ];
 
     // Definir relaciones con otras tablas
-    public function solicitudContratacion()
+   
+
+    public function servicio()
     {
-        return $this->belongsTo(SolicitudContratacion::class, 'solicitud_contratacion_id');
+        return $this->belongsTo(ServicioMecanico::class, 'servicio_id');
+    }
+
+    public function conductor()
+    {
+        return $this->belongsTo(User::class, 'conductor_id');
+    }
+
+    public function mecanico()
+    {
+        return $this->belongsTo(ServicioMecanico::class, 'mecanico_id', 'perfil_mecanico_id');
+    }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estados::class, 'estado_id');
     }
 }

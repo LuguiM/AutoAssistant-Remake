@@ -45,34 +45,46 @@
         <v-window v-model="tab">
             <v-window-item value="card">
                 <v-container fluid>
-                    <v-row>
+                    <v-row v-if="loading" v-model="loading" class="fill-height" align-content="center" justify="center">
+                        <v-col class="text-subtitle-1 text-center" cols="12">
+                            Cargando contrataciones
+                        </v-col>
+                        <v-col cols="6">
+                            <v-progress-linear indeterminate rounded height="6"></v-progress-linear>
+                        </v-col>
+                    </v-row>
+
+                    <v-alert v-else-if="!status" color="error" icon="$error" :text="'No se encontraron contrataciones' || message">
+                    </v-alert>
+
+                    <v-row v-else-if="status">
                         <v-col cols="12" sm="6" v-for="(servicio, index) in servicios" :key="index">
                             <v-card class="bg-secondary">
                                 <v-card-text>
                                     <v-row align="center">
                                         <v-col cols="12" sm="4">
-                                            <v-img :src="servicio.img" max-height="200"></v-img>
+                                            <v-img :src="servicio.servicio.logo" max-height="200"></v-img>
                                         </v-col>
                                         <v-col cols="12" sm="8">
                                             <v-card-title class="text-h5 font-weight-bold item-texto">
-                                                {{ servicio.title }}
+                                                {{ servicio.servicio.servicio }}
                                             </v-card-title>
                                             <v-card-subtitle class="item-texto">
-                                                Fecha de contratación: {{ servicio.created_at }}
+                                                Fecha de contratación: {{ servicio.fecha_contratacion }}
                                             </v-card-subtitle>
                                             <v-card-text>
                                                 Estado:
-                                                <v-chip variant="elevated" :color="servicio.color" class="ma-2" :prepend-icon="servicio.icon">
-                                                    {{servicio.estado}}
+                                                <v-chip variant="elevated" :color="servicio.estado.color" class="ma-2" :prepend-icon="servicio.estado.icon">
+                                                    {{servicio.estado.estado}}
                                                 </v-chip>
                                             </v-card-text>
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
-                                <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"  v-if="servicio.estado === 'Activo'">
+                                <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"  v-if="servicio.estado.estado === 'Activo'">
                                     <v-btn class="bg-grey2" prepend-icon="mdi-message-outline">Chat</v-btn>
                                 </v-card-actions>
-                                <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"  v-else-if="servicio.estado === 'En espera'">
+                                <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"  v-else-if="servicio.estado.estado === 'En espera'">
                                     <div class="d-flex flex-column flex-md-row gap-10" >
                                         <AceptarServicio type="text"></AceptarServicio>
                                         <CancelarRechazar title="Rechazar" type="text"></CancelarRechazar>                                    
@@ -81,7 +93,7 @@
 
                                 </v-card-actions>
 
-                                <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado === 'Rechazado'">
+                                <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado.estado === 'Rechazado'">
                                     <div class="d-flex flex-column flex-sm-row gap-10" >
                                         <VerRechazo type="text"></VerRechazo>
                                     </div>
@@ -96,12 +108,13 @@
                     <v-data-table v-model:page="page"
                     :headers="headers"
                     :items="servicios"
-                    :items-per-page="itemsPerPage">
+                    :items-per-page="itemsPerPage"
+                    :loading="loading" loading-text="Cargando contrataciones" no-data-text="No se encontraron contrataciones">
 
-                        <template v-slot:item.img="{ item }">
+                        <template v-slot:item.servicio.logo="{ item }">
                             <v-card class="my-2" elevation="2" rounded>
                             <v-img
-                                :src="item.img"
+                                :src="item.servicio.logo"
                                 height="64"
                                 cover
                             ></v-img>
@@ -110,27 +123,27 @@
 
                         <template v-slot:item.estado="{ item }">
                             <v-chip
-                                :color="item.color"
+                                :color="item.estado.color"
                                 class="text-uppercase"
                                 label
                                 size="small"
-                                :prepend-icon="item.icon"
+                                :prepend-icon="item.estado.icon"
                             >
-                            {{item.estado}}
+                            {{item.estado.estado}}
                             </v-chip>
                         </template>
                         <template v-slot:item.acciones="{ item }">
-                            <div v-if="item.estado === 'Activo'">                               
+                            <div v-if="item.estado.estado === 'Activo'">                               
                                 <v-btn variant="flat" density="compact" icon="mdi-message-outline"></v-btn>
                             </div>
 
-                            <div v-else-if="item.estado === 'En espera'">
+                            <div v-else-if="item.estado.estado === 'En espera'">
                                 <AceptarServicio type="icon"></AceptarServicio>
                                 <CancelarRechazar title="Rechazar" type="icon"></CancelarRechazar>                                    
                                 <Observacion title="Crear" type="icon"></Observacion>
                             </div>
 
-                            <div v-else-if="item.estado === 'Rechazado'">
+                            <div v-else-if="item.estado.estado === 'Rechazado'">
                                 <VerRechazo type="icon"></VerRechazo>
                             </div>
                         </template>
@@ -154,70 +167,74 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import AceptarServicio from '../../Components/Modales/AceptarServicio.vue';
 import Observacion from '../../Components/Modales/Observacion.vue';
 import VerRechazo from '../../Components/Modales/VerRechazo.vue';
 import CancelarRechazar from '../../Components/Modales/CancelarRechazar.vue';
+import notify from '@/plugins/notify.js';
+import { getData, postData } from '@/plugins/api.js';
+import { useAuthStore } from '@/Stores/auth';
 
+const authStore = useAuthStore();
 const tab = ref('table');
 
 const page = ref(1);
 const itemsPerPage = ref(3);
 
 const headers = ref([
-    {title:'Imagen', value:'img'},
-    {title:'Servicio', value:'title'},
-    {title:'Fecha de contratación', value:'created_at'},
+    {title:'Imagen', value:'servicio.logo'},
+    {title:'Servicio', value:'servicio.servicio'},
+    {title:'Fecha de contratación', value:'fecha_contratacion'},
     {title:'Estado', value:'estado'},
     {title:'Acciones', value:'acciones'}
 ])
 
-const servicios = ref([
-    {
-        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-        title: 'Intermitente ',
-        created_at: '12/09/2023',
-        estado: 'Activo',
-        color:'primary',
-        icon: 'mdi-cogs'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-        title: 'luces de emergencia',
-        created_at: '12/09/2023',
-        estado:'En espera',
-        color:'grey',
-        icon:'mdi-clock-outline'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-        title: 'Emergencia',
-        created_at: '12/09/2023',
-        estado:'Completado',
-        color:'green',
-        icon:'mdi-checkbox-marked-circle-outline'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-        title: 'Intermitente y luces',
-        created_at: '12/09/2023',
-        estado:'Cancelado',
-        color:'red',
-        icon:'mdi-delete-outline'
-    },
-    {
-        img: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
-        title: 'Intermitente y luces de emergencia',
-        created_at: '12/09/2023',
-        estado:'Rechazado',
-        color:'orange-darken-4',
-        icon:'mdi-close-circle-outline'
-    },
-])
+const servicios = ref([])
+const loading = ref(true);
+const status = ref(false);
+const message = ref('');
 
 const pageCount = Math.ceil(servicios.value.length / itemsPerPage.value);
 
+const getPerfil = async () => {
+    try {
+        const id = authStore.authUser.id;
+        const data = await getData(('verificarPerfil/' + id));
+
+        if (!data.status) {
+            notify('No se encontro perfil mecanico', 'info')
+            setTimeout(() => router.push({ path: 'perfilMecanico' }), 3000)
+        }
+
+        getContrataciones(data.id);
+        
+    } catch (error) {
+        notify(error.message, 'error');
+    } 
+};
+
+const getContrataciones = async (id) => {
+    try {
+        const data = await getData(('contrataciones/' + id));
+        status.value = data.status;
+        servicios.value = data.data;
+        console.log('data', servicios.value);
+
+        if (!data.status) {
+            status.value = data.status;
+            message.value = data.message;
+        }
+    } catch (error) {
+        notify(error.message, 'error');
+    } finally {
+        loading.value = false;
+    }
+};
+
+onMounted(() => {
+    getPerfil();
+})
 </script>
 
 <style>

@@ -1,9 +1,14 @@
 <template>
     <div>
 
-        <v-overlay class="align-center justify-center" v-if="loading" :model-value="loading">
-            <v-progress-circular indeterminate size="64"></v-progress-circular>
-        </v-overlay>
+        <v-row v-if="loading" v-model="loading" class="fill-height" align-content="center" justify="center">
+            <v-col class="text-subtitle-1 text-center text-white" cols="12">
+                Cargando datos...
+            </v-col>
+            <v-col cols="6">
+                <v-progress-linear color="white" indeterminate rounded height="6"></v-progress-linear>
+            </v-col>
+        </v-row>
 
 
         <crearPerfilMecanico v-else-if="!status"></crearPerfilMecanico>

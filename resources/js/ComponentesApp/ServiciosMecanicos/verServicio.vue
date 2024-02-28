@@ -99,24 +99,20 @@
             </v-row>
 
             <v-dialog v-model="contratarModal" width="auto">
-                <v-card max-width="550" height="500" class="bg-greyDark">
+                <v-card max-width="550"  class="bg-greyDark">
                     <v-card-text>
-                        <v-form>
+                        <v-form  @submit.prevent="postContratar()" validate-on="submit lazy">
                             <v-row>
-                                <v-col cols="10">
+                                <v-col cols="12" class="d-flex justify-space-between">
                                     <h2 class="text-primary">Contratar el servicio</h2>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn elevation="0" class="bg-transparent" @click="contratarModal = false">
+                                
+                                    <v-btn icon elevation="0" class="bg-transparent" @click="contratarModal = false">
                                         <v-icon>mdi-close-thick</v-icon>
                                     </v-btn>
                                 </v-col>
+                               
                                 <v-col cols="12">
-                                    <v-text-field class="btnModal" color="white" label="Nombre del conductor*" required
-                                        variant="solo"></v-text-field>
-                                </v-col>
-                                <v-col cols="12">
-                                    <v-text-field v-model="infoServicio.servicio" readonly variant="solo" class="btnModal" label="Servicio a contratar"
+                                    <v-text-field  hide-details v-model="infoServicio.servicio" readonly variant="solo"  label="Servicio a contratar"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
@@ -125,11 +121,18 @@
                                         placeholder="Fecha y hora" />
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-select variant="solo" class="selectModal" label="Seleccione el tipo de servicio"
-                                        :items="[infoServicio.tipo_servicio]"></v-select>
+                                    <v-select v-model="form.tipo_servicio" variant="solo" class="selectModal" label="Seleccione el tipo de servicio"
+                                        :items="[infoServicio.tipo_servicio]" hide-details></v-select>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-btn color="primary" type="submit" prepend-icon="mdi-car-cog">Contratar
+                                    <v-text-field v-model="form.direccion" hide-details color="primary" label="Dirección" required
+                                        variant="solo"></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-textarea v-model="form.comentario" base-color="primary" hide-details label="Comentario" color="primary" variant="solo"></v-textarea>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-btn :loading="cargando" color="primary" type="submit" prepend-icon="mdi-car-cog">Contratar
                                         servicio</v-btn>
                                 </v-col>
                             </v-row>
@@ -148,7 +151,10 @@
 import { ref, defineProps, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import notify from '@/plugins/notify.js';
-import { getData } from '@/plugins/api.js';
+import { getData, postData } from '@/plugins/api.js';
+import { useAuthStore } from '@/Stores/auth';
+
+const authStore = useAuthStore();
 
 const prop = defineProps({
     mode: {
@@ -165,14 +171,18 @@ const prop = defineProps({
 
 const router = useRouter();
 const routerParams = useRoute();
-const date = ref();
+const date = ref('');
 const contratarModal = ref(false);
+const form = ref({});
+const cargando = ref(false);
 
 const infoServicio = ref({});
 const loading = ref(true);
 const status = ref(false);
 const message = ref('');
 const msg = ref('El servicio mecanico solicitado no se ha encontrado o no esta disponible')
+
+
 
 const verPerfilMecanico = (id) => {
     router.push({ path: `/verPerfilMecanico/${id}` });
@@ -195,6 +205,25 @@ const serviciosMecanico = async (id) => {
         loading.value = false;
     }
 };
+
+const postContratar = async () => {
+    try{
+        cargando.value = true;
+        
+        const fechaMySQL = date.value ? new Date(date.value).toISOString().slice(0, 19).replace('T', ' ') : null;
+
+        form.value.fecha_contratacion = fechaMySQL;
+        form.value.servicio_id = infoServicio.value.id;
+        form.value.conductor_id = authStore.user.id;
+        form.value.mecanico_id = infoServicio.value.perfil_mecanico_id;
+        console.log(form.value)
+        await postData('contratacion', form.value, { headers: { 'Content-Type': 'application/json' } }, '/serviciosContratados');
+    }catch(error){
+        notify(error.message, 'error');
+    }finally {
+        cargando.value = false;
+    }
+}
 
 onMounted(() => {
     if (prop.id !== null) {
