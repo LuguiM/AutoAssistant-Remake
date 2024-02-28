@@ -44,6 +44,8 @@
 <script setup>
 import {ref, defineProps} from 'vue'
 import notify from '@/plugins/notify.js'
+import { putData } from '@/plugins/api.js';
+
 
 
 const dialog = ref(false);
@@ -58,18 +60,34 @@ const prop = defineProps({
         type: String,
         required: true,
         default: 'icon'
+    },
+    id: {
+        type: Number,
+        required: true,
+        default: null
     }
 
 })
+const emit = defineEmits(['actualizar'])
 
-const cancelarRechazar = () =>{
-    if(prop.title === 'Rechazar'){
-        notify(`Se ha rechazado el servicio, se informara el motivo al usuario`, 'info')
-    }else{
-        notify(`Se ha cancelado el servicio`, 'success')
+const form = ref({})
+
+const cancelarRechazar = async() =>{
+
+    try{
+        if(prop.title === 'Rechazar'){
+            form.value.estado_id = 5;
+            await putData(('updateEstado/' + prop.id),form.value, { headers: { 'Content-Type': 'application/json' } });
+        }else{
+            form.value.estado_id = 4;
+            await putData(('updateEstado/' + prop.id),form.value, { headers: { 'Content-Type': 'application/json' } });
+        }
+    }catch(error){
+        notify(error,'error');
+    }finally{
+        dialog.value = false
+        emit('actualizar')
     }
-
-    dialog.value = false
 }
 
 </script>

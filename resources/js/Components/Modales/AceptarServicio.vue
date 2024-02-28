@@ -26,6 +26,8 @@
 <script setup>
 import {ref, defineProps} from 'vue'
 import notify from '@/plugins/notify.js'
+import { putData } from '@/plugins/api.js';
+
 
 
 const dialog = ref(false);
@@ -35,13 +37,32 @@ const prop = defineProps({
         type: String,
         required: true,
         default: 'icon'
+    },
+    id: {
+        type: Number,
+        required: true,
+        default: null
     }
 
 })
+const emit = defineEmits(['actualizar'])
 
-const aceptarServicio = () =>{
-    notify(`Se ha activado el servicio correctamente`, 'success')
-    dialog.value = false
+
+const form = ref({})
+
+const aceptarServicio = async() =>{
+    
+    try{
+        form.value.estado_id = 1;
+        await putData(('updateEstado/' + prop.id),form.value, { headers: { 'Content-Type': 'application/json' } });
+    }catch(error){
+        notify(error,'error');
+    }finally{
+        dialog.value = false;
+        emit('actualizar')
+    }
 }
+
+
 
 </script>

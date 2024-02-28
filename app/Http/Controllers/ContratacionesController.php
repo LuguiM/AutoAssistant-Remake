@@ -14,12 +14,22 @@ class ContratacionesController extends Controller
      */
     public function index(Request $request, string $id)
     {
-        $contrataciones = Contratacion::with('servicio', 'conductor', 'mecanico', 'estado')
-        ->where(function ($query) use ($id) {
-            $query->where('conductor_id', $id)
-                ->orWhere('mecanico_id', $id);
-        })
-        ->get();
+        $estado = $request->input("estado");
+
+        if (!empty($estado)) {
+            $contrataciones = Contratacion::with('servicio', 'conductor', 'mecanico', 'estado')
+                ->where(function ($query) use ($id) {
+                    $query->where('conductor_id', $id)
+                        ->orWhere('mecanico_id', $id);
+                })->where('estado_id', $estado)
+                ->orderBy('estado_id', 'asc')->paginate(10);
+        } else {
+            $contrataciones = Contratacion::with('servicio', 'conductor', 'mecanico', 'estado')
+                ->where(function ($query) use ($id) {
+                    $query->where('conductor_id', $id)
+                        ->orWhere('mecanico_id', $id);
+                })->orderBy('estado_id', 'asc')->paginate(10);
+        }
 
 
         if ($contrataciones->isEmpty()) {
@@ -102,18 +112,48 @@ class ContratacionesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        switch ($id) {
-            case 0:
-                echo "i es igual a 0";
-                break;
+        $contratacion = Contratacion::find($id);
+        if (!$contratacion) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Contratación no encontrada',
+            ], 404);
+        }
+        $message = '';
+        $estado_id = $request->input('estado_id');
+
+        switch ($estado_id) {
             case 1:
-                echo "i es igual a 1";
+                $contratacion->estado_id = 1;
+                $message = 'Contratación activada con exito';
                 break;
-            case 2:
-                echo "i es igual a 2";
+            case 3:
+                $contratacion->estado_id = 3;
+                $message = 'Contratacion completada con exito';
+                break;
+            case 4:
+                $contratacion->estado_id = 4;
+                $message = 'Contratación cancelada con exito';
+                break;
+            case 5:
+                $contratacion->estado_id = 5;
+                $message = 'Contratación rechazada con exito';
                 break;
             default:
-                echo "i no es igual a 0, 1 ni 2";
+                $message = 'No se pudo cambiar el estado de la contratación';
+
+        }
+
+        if ($contratacion->update()) {
+            return response()->json([
+                'status' => true,
+                'message' => $message,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Ocurrio un error al actualizar el estado',
+            ], 400);
         }
     }
 

@@ -39,7 +39,8 @@ export const postData = async (endpoint, data, headers = {}, redirect = null) =>
       }
     }
   ).catch((error) => {
-    let desc = error.response.data.errors.join('\n');
+    let desc = error.response?.data?.errors? error.response.data.errors.join('\n'): error.response.data.message;
+
     notify(desc, 'error');
   });;
 
@@ -55,7 +56,8 @@ export const putData = async (endpoint, data, headers = {}, redirect = null) => 
       }
     }
   ).catch((error) => {
-    let desc = error.response.data.errors.join('\n');
+    let desc = error.response?.data?.errors? error.response.data.errors.join('\n'): error.response.data.message;
+
     notify(desc, 'error');
   });;
 

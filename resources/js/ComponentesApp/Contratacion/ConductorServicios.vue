@@ -70,7 +70,7 @@
                     <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"
                         v-if="servicio.estado.estado === 'Activo'">
                         <div class="d-flex flex-column flex-md-row gap-10">
-                            <CancelarRechazar title="Cancelar" type="text"></CancelarRechazar>
+                            <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="getContrataciones(authStore.user.id)"></CancelarRechazar>
                         </div>
 
                         <v-btn class="bg-grey2" prepend-icon="mdi-message-outline">Chat</v-btn>
@@ -79,7 +79,7 @@
                         v-else-if="servicio.estado.estado === 'En espera'">
                         <div class="d-flex flex-column flex-md-row gap-10">
                             <v-btn class="bg-primary" prepend-icon="mdi-square-edit-outline">Modificar</v-btn>
-                            <CancelarRechazar title="Cancelar" type="text"></CancelarRechazar>
+                            <CancelarRechazar title="Cancelar" type="text" :id="servicio.id"></CancelarRechazar>
                         </div>
 
                         <Observacion title="Ver" type="text"></Observacion>
@@ -118,7 +118,7 @@ const getContrataciones = async (id) => {
     try {
         const data = await getData(('contrataciones/' + id));
         status.value = data.status;
-        servicios.value = data.data;
+        servicios.value = data.data.data;
         console.log('data', servicios.value);
 
         if (!data.status) {
