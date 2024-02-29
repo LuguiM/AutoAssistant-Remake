@@ -21,7 +21,8 @@ export const useAuthStore = defineStore('auth', {
                 }
             ).catch(
                 (errors) => {
-                    let desc = errors.response.data.errors.join('\n');
+                    let desc = errors.response?.data?.errors? errors.response.data.errors.join('\n'): errors.response.data.message;
+
                     notify(desc, 'error');
                 }
             )
@@ -36,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
                 }
             ).catch(
                 (errors) => {
-                    let desc = errors.response.data.errors.join('\n');
+                    let desc = errors.response?.data?.errors? errors.response.data.errors.join('\n'): errors.response.data.message;
                     notify(desc, 'error');
                 }
             )
