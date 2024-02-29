@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="custom-container">
         <v-row>
             <v-col cols="12" sm="6" offset-sm="3">
                 <v-card class="my-5 text-center bg-black" rounded="xl">
@@ -11,22 +11,24 @@
                         Iniciar Sesion
                     </v-card-title>
                     <v-card-text class="mx-sm-6">
-                        <v-text-field label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
-                            color="primary"></v-text-field>
+                        <v-form @submit.prevent="sendLogin()" validate-on="submit lazy">
+                            <v-text-field label="Correo" :rules="[rules.required, rules.email]" variant="solo" rounded="xl"
+                                color="primary" v-model="form.correo"></v-text-field>
 
-                        <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                            :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
-                            label="Ingresar contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
-                            color="primary" hint="*La contraseña debe ser mayor a 8 digitos" class="mt-3"></v-text-field>
-                        <v-btn block rounded="xl" class="bg-primary mt-3">Iniciar Sesion</v-btn>
+                            <v-text-field v-model="form.password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                                :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible"
+                                label="Ingresar contraseña" :rules="[rules.required, rules.counter]" rounded="xl" variant="solo"
+                                color="primary" hint="*La contraseña debe ser mayor a 8 digitos" class="mt-3"></v-text-field>
 
+                            <v-btn :loading="cargando" type="submit" block rounded="xl" class="bg-primary mt-3">Iniciar Sesion</v-btn>
+                        </v-form>
                     </v-card-text>
                     <v-card-text class="d-sm-flex pt-0 align-center">
                         <v-checkbox label="Recuerdame" hide-details="auto"></v-checkbox>
                         <a href="#" class="text-white">¿Contraseña olvidada?</a>
                     </v-card-text>
                     <v-card-text class="pt-0">
-                        ¿No tienes cuenta? <a href="#" class="text-white">Crear cuenta</a>
+                        ¿No tienes cuenta? <a href="/OpcionesRegistro" class="text-white">Crear cuenta</a>
                     </v-card-text>
 
                     <v-card-text class="bg-white">
@@ -42,6 +44,14 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useAuthStore } from '../Stores/auth'
+
+const authStore = useAuthStore();
+
+const form = ref({})
+const cargando = ref(false)
+const visible = ref(false);
+
 
 const rules = ref({
     required: value => !!value || 'Campo obligatorio.',
@@ -52,7 +62,16 @@ const rules = ref({
     },
 
 });
-const visible = ref(false);
+
+
+const sendLogin = async () =>{
+    try{
+        cargando.value = true;
+        await authStore.login(form.value);
+    } finally {
+        cargando.value = false;
+    }
+}
 
 </script>
 

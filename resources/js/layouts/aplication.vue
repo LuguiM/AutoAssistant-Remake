@@ -15,14 +15,23 @@
 
             <v-divider></v-divider>
             <v-list nav density="compact">
-                <v-list-item class="font-weight-bold" v-for="item in items" :to="item.ruta" :prepend-icon="item.icon">
+                <v-list-item v-show="authStore.user.rol == 'conductor' || authStore.user.rol == 'futuro_conductor'" class="font-weight-bold" v-for="(item, index) in rutasConductor" :to="item.ruta" :key="index"
+                    :prepend-icon="item.icon">
+                    {{ item.nombre }}
+                </v-list-item>
+                <v-list-item v-show="authStore.user.rol == 'Mecanico Independiente' || authStore.user.rol == 'Taller Mecanico'" class="font-weight-bold" v-for="(item, index) in rutasMecanico" :to="item.ruta" :key="index"
+                    :prepend-icon="item.icon">
+                    {{ item.nombre }}
+                </v-list-item>
+                <v-list-item v-show="authStore.user.rol == 'admin'" class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index"
+                    :prepend-icon="item.icon">
                     {{ item.nombre }}
                 </v-list-item>
             </v-list>
 
             <template v-slot:append>
                 <div class="pa-2 ">
-                    <v-btn block class="bgBar" flat>
+                    <v-btn block class="bgBar" flat @click="$event => authStore.logout()">
                         <v-icon start icon="mdi-exit-to-app"></v-icon>
                         Cerrar Sesión
                     </v-btn>
@@ -36,14 +45,10 @@
 
             <v-spacer></v-spacer>
 
-            <v-img src="../images/Logos/sinLetrasLogo.png"></v-img>
-
-
-            <v-spacer></v-spacer>
 
             <h5 style="padding: 5px 13px;">
                 <v-icon start icon="mdi-account-circle"></v-icon>
-                Kerin Melendez
+                {{ authStore.user.nombre }}
             </h5>
         </v-app-bar>
 
@@ -56,17 +61,38 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useAuthStore } from '../Stores/auth'
+
+const authStore = useAuthStore();
 
 const items = ref([
     { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
-    { nombre: 'Perfil', icon: 'mdi-account', ruta: '/perfilUsuario' },
+    { nombre: 'Perfil', icon: 'mdi-account-circle', ruta: '/perfilUsuario' },
     { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
     { nombre: 'Servicios Contratados', icon: 'mdi-wrench-check', ruta: '/serviciosContratados' },
     { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
     { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
     { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
-    { nombre: 'Perfil Mecanico', icon: 'mdi-account', ruta: '/crearPerfilMecanico' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account-cog', ruta: '/crearPerfilMecanico' },
+]);
+
+const rutasConductor = ref([
+    { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
+    { nombre: 'Perfil', icon: 'mdi-account-circle', ruta: '/perfilUsuario' },
+    { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
+    { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
+    { nombre: 'Servicios Contratados', icon: 'mdi-wrench-check', ruta: '/serviciosContratados' },
+]);
+
+const rutasMecanico = ref([
+    { nombre: 'Inicio', icon: 'mdi-home', ruta: '/dashboard' },
+    { nombre: 'Perfil', icon: 'mdi-account-circle', ruta: '/perfilUsuario' },
+    { nombre: 'Inscripción Servicios', icon: 'mdi-progress-wrench', ruta: '/inscripcionServicios' },
+    { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
+    { nombre: 'Perfil Mecanico', icon: 'mdi-account-cog', ruta: '/perfilMecanico' },
+    { nombre: 'Manuales', icon: 'mdi-bookshelf', ruta: '/manuales' },
+    { nombre: 'Pilotos', icon: 'mdi-car', ruta: '/Pilotos' },
 ]);
 const drawer = ref(true);
 </script>
@@ -82,7 +108,8 @@ const drawer = ref(true);
 }
 
 .bgMain {
-    background: url('../images/Fondos/fondo4.jpg') no-repeat center center fixed;
-    background-size: cover;
+    /* background: url('../images/Fondos/fondo4.jpg') no-repeat center center fixed;
+    background-size: cover; */
+    background-color: #32525C;
 }
 </style>
