@@ -9,17 +9,17 @@
                 <v-form>
                     <v-row>
                         <v-col cols="12" md="6">
-                            <v-select prepend-inner-icon="mdi-car-search" label="Estado"
-                                :items="['Activo', 'En espera', 'Cancelado', 'Completado']" variant="solo"
+                            <v-select v-model="selectedEstado" prepend-inner-icon="mdi-car-search" label="Estado"
+                                :items="items" variant="solo" item-title="estado" item-value="id"
                                 hide-details="auto"></v-select>
                         </v-col>
                         <v-col cols="12" md="5"
                             class="d-flex flex-column flex-sm-row align-center justify-center justify-md-start"
                             style="gap:10px;">
-                            <v-btn prepend-icon="mdi-magnify" class="blueButton px-8">
+                            <v-btn @click="cargarDatos()" prepend-icon="mdi-magnify" class="blueButton px-8">
                                 Buscar
                             </v-btn>
-                            <v-btn prepend-icon="mdi-trash-can" class="greyButton px-8">
+                            <v-btn @click="cleanSearch()" prepend-icon="mdi-trash-can" class="greyButton px-8">
                                 Limpiar
                             </v-btn>
                         </v-col>
@@ -47,22 +47,39 @@
                 <v-card class="bg-secondary">
                     <v-card-text>
                         <v-row align="center">
-                            <v-col cols="12" sm="4">
+                            <v-col cols="12" md="4">
                                 <v-img :src="servicio.servicio.logo" max-height="200"></v-img>
                             </v-col>
-                            <v-col cols="12" sm="8">
+                            <v-col cols="12" md="8">
                                 <v-card-title class="text-h5 font-weight-bold item-texto">
                                     {{ servicio.servicio.servicio }}
                                 </v-card-title>
                                 <v-card-subtitle class="item-texto">
-                                    Fecha de contratación: {{ servicio.fecha_contratacion }}
+                                    Fecha contratación: {{ formatDate(servicio.fecha_contratacion) }}
                                 </v-card-subtitle>
-                                <v-card-text>
-                                    Estado:
-                                    <v-chip variant="elevated" :color="servicio.estado.color" class="ma-2"
-                                        :prepend-icon="servicio.estado.icon">
-                                        {{ servicio.estado.estado }}
-                                    </v-chip>
+                                <v-card-text class="d-flex justify-space-between flex-column flex-lg-row">
+                                    <div class="d-flex flex-column align-center">
+                                        Estado
+                                        <v-chip variant="elevated" :color="servicio.estado.color" class="ma-2"
+                                            :prepend-icon="servicio.estado.icon">
+                                            {{ servicio.estado.estado }}
+                                        </v-chip>
+                                    </div>
+                                    <div v-if="servicio.mecanico.nombre_taller == null" class="d-flex flex-column align-center">
+                                        Mecanico
+                                        <v-chip variant="elevated"  class="ma-2"
+                                            prepend-icon="mdi-account-circle">
+                                            {{ servicio.mecanico.representante }}
+                                        </v-chip>
+                                    </div>
+                                    <div v-else class="d-flex flex-column align-center">
+                                        Taller Mecanico
+                                        <v-chip variant="elevated"  class="ma-2"
+                                            prepend-icon="mdi-account-circle">
+                                            {{ servicio.mecanico.nombre_taller }}
+                                        </v-chip>
+                                    </div>
+                                    
                                 </v-card-text>
                             </v-col>
                         </v-row>
@@ -93,6 +110,9 @@
                 </v-card>
             </v-col>
         </v-row>
+        <div v-if="status" class="text-center pt-2">
+            <v-pagination v-model="currentPage" :length="last_page" @click="cargarDatos"></v-pagination>
+        </div>
 
     </v-container>
 </template>
@@ -105,6 +125,7 @@ import CancelarRechazar from '../../Components/Modales/CancelarRechazar.vue';
 import notify from '@/plugins/notify.js';
 import { getData, postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
+import { format } from 'date-fns';
 
 const authStore = useAuthStore();
 
@@ -113,18 +134,46 @@ const servicios = ref([]);
 const loading = ref(true);
 const status = ref(false);
 const message = ref('');
+const selectedEstado = ref('');
+const items = ref([]);
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+const last_page = ref(null);
+
+const getEstados = async () => {
+    try {
+        const data = await getData(('estados'));
+
+        items.value = data.data
+        console.log('estados', items.value)
+
+    } catch (error) {
+        notify(error.message, 'error');
+    }
+};
+
+const formatDate = (dateTime) => {
+    if (!dateTime) return '';
+
+    const dateTimeObj = new Date(dateTime);
+    return format(dateTimeObj, 'dd/MM/yyyy hh:mm a');
+};
 
 const getContrataciones = async (id) => {
     try {
-        const data = await getData(('contrataciones/' + id));
-        status.value = data.status;
-        servicios.value = data.data.data;
-        console.log('data', servicios.value);
-
+        const data = await getData(('contrataciones/' + id + '?page=' + currentPage.value + '&estado=' + selectedEstado.value));
         if (!data.status) {
             status.value = data.status;
             message.value = data.message;
+        }else{
+            status.value = data.status;
+            servicios.value = data.data.data;
+            itemsPerPage.value = data.data.per_page;
+            currentPage.value = data.data.current_page;
+            last_page.value = data.data.last_page;
+            console.log('data', servicios.value);
         }
+        
     } catch (error) {
         notify(error.message, 'error');
     } finally {
@@ -132,8 +181,18 @@ const getContrataciones = async (id) => {
     }
 };
 
+const cargarDatos = async () => {
+    await getContrataciones(authStore.user.id)
+}
+
+const cleanSearch = () => {
+    selectedEstado.value = '';
+    cargarDatos();
+}
+
 onMounted(() => {
     getContrataciones(authStore.user.id);
+    getEstados();
 })
 
 </script>

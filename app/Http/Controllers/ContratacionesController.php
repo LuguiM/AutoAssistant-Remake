@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contratacion;
+use App\Models\Estados;
+
 
 
 class ContratacionesController extends Controller
@@ -14,7 +16,7 @@ class ContratacionesController extends Controller
      */
     public function index(Request $request, string $id)
     {
-        $estado = $request->input("estado");
+        $estado = $request->get("estado");
 
         if (!empty($estado)) {
             $contrataciones = Contratacion::with('servicio', 'conductor', 'mecanico', 'estado')
@@ -163,5 +165,15 @@ class ContratacionesController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function verEstados()
+    {
+        $estados = Estados::all();
+
+        return response()->json([
+            'status' => true,
+            'data' => $estados,
+        ], 200);
     }
 }

@@ -42,10 +42,20 @@ export const useAuthStore = defineStore('auth', {
             )
         },
         async logout() {
-            await axios.get('/api/auth/logout', this.authToken);
-            this.authToken = null;
-            this.authUser = null;
-            this.router.push('/IniciarSesion')
+            try {
+                await axios.get('/api/auth/logout', this.authToken);
+                this.authToken = null;
+                this.authUser = null;
+                localStorage.removeItem('auth');
+                this.router.push('/IniciarSesion')
+            }catch (error) {
+                console.error('Error al cerrar sesión:', error);
+                this.authToken = null;
+                this.authUser = null;
+                localStorage.removeItem('auth');
+                this.router.push('/IniciarSesion');
+            }
+            
         }
     },
     persist: true

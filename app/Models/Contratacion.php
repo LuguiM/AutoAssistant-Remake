@@ -37,7 +37,7 @@ class Contratacion extends Model
 
     public function mecanico()
     {
-        return $this->belongsTo(ServicioMecanico::class, 'mecanico_id', 'perfil_mecanico_id');
+        return $this->belongsTo(PerfilMecanico::class,'mecanico_id', 'id');
     }
 
     public function estado()
