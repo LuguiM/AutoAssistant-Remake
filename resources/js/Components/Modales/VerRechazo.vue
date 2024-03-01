@@ -1,9 +1,9 @@
 <template>
     <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }">
-            <v-btn v-if="prop.type === 'text'" v-bind="props" class="bg-primary"  prepend-icon="mdi-comment-eye-outline">Motivo de rechazo</v-btn>
+            <v-btn v-if="prop.type === 'text'" v-bind="props" class="bg-primary"  prepend-icon="mdi-comment-eye-outline" @click="getMotivo()">Motivo de rechazo</v-btn>
 
-            <v-btn v-else v-bind="props" variant="flat" density="compact" icon="mdi-comment-eye-outline"></v-btn>
+            <v-btn v-else v-bind="props" variant="flat" density="compact" icon="mdi-comment-eye-outline" @click="getMotivo()"></v-btn>
 
         </template>
 
@@ -30,19 +30,44 @@
 </template>
 
 <script setup>
-import {ref, defineProps} from 'vue'
+import {ref, defineProps, onMounted} from 'vue';
+import { getData, postData } from '@/plugins/api.js';
+import notify from '@/plugins/notify.js';
+
 
 const dialog = ref(false);
                    
-const observacion = ref("El dia escogido no daremos servicio")
+const observacion = ref("")
 
 const prop = defineProps({
     type: {
         type: String,
         required: true,
         default: 'icon'
+    },
+    id: {
+        type: Number,
+        required: true,
+        default: 0,
     }
 
 })
+
+const getMotivo = async () => {
+    try {
+        const data = await getData(('verRechazo/' + prop.id));
+
+        if (!data.status) {
+            notify(data.message, 'warning');
+            dialog.value = false;
+        }else{
+            observacion.value = data.data.motivo
+        }
+
+    } catch (error) {
+        notify(error.message, 'error');
+    }
+};
+
 
 </script>

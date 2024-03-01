@@ -50,6 +50,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('contrataciones/{id}',[ContratacionesController::class, 'index']);
     Route::post('contratacion',[ContratacionesController::class,'store']);
     Route::put('updateEstado/{id}',[ContratacionesController::class, 'update']);
+    Route::get('verRechazo/{id}',[ContratacionesController::class, 'verRechazo']);
+
 
 
 

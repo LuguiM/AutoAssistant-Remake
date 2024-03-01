@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('rechazo', function (Blueprint $table) {
             $table->id();
             $table->string('motivo');
-            $table->unsignedBigInteger('solicitud_contratacion_id');
-            $table->foreign('solicitud_contratacion_id')->references('id')->on('solicitud_contratacion')->onDelete('cascade');
+            $table->unsignedBigInteger('contratacion_id');
+            $table->foreign('contratacion_id')->references('id')->on('contrataciones')->onDelete('cascade');
 
             $table->timestamps();
         });

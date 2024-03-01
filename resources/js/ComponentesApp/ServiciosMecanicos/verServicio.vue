@@ -23,13 +23,15 @@
                 <v-col cols="12">
                     <v-card variant="outlined" class="cardServicio">
                         <v-row>
-                            <v-col col="12" md="5" class="d-flex align-center justify-center pr-0">
+                            <v-col cols="12" sm="5" class="d-flex align-center justify-center pr-0">
 
-                                <v-img class="ml-1" style="height: 70%;"
+                                <v-img :width="250"
+                                    aspect-ratio="4/3"
+                                    
                                     :src="infoServicio.logo"></v-img>
                             </v-col>
 
-                            <v-col col="12" md="7">
+                            <v-col cols="12" sm="7">
                                 <v-card-title class="text-h5 bg-primary text-center font-weight-bold">
                                     {{ infoServicio.servicio }}
                                 </v-card-title>
@@ -116,7 +118,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <VueDatePicker v-model="date" time-picker-inline teleport-center locale="es"
+                                    <VueDatePicker v-model="date" time-picker-inline teleport-center :is-24="false" :min-date="minDate" locale="es"
                                         cancelText="Cancelar" class="pickerDate" selectText="Aceptar"
                                         placeholder="Fecha y hora" />
                                 </v-col>
@@ -153,6 +155,7 @@ import { useRouter, useRoute } from 'vue-router';
 import notify from '@/plugins/notify.js';
 import { getData, postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
+import { parse, format } from 'date-fns';
 
 const authStore = useAuthStore();
 
@@ -175,7 +178,7 @@ const date = ref('');
 const contratarModal = ref(false);
 const form = ref({});
 const cargando = ref(false);
-
+const minDate = ref(new Date());
 const infoServicio = ref({});
 const loading = ref(true);
 const status = ref(false);
@@ -187,6 +190,39 @@ const msg = ref('El servicio mecanico solicitado no se ha encontrado o no esta d
 const verPerfilMecanico = (id) => {
     router.push({ path: `/verPerfilMecanico/${id}` });
 }
+
+
+const formatDatetime = (datetime) => {
+    // console.log('Valor original de datetime:', datetime);
+
+    // Si el datetime es null, devolver una cadena vacía
+    if (datetime === null) {
+        // console.log('El datetime es null. Devolviendo cadena vacía.');
+        return '';
+    }
+
+    // Verificar si datetime es un objeto Date
+    if (datetime instanceof Date) {
+        // console.log('El datetime es un objeto Date. Convirtiendo a formato MySQL.');
+
+        const year = datetime.getFullYear();
+        const month = String(datetime.getMonth() + 1).padStart(2, '0');
+        const day = String(datetime.getDate()).padStart(2, '0');
+        const hours = String(datetime.getHours()).padStart(2, '0');
+        const minutes = String(datetime.getMinutes()).padStart(2, '0');
+        const seconds = String(datetime.getSeconds()).padStart(2, '0');
+
+        const datetimeMySQL = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        console.log('Valor de datetime en formato MySQL:', datetimeMySQL);
+        return datetimeMySQL;
+    }
+
+    // Si datetime está en formato deseado, devolver datetime sin cambios
+    // console.log('El datetime no es un objeto Date. Devolviendo datetime sin cambios.');
+    return datetime;
+}
+
+
 
 const serviciosMecanico = async (id) => {
     try {
@@ -210,7 +246,7 @@ const postContratar = async () => {
     try{
         cargando.value = true;
         
-        const fechaMySQL = date.value ? new Date(date.value).toISOString().slice(0, 19).replace('T', ' ') : null;
+        const fechaMySQL = formatDatetime(date.value)
 
         form.value.fecha_contratacion = fechaMySQL;
         form.value.servicio_id = infoServicio.value.id;
@@ -220,7 +256,9 @@ const postContratar = async () => {
         await postData('contratacion', form.value, { headers: { 'Content-Type': 'application/json' } }, '/serviciosContratados');
     }catch(error){
         notify(error.message, 'error');
+        console.error(error.message)
     }finally {
+        contratarModal.value = false;
         cargando.value = false;
     }
 }

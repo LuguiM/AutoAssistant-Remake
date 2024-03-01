@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contratacion;
 use App\Models\Estados;
+use App\Models\Rechazo;
+
 
 
 
@@ -37,7 +39,7 @@ class ContratacionesController extends Controller
         if ($contrataciones->isEmpty()) {
             return response()->json([
                 'status' => false,
-                'message' => 'No se encontraron perfiles mecánicos',
+                'message' => 'No se encontraron contrataciones',
             ], 200);
         }
 
@@ -123,6 +125,7 @@ class ContratacionesController extends Controller
         }
         $message = '';
         $estado_id = $request->input('estado_id');
+        $motivoRechazo = $request->input('motivo');
 
         switch ($estado_id) {
             case 1:
@@ -138,8 +141,32 @@ class ContratacionesController extends Controller
                 $message = 'Contratación cancelada con exito';
                 break;
             case 5:
-                $contratacion->estado_id = 5;
-                $message = 'Contratación rechazada con exito';
+
+                $rules = [
+                    'motivo' => 'required',
+                ];
+        
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'errors' => $validator->errors()->all()
+                    ], 400);
+                }
+
+                $rechazo = new Rechazo();
+                $rechazo->motivo = $motivoRechazo;
+                $rechazo->contratacion_id = $contratacion->id;
+
+                if ($rechazo->save()) {
+                    $contratacion->estado_id = 5;
+                    $message = 'Contratación rechazada con exito';
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Ocurrio un error al contratar el servicio',
+                    ], 400);
+                }
                 break;
             default:
                 $message = 'No se pudo cambiar el estado de la contratación';
@@ -175,5 +202,22 @@ class ContratacionesController extends Controller
             'status' => true,
             'data' => $estados,
         ], 200);
+    }
+
+    public function verRechazo($id){
+        $rechazo = Rechazo::where('contratacion_id', $id)->first();
+
+        if (!$rechazo) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Ocurrio un error al encontrar el rechazo',
+            ], 404);
+        }
+    
+        return response()->json([
+            'status' => true,
+            'data' => $rechazo,
+        ], 200);
+
     }
 }

@@ -24,7 +24,7 @@
                 <v-card-text v-else class="pt-0">Esta accion sera irreversible</v-card-text>
 
                 <v-card-text v-if="prop.title === 'Rechazar'">
-                    <v-textarea label="Motivo" variant="solo" auto-grow
+                    <v-textarea v-model="form.motivo" label="Motivo" variant="solo" auto-grow
                     rows="4"
                     row-height="30">
                     </v-textarea>
@@ -77,16 +77,23 @@ const cancelarRechazar = async() =>{
     try{
         if(prop.title === 'Rechazar'){
             form.value.estado_id = 5;
-            await putData(('updateEstado/' + prop.id),form.value, { headers: { 'Content-Type': 'application/json' } });
+            try{
+                await putData(('updateEstado/' + prop.id),form.value, { headers: { 'Content-Type': 'application/json' } });
+            }catch(error){
+                console.log(error)
+            }finally{
+                emit('actualizar')
+                dialog.value = false
+            }
         }else{
             form.value.estado_id = 4;
             await putData(('updateEstado/' + prop.id),form.value, { headers: { 'Content-Type': 'application/json' } });
+            emit('actualizar')
+            dialog.value = false
+
         }
     }catch(error){
         notify(error,'error');
-    }finally{
-        dialog.value = false
-        emit('actualizar')
     }
 }
 

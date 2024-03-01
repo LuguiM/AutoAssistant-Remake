@@ -114,7 +114,7 @@
                                 <v-card-actions class="d-flex justify-space-between"
                                     v-else-if="servicio.estado.estado === 'Rechazado'">
                                     <div class="d-flex flex-column flex-sm-row gap-10">
-                                        <VerRechazo type="text"></VerRechazo>
+                                        <VerRechazo :id="servicio.id" type="text"></VerRechazo>
                                     </div>
                                 </v-card-actions>
                             </v-card>

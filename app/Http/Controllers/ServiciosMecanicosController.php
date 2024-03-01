@@ -32,7 +32,7 @@ class ServiciosMecanicosController extends Controller
         if ($servicios->isEmpty()) {
             return response()->json([
                 'status' => false,
-                'message' => 'No se encontraron servicios mecánicos con los rubros seleccionados',
+                'message' => 'No se encontraron servicios mecánicos',
             ], 200);
         }
 

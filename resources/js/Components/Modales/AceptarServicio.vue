@@ -11,6 +11,7 @@
                 <v-divider class="border-opacity-100" color="primary"></v-divider>
                 <v-card-text class="text-h4"><v-icon color="success">mdi-check-circle-outline</v-icon></v-card-text>
                 <v-card-text>¿Esta seguro de aceptar este servicio?</v-card-text>
+                <v-card-text class="pt-0">Su estado cambiara a activo</v-card-text>
 
                 <v-card-actions class="mt-3">
                     <v-btn class="bg-primary" @click="aceptarServicio">Confimar</v-btn>

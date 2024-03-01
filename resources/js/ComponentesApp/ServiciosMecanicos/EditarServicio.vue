@@ -1,7 +1,6 @@
 
         <template>
-
-                <v-dialog width="1000" v-model="dialog" rounded="xl">
+                <v-dialog width="1000" v-model="dialog" rounded="xl" persistent>
                 <template v-slot:activator="{ props }">
                     <v-btn v-bind="props" class=" bg-primary" prepend-icon="mdi-square-edit-outline">
                             Modificar
@@ -54,11 +53,11 @@
                                             variant="solo"></v-select>
                                     </v-col>
                                     <v-col cols="12" md="6">
-                                        <flat-pickr :config="config" v-model="form.hora_apertura" placeholder="Hora de apertura"
+                                        <flat-pickr :config="config" v-model="timeInicio" placeholder="Hora de apertura"
                                             class="timepicker" />
                                     </v-col>
                                     <v-col cols="12" md="6">
-                                        <flat-pickr :config="config" v-model="form.hora_cierre" placeholder="Hora de cierre"
+                                        <flat-pickr :config="config" v-model="timeFin" placeholder="Hora de cierre"
                                             class="timepicker" />
                                     </v-col>
                                     <v-col cols="12" md="6">
@@ -95,6 +94,8 @@ import 'flatpickr/dist/flatpickr.css';
 import { getData ,putData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
 import notify from '@/plugins/notify.js';
+import { format, parse } from 'date-fns';
+
 
 const props = defineProps({
     id: {
@@ -182,12 +183,13 @@ const cargando = ref(false);
 const image = ref('');
 const idServicio = ref('');
 const form = ref({})
+const timeInicio = ref(null);
+const timeFin = ref(null);
 
 const handleImageChange = (event) => {
     const file = event.target.files[0];
     console.log("Archivo seleccionado:", file);
     
-    // Verificar si el archivo es una instancia de Blob
     if (file instanceof Blob) {
         image.value = file;
 
@@ -199,12 +201,28 @@ const handleImageChange = (event) => {
             console.warn('Debe seleccionar una imagen');
         }
     } else {
-        // Manejar el caso cuando no se selecciona un archivo válido (no un Blob)
         console.warn('Debe seleccionar un archivo válido');
-        // Limpiar la imagen seleccionada o realizar cualquier otra acción necesaria
         selectedImage.value = null;
     }
 };
+
+const formatTime = (time) => {
+   // Si la hora es null, devolver una cadena vacía
+   if (time === null) {
+        return '';
+    }
+
+    // Verificar si la hora está en formato MySQL
+    if (/^\d{2}:\d{2}:\d{2}$/.test(time)) {
+        return time;
+    }
+
+    // Si la hora está en formato deseado, convertirla a formato MySQL
+    const parsedDate = parse(time, 'h:mm a', new Date());
+    const horaMySQL = format(parsedDate, 'HH:mm:ss');
+
+    return horaMySQL;
+}
 
 
 const getServicio = async () => {
@@ -217,6 +235,8 @@ const getServicio = async () => {
             setTimeout(() => router.push({ path: 'inscripcionServicios' }), 3000)
         }
         form.value=data.data;
+        timeInicio.value = form.value.hora_apertura;
+        timeFin.value = form.value.hora_cierre;
         selectedImage.value = form.value.logo
         selectedRubro.value = form.value.rubro
         selectedServicio.value = form.value.servicio
@@ -240,6 +260,8 @@ const postServicio = async () => {
                 reader.onerror = error => reject(error);
             });
         }
+        form.value.hora_apertura = formatTime(timeInicio.value);
+        form.value.hora_cierre = formatTime(timeFin.value);
         form.value.rubro = selectedRubro.value
         form.value.servicio = selectedServicio.value
         // form.value.perfil_mecanico_id = idServicio.value

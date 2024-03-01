@@ -9,10 +9,11 @@
             </v-app-bar-title>
 
             <template v-slot:append>
-                <div class="d-none d-sm-block">
+                <div class="d-none d-sm-block" v-if="authStore.authUser?.id">
                     <v-btn prepend-icon="mdi-login" to="/IniciarSesion">Iniciar Sesión</v-btn>
                     <v-btn prepend-icon="mdi-account-plus" to="/OpcionesRegistro">Registrarse</v-btn>
                 </div>
+                
                 <div class="d-block d-sm-none">
                     <v-btn to="/IniciarSesion" icon>
                         <v-icon>mdi-login</v-icon>
@@ -77,6 +78,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/Stores/auth';
+
+const authStore = useAuthStore();
+
 
 const router = useRouter();
 const route = useRoute();

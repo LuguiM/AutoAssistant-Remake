@@ -87,7 +87,7 @@
                     <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"
                         v-if="servicio.estado.estado === 'Activo'">
                         <div class="d-flex flex-column flex-md-row gap-10">
-                            <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="getContrataciones(authStore.user.id)"></CancelarRechazar>
+                            <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>
                         </div>
 
                         <v-btn class="bg-grey2" prepend-icon="mdi-message-outline">Chat</v-btn>
@@ -96,7 +96,7 @@
                         v-else-if="servicio.estado.estado === 'En espera'">
                         <div class="d-flex flex-column flex-md-row gap-10">
                             <v-btn class="bg-primary" prepend-icon="mdi-square-edit-outline">Modificar</v-btn>
-                            <CancelarRechazar title="Cancelar" type="text" :id="servicio.id"></CancelarRechazar>
+                            <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>
                         </div>
 
                         <Observacion title="Ver" type="text"></Observacion>
@@ -104,7 +104,7 @@
 
                     <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado.estado === 'Rechazado'">
                         <div class="d-flex flex-column flex-sm-row gap-10">
-                            <VerRechazo type="text"></VerRechazo>
+                            <VerRechazo :id="servicio.id" type="text"></VerRechazo>
                         </div>
                     </v-card-actions>
                 </v-card>

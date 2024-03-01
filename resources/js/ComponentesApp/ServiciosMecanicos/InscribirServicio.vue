@@ -63,11 +63,11 @@
                                         variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <flat-pickr :config="config" v-model="form.hora_apertura" placeholder="Hora de apertura"
+                                    <flat-pickr :config="config" v-model="timeInicio" placeholder="Hora de apertura"
                                         class="timepicker" />
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <flat-pickr :config="config" v-model="form.hora_cierre" placeholder="Hora de cierre"
+                                    <flat-pickr :config="config" v-model="timeFin" placeholder="Hora de cierre"
                                         class="timepicker" />
                                 </v-col>
                                 <v-col cols="12" md="6">
@@ -100,6 +100,7 @@ import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { getData ,postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
+import { format, parse } from 'date-fns';
 
 const authStore = useAuthStore();
 
@@ -182,6 +183,8 @@ const cargando = ref(false);
 const image = ref('');
 const idMecanico = ref('');
 const formValidator = (false);
+const timeInicio = ref(null);
+const timeFin = ref(null);
 
 const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -204,6 +207,18 @@ const handleImageChange = (event) => {
         selectedImage.value = null;
     }
 };
+
+const formatTime = (time) => {
+    if(time === null){
+        return ''
+    }
+    
+    const parsedDate = parse(time, 'h:mm a', new Date());
+
+    const horaMySQL = format(parsedDate, 'HH:mm:ss');
+
+    return horaMySQL;
+}
 
 
 const getPerfil = async () => {
@@ -234,6 +249,10 @@ const postServicio = async () => {
             };
             reader.onerror = error => reject(error);
         });
+
+        form.value.hora_apertura = formatTime(timeInicio.value);
+        form.value.hora_cierre = formatTime(timeFin.value);
+
         form.value.rubro = selectedRubro.value
         form.value.servicio = selectedServicio.value
         form.value.perfil_mecanico_id = idMecanico.value
