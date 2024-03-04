@@ -5,7 +5,7 @@ const notify = (mensaje, type, theme) => {
     toast(mensaje, {
         "theme": theme || 'colored',
         "type": type,
-        icon: false
+        // icon: false
     }) 
 }
 

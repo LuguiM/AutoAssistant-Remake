@@ -10,6 +10,10 @@
 
             <template v-slot:append>
                 <div class="d-none d-sm-block" v-if="authStore.authUser?.id">
+                    <v-btn prepend-icon="mdi-account" to="/perfilUsuario">{{authStore.authUser.nombre}}</v-btn>
+                    <v-btn prepend-icon="mdi-home" to="/App">Inicio</v-btn>
+                </div>
+                <div class="d-none d-sm-block" v-else>
                     <v-btn prepend-icon="mdi-login" to="/IniciarSesion">Iniciar Sesión</v-btn>
                     <v-btn prepend-icon="mdi-account-plus" to="/OpcionesRegistro">Registrarse</v-btn>
                 </div>
