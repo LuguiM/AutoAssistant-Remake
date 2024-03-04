@@ -106,7 +106,7 @@
                             <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>
                         </div>
 
-                        <Observacion title="Ver" type="text"></Observacion>
+                        <Observacion title="Ver" type="text" :id="servicio.id" @actualizar="cargarDatos()"></Observacion>
                     </v-card-actions>
 
                     <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado.estado === 'Rechazado'">

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Contratacion;
 use App\Models\Estados;
 use App\Models\Rechazo;
+use App\Models\Observacion;
+
 
 
 
@@ -126,11 +128,39 @@ class ContratacionesController extends Controller
         $message = '';
         $estado_id = $request->input('estado_id');
         $motivoRechazo = $request->input('motivo');
+        $motivoObservacion = $request->input('observacion');
 
         switch ($estado_id) {
             case 1:
                 $contratacion->estado_id = 1;
                 $message = 'Contratación activada con exito';
+                break;
+            case 2:
+                $rules = [
+                    'observacion' => 'required',
+                ];
+        
+                $validator = Validator::make($request->input(), $rules);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'errors' => $validator->errors()->all()
+                    ], 400);
+                }
+
+                $observacion = new Observacion();
+                $observacion->observacion = $motivoObservacion;
+                $observacion->contratacion_id = $contratacion->id;
+
+                if ($observacion->save()) {
+                    $contratacion->estado_id = 2;
+                    $message = 'Se ha realizado la observación con exito';
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Ocurrio un error al actualizar la contratación',
+                    ], 400);
+                }
                 break;
             case 3:
                 $contratacion->estado_id = 3;
@@ -164,7 +194,7 @@ class ContratacionesController extends Controller
                 } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Ocurrio un error al contratar el servicio',
+                        'message' => 'Ocurrio un error al actualizar la contratación',
                     ], 400);
                 }
                 break;
@@ -217,6 +247,23 @@ class ContratacionesController extends Controller
         return response()->json([
             'status' => true,
             'data' => $rechazo,
+        ], 200);
+
+    }
+
+    public function verObservacion($id){
+        $observacion = Observacion::where('contratacion_id', $id)->latest('created_at')->first();
+
+        if (!$observacion) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Actualmente no hay observaciones',
+            ], 404);
+        }
+    
+        return response()->json([
+            'status' => true,
+            'data' => $observacion,
         ], 200);
 
     }

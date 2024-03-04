@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }" v-if="prop.type === 'text'">
-            <v-btn v-if="prop.title === 'Ver'" v-bind="props" class="bg-primary" icon>
+            <v-btn v-if="prop.title === 'Ver'" v-bind="props" @click="CrearVer" class="bg-primary" icon>
                 <v-icon>mdi-comment-search-outline</v-icon>
                 <v-tooltip activator="parent" location="top">Ver observacion</v-tooltip>
             </v-btn>
@@ -28,7 +28,7 @@
             <v-card-text class="pt-0" v-else>Observación hecha por el mecanico</v-card-text>
 
             <v-card-text>
-                <v-textarea v-if="prop.title === 'Crear'" label="Observación" variant="solo" auto-grow rows="4"
+                <v-textarea v-if="prop.title === 'Crear'" v-model="form.observacion" label="Observación" variant="solo" auto-grow rows="4"
                     row-height="30">
                 </v-textarea>
 
@@ -51,11 +51,13 @@
 <script setup>
 import { ref, defineProps } from 'vue'
 import notify from '@/plugins/notify.js'
+import { getData, putData } from '@/plugins/api.js';
+
 
 
 const dialog = ref(false);
 
-const observacion = ref("El dia escogido para el servicio no esta disponible se recomienda elegir otro dia apartir del sabado de esta semana")
+const observacion = ref("");
 
 const prop = defineProps({
     title: {
@@ -67,16 +69,47 @@ const prop = defineProps({
         type: String,
         required: true,
         default: 'icon'
+    },
+    id: {
+        type: Number,
+        required: true,
+        default: 0,
     }
 
 })
 
-const CrearVer = () => {
+const emit = defineEmits(['actualizar'])
+const form = ref({})
+
+
+
+const CrearVer = async () => {
     if (prop.title === 'Crear') {
-        notify(`Observación enviada correctamente, se procede a informar al usuario`, 'info')
+        form.value.estado_id = 2;
+        try {
+            await putData(('updateEstado/' + prop.id), form.value, { headers: { 'Content-Type': 'application/json' } });
+        } catch (error) {
+            console.log(error)
+        } finally {
+            emit('actualizar')
+            dialog.value = false
+        }
+    } else {
+        try {
+            const data = await getData(('verObservacion/' + prop.id));
+
+            if (!data.status) {
+                notify(data.message, 'info');
+                dialog.value = false;
+            } else {
+                observacion.value = data.data.observacion
+            }
+
+        } catch (error) {
+            notify(error.message, 'error');
+        }
     }
 
-    dialog.value = false
 }
 
 </script>

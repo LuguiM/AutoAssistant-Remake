@@ -119,7 +119,7 @@
                                         <CancelarRechazar :id="servicio.id" title="Rechazar" type="text"
                                             @actualizar="getPerfil()"></CancelarRechazar>
                                     </div>
-                                    <Observacion title="Crear" type="text"></Observacion>
+                                    <Observacion :id="servicio.id" @actualizar="cargarDatos()" title="Crear" type="text"></Observacion>
 
                                 </v-card-actions>
 
@@ -180,7 +180,7 @@
                                 <AceptarServicio :id="item.id" type="icon" @actualizar="getPerfil()"></AceptarServicio>
                                 <CancelarRechazar :id="item.id" title="Rechazar" type="icon" @actualizar="getPerfil()">
                                 </CancelarRechazar>
-                                <Observacion title="Crear" type="icon"></Observacion>
+                                <Observacion :id="item.id" @actualizar="cargarDatos()" title="Crear" type="icon"></Observacion>
                             </div>
 
                             <div v-else-if="item.estado.estado === 'Rechazado'">

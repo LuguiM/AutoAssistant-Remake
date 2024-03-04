@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rechazo extends Model
+class Observacion extends Model
 {
     use HasFactory;
 
-    protected $table = 'rechazo';
+    protected $table = 'observaciones';
 
     protected $fillable = [
-        'motivo',
+        'observacion',
         'solicitud_contratacion_id'
     ];
 
