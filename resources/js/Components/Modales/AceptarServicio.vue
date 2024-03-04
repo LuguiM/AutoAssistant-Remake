@@ -1,7 +1,12 @@
 <template>
      <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }">
-            <v-btn v-if="prop.type ==='text'" v-bind="props" class="bg-primary"  prepend-icon="mdi-check-circle-outline">Aceptar</v-btn>
+            <v-btn v-if="prop.type ==='text'" v-bind="props" class="bg-primary" icon>
+                <v-icon>
+                    mdi-check-circle-outline
+                </v-icon>
+                <v-tooltip activator="parent" location="top">Aceptar servicio</v-tooltip>
+            </v-btn>
             <v-btn v-else-if="prop.type === 'icon'" v-bind="props" variant="flat" density="compact" icon="mdi-check-circle-outline"></v-btn>
         </template>
         

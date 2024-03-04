@@ -1,7 +1,10 @@
 <template>
     <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }">
-            <v-btn v-if="prop.type === 'text'" v-bind="props" class="bg-primary"  prepend-icon="mdi-comment-eye-outline" @click="getMotivo()">Motivo de rechazo</v-btn>
+            <v-btn v-if="prop.type === 'text'" v-bind="props" class="bg-primary" icon @click="getMotivo()">
+            <v-icon>mdi-comment-eye-outline</v-icon>
+            <v-tooltip activator="parent" location="top">Motivo de rechazo</v-tooltip>
+            </v-btn>
 
             <v-btn v-else v-bind="props" variant="flat" density="compact" icon="mdi-comment-eye-outline" @click="getMotivo()"></v-btn>
 

@@ -44,7 +44,7 @@
 
         <v-row v-else-if="status">
             <v-col cols="12" sm="6" v-for="(servicio, index) in servicios" :key="index">
-                <v-card class="bg-secondary">
+                <v-card class="bg-secondary" variant="outlined" hover>
                     <v-card-text>
                         <v-row align="center">
                             <v-col cols="12" md="4">
@@ -84,18 +84,25 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
-                    <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"
+                    <v-divider ></v-divider>
+                    <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                         v-if="servicio.estado.estado === 'Activo'">
-                        <div class="d-flex flex-column flex-md-row gap-10">
+                        <div class="d-flex flex--row gap-10">
                             <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>
                         </div>
 
-                        <v-btn class="bg-grey2" prepend-icon="mdi-message-outline">Chat</v-btn>
+                        <v-btn class="bg-grey2" icon>
+                            <v-icon>mdi-message-outline</v-icon>
+                            <v-tooltip activator="parent" location="top">Chat</v-tooltip>
+                        </v-btn>
                     </v-card-actions>
-                    <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"
+                    <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                         v-else-if="servicio.estado.estado === 'En espera'">
-                        <div class="d-flex flex-column flex-md-row gap-10">
-                            <v-btn class="bg-primary" prepend-icon="mdi-square-edit-outline">Modificar</v-btn>
+                        <div class="d-flex flex-row gap-10">
+                            <v-btn class="bg-primary" icon>
+                                <v-icon>mdi-square-edit-outline</v-icon>
+                                <v-tooltip activator="parent" location="top">Modificar servicio</v-tooltip>
+                            </v-btn>
                             <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>
                         </div>
 

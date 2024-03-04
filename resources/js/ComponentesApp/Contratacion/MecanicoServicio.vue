@@ -58,7 +58,7 @@
 
                     <v-row v-else-if="status">
                         <v-col cols="12" sm="6" v-for="(servicio, index) in servicios" :key="index">
-                            <v-card class="bg-secondary">
+                            <v-card class="bg-secondary" variant="outlined" hover>
                                 <v-card-text>
                                     <v-row align="center">
                                         <v-col cols="12" md="4">
@@ -71,37 +71,49 @@
                                             <v-card-subtitle class="item-texto">
                                                 Fecha contratación: {{ formatDate(servicio.fecha_contratacion) }}
                                             </v-card-subtitle>
+
                                             <v-card-text class="d-flex justify-space-between flex-column flex-lg-row">
+
                                                 <div class="d-flex flex-column align-center">
                                                     Estado
-                                                    <v-chip variant="elevated" :color="servicio.estado.color" class="ma-2"
-                                                        :prepend-icon="servicio.estado.icon">
+                                                    <v-chip variant="elevated" :color="servicio.estado.color"
+                                                        class="ma-2" :prepend-icon="servicio.estado.icon">
                                                         {{ servicio.estado.estado }}
                                                     </v-chip>
                                                 </div>
                                                 <div class="d-flex flex-column align-center">
                                                     Usuario
-                                                    <v-chip variant="elevated"  class="ma-2"
+                                                    <v-chip variant="elevated" class="ma-2"
                                                         prepend-icon="mdi-account-circle">
                                                         {{ servicio.conductor.nombre }}
                                                     </v-chip>
                                                 </div>
-                                                
                                             </v-card-text>
-                                           
+
                                         </v-col>
                                     </v-row>
                                 </v-card-text>
-                                <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"
+                                <v-divider></v-divider>
+                                <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                                     v-if="servicio.estado.estado === 'Activo'">
-                                    <v-btn class="bg-grey2" prepend-icon="mdi-message-outline">Chat</v-btn>
+                                    <div class="d-flex flex-row gap-10">
+
+                                        <completado :id="servicio.id" type="text"
+                                        @actualizar="getPerfil()"></completado>
+
+                                        <v-btn class="bg-grey2" icon>
+                                            <v-icon>mdi-message-outline</v-icon>
+                                            <v-tooltip activator="parent" location="top">Chat</v-tooltip>
+                                        </v-btn>
+                                    </div>
+                                   
                                     <CancelarRechazar :id="servicio.id" title="Rechazar" type="text"
                                         @actualizar="getPerfil()"></CancelarRechazar>
 
                                 </v-card-actions>
-                                <v-card-actions class="d-flex flex-column flex-sm-row justify-space-between gap-10"
+                                <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                                     v-else-if="servicio.estado.estado === 'En espera'">
-                                    <div class="d-flex flex-column flex-md-row gap-10">
+                                    <div class="d-flex flex-row gap-10">
                                         <AceptarServicio :id="servicio.id" type="text" @actualizar="getPerfil()">
                                         </AceptarServicio>
                                         <CancelarRechazar :id="servicio.id" title="Rechazar" type="text"
@@ -128,8 +140,9 @@
             </v-window-item>
             <v-window-item value="table">
                 <v-container fluid>
-                    <v-data-table :headers="headers" :items="servicios" :items-per-page="itemsPerPage" :loading="loading"
-                        loading-text="Cargando contrataciones" no-data-text="No se encontraron contrataciones">
+                    <v-data-table :headers="headers" :items="servicios" :items-per-page="itemsPerPage"
+                        :loading="loading" loading-text="Cargando contrataciones"
+                        no-data-text="No se encontraron contrataciones">
 
                         <template v-slot:item.servicio.logo="{ item }">
                             <v-card class="my-2" elevation="2" rounded>
@@ -147,14 +160,17 @@
                                 {{ item.estado.estado }}
                             </v-chip>
                         </template>
+
                         <template v-slot:item.servicio.conductor="{ item }">
-                            <v-chip  label size="small"
-                                prepend-icon="mdi-account-circle">
+                            <v-chip label size="small" prepend-icon="mdi-account-circle">
                                 {{ item.conductor.nombre }}
                             </v-chip>
                         </template>
+
                         <template v-slot:item.acciones="{ item }">
                             <div v-if="item.estado.estado === 'Activo'">
+                                <completado :id="item.id" type="icon"
+                                        @actualizar="getPerfil()"></completado>
                                 <v-btn variant="flat" density="compact" icon="mdi-message-outline"></v-btn>
                                 <CancelarRechazar :id="item.id" title="Rechazar" type="icon" @actualizar="getPerfil()">
                                 </CancelarRechazar>
@@ -174,7 +190,8 @@
 
                         <template v-slot:bottom>
                             <div class="text-center pt-2">
-                                <v-pagination v-model="currentPage" :length="last_page" @click="cargarDatos"></v-pagination>
+                                <v-pagination v-model="currentPage" :length="last_page"
+                                    @click="cargarDatos"></v-pagination>
                             </div>
                         </template>
 
@@ -193,6 +210,7 @@ import { ref, onMounted } from 'vue';
 import AceptarServicio from '../../Components/Modales/AceptarServicio.vue';
 import Observacion from '../../Components/Modales/Observacion.vue';
 import VerRechazo from '../../Components/Modales/VerRechazo.vue';
+import completado from '../../Components/Modales/completado.vue';
 import CancelarRechazar from '../../Components/Modales/CancelarRechazar.vue';
 import notify from '@/plugins/notify.js';
 import { getData, postData } from '@/plugins/api.js';
