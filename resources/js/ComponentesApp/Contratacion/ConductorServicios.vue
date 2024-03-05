@@ -102,7 +102,7 @@
                         <div class="d-flex flex-row gap-10">
                             <detalleContratacion type="text" :id="servicio.id" mode="detalles"></detalleContratacion>
 
-                            <detalleContratacion type="text" :id="servicio.id" mode="modificar"></detalleContratacion>
+                            <detalleContratacion type="text" :id="servicio.id" mode="modificar" @actualizar="cargarDatos()"></detalleContratacion>
 
                             
                             <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>

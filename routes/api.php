@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Rutas de contratacion de servicio
     Route::get('contrataciones/{id}',[ContratacionesController::class, 'index']);
     Route::post('contratacion',[ContratacionesController::class,'store']);
+    Route::put('contrataciones/edit/{id}',[ContratacionesController::class, 'edit']);
     Route::put('updateEstado/{id}',[ContratacionesController::class, 'update']);
     Route::get('verRechazo/{id}',[ContratacionesController::class, 'verRechazo']);
     Route::get('verObservacion/{id}',[ContratacionesController::class, 'verObservacion']);

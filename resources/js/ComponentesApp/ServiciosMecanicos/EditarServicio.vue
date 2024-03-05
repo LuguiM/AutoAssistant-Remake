@@ -34,9 +34,12 @@
                                             label="Servicio" :disabled="!selectedRubro" variant="solo"></v-select>
                                     </v-col>
                                     <v-col cols="12" md="4">
-                                        <v-select v-model="form.tipo_servicio" class="file" color="primary" label="Tipo de servicio"
+                                        <!-- <v-select v-model="form.tipo_servicio" class="file" color="primary" label="Tipo de servicio"
                                             :items="['Adomicilio','Reserva/Cita']"
-                                            variant="solo"></v-select>
+                                            variant="solo"></v-select> -->
+                                            <v-combobox v-model="form.tipo_servicio" :items="['Adomicilio', 'Reserva/Cita']"
+                                        variant="solo" class="file" color="primary" label="Tipo de servicio" chips
+                                        multiple></v-combobox>
                                     </v-col>
                                     <v-col cols="12">
                                         <v-textarea v-model="form.descripcion" class="areaa" color="primary" label="Descripcion del servicio"

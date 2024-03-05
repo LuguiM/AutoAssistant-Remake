@@ -2,7 +2,8 @@
     <v-dialog v-model="dialog" persistent width="500">
         <template v-slot:activator="{ props }" v-if="prop.type === 'text'">
 
-            <v-btn v-if="prop.mode === 'modificar'" @click="detallles" v-bind="props" class="bg-primary" size="small" icon>
+            <v-btn v-if="prop.mode === 'modificar'" @click="detallles" v-bind="props" class="bg-primary" size="small"
+                icon>
                 <v-icon>mdi-square-edit-outline</v-icon>
                 <v-tooltip activator="parent" location="top">Modificar servicio</v-tooltip>
             </v-btn>
@@ -14,42 +15,47 @@
         </template>
 
         <template v-slot:activator="{ props }" v-else="prop.type ==='icon'">
-            <v-btn v-if="prop.mode === 'modificar'" @click="detallles"  v-bind="props" variant="flat" density="compact" icon="mdi-square-edit-outline"></v-btn>
-            <v-btn v-else @click="detallles" v-bind="props" variant="flat" density="compact" icon="mdi-file-cog-outline"></v-btn>
+            <v-btn v-if="prop.mode === 'modificar'" @click="detallles" v-bind="props" variant="flat" density="compact"
+                icon="mdi-square-edit-outline"></v-btn>
+            <v-btn v-else @click="detallles" v-bind="props" variant="flat" density="compact"
+                icon="mdi-file-cog-outline"></v-btn>
 
         </template>
 
         <v-card class="text-center bg-greyDark">
-            <v-card-title v-if="prop.mode === 'modificar'" class="text-primary font-weight-bold">Modificar contratación</v-card-title>
+            <v-card-title v-if="prop.mode === 'modificar'" class="text-primary font-weight-bold">Modificar
+                contratación</v-card-title>
             <v-card-title v-else class="text-primary font-weight-bold">Detalles de la contratación</v-card-title>
 
             <v-divider class="border-opacity-100" color="primary"></v-divider>
 
             <v-card-text v-if="prop.mode === 'modificar'">
-                <v-form  @submit.prevent="modificarContratacion()" validate-on="submit lazy">
+                <v-form @submit.prevent="modificarContratacion()" validate-on="submit lazy">
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field  hide-details v-model="servicio.servicio" readonly variant="solo"  label="Servicio a contratar"
-                                required></v-text-field>
+                            <v-text-field hide-details v-model="servicio.servicio" readonly variant="solo"
+                                label="Servicio a contratar" required></v-text-field>
                         </v-col>
                         <v-col cols="12">
-                            <VueDatePicker v-model="date" time-picker-inline teleport-center :is-24="false" :min-date="minDate" locale="es"
-                                cancelText="Cancelar" class="pickerDate" selectText="Aceptar"
-                                placeholder="Fecha y hora" />
+                            <VueDatePicker v-model="date" time-picker-inline teleport-center :is-24="false"
+                                :min-date="minDate" locale="es" cancelText="Cancelar" class="pickerDate"
+                                selectText="Aceptar" placeholder="Fecha y hora" />
                         </v-col>
                         <v-col cols="12">
-                            <v-text-field  hide-details v-model="form.tipo_servicio" readonly variant="solo"  label="Tipo de servicio"
-                            required></v-text-field>
+                            <v-text-field hide-details v-model="form.tipo_servicio" readonly variant="solo"
+                                label="Tipo de servicio" required></v-text-field>
                         </v-col>
                         <v-col cols="12">
-                            <v-text-field v-model="form.direccion" hide-details color="primary" label="Dirección" required
-                                variant="solo"></v-text-field>
+                            <v-text-field v-model="form.direccion" hide-details color="primary" label="Dirección"
+                                required variant="solo"></v-text-field>
                         </v-col>
                         <v-col cols="12">
-                            <v-textarea v-model="form.comentario" base-color="primary" hide-details label="Comentario" color="primary" variant="solo"></v-textarea>
+                            <v-textarea v-model="form.comentario" base-color="primary" hide-details label="Comentario"
+                                color="primary" variant="solo"></v-textarea>
                         </v-col>
                         <v-col cols="12" class="d-flex justify-space-between">
-                            <v-btn :loading="cargando" color="primary" type="submit" prepend-icon="mdi-car-cog">Contratar
+                            <v-btn :loading="cargando" color="primary" type="submit"
+                                prepend-icon="mdi-car-cog">Contratar
                                 servicio</v-btn>
                             <v-btn class="bg-error" @click="dialog = false">Cerrar</v-btn>
 
@@ -85,15 +91,15 @@
                     </v-col>
 
                     <v-col cols="12" v-if="detalles.tipo_servicio === 'Adomicilio'" class="d-flex flex-column">
-                       <h3>Direccion</h3>
+                        <h3>Direccion</h3>
 
-                       <h4 class="font-weight-regular">{{ detalles.direccion }}</h4> 
+                        <h4 class="font-weight-regular">{{ detalles.direccion }}</h4>
                     </v-col>
 
                     <v-col cols="12" class="d-flex flex-column">
                         <h3>Comentario</h3>
 
-                       <h4 class="font-weight-regular">{{ detalles.comentario }}</h4> 
+                        <h4 class="font-weight-regular">{{ detalles.comentario }}</h4>
                     </v-col>
 
 
@@ -114,7 +120,7 @@
 <script setup>
 import { ref, defineProps } from 'vue'
 import notify from '@/plugins/notify.js'
-import { getData } from '@/plugins/api.js';
+import { getData, putData } from '@/plugins/api.js';
 import { format } from 'date-fns';
 
 
@@ -178,7 +184,17 @@ const detallles = async () => {
 }
 
 const modificarContratacion = async () => {
-
+    try {
+        cargando.value = true
+        form.value.fecha_contratacion = date.value;
+        await putData(('contrataciones/edit/' + prop.id), form.value, { headers: { 'Content-Type': 'application/json' } });
+    } catch (error) {
+        console.log(error)
+    } finally {
+        emit('actualizar')
+        dialog.value = false
+        cargando.value = false
+    }
 }
 
 </script>

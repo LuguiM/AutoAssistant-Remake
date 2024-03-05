@@ -228,6 +228,48 @@ class ContratacionesController extends Controller
         }
     }
 
+    public function edit(Request $request, $id){
+        $contratacion = Contratacion::find($id);
+
+        if(!$contratacion){
+            return response()->json([
+                'status' => false,
+                'message' => 'No se ha encontrado la contratación',
+            ], 400);
+        }
+
+        $rules = [
+            'fecha_contratacion' => 'required',
+            'direccion' => 'nullable|string',
+            'comentario' => 'nullable|string',
+        ];
+
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()->all()
+            ], 400);
+        }
+
+        $contratacion->fecha_contratacion = $request->fecha_contratacion;
+        $contratacion->direccion = $request->direccion;
+        $contratacion->comentario = $request->comentario;
+
+        if ($contratacion->update()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Contratación actualizada con exito',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Ocurrio un error al actualizar',
+            ], 400);
+        }
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */

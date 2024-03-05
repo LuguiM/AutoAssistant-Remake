@@ -20,14 +20,16 @@
                     <v-window-item value="informacion">
                         <v-card-text>
                             <v-row>
-                                
-                                <v-col cols="12" class="d-flex justify-center align-center gap-10 flex-column flex-sm-row">
+
+                                <v-col cols="12"
+                                    class="d-flex justify-center align-center gap-10 flex-column flex-sm-row">
                                     <v-avatar :image="selectedImage" size="150"></v-avatar>
 
                                     <v-file-input @change="handleImageChange" accept="image/png, image/jpeg"
-                                    prepend-icon="mdi-image" label="Logo*" color="primary" variant="solo"
-                                    hide-details></v-file-input>
-                                    <p v-if="errorImage" class="text-error text-start text-subtitle-1">*Debe ser una imagen</p>
+                                        prepend-icon="mdi-image" label="Logo*" color="primary" variant="solo"
+                                        hide-details></v-file-input>
+                                    <p v-if="errorImage" class="text-error text-start text-subtitle-1">*Debe ser una
+                                        imagen</p>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-select class="file" color="primary" v-model="selectedRubro" :items="rubros"
@@ -38,13 +40,16 @@
                                         label="Servicio" :disabled="!selectedRubro" variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-select v-model="form.tipo_servicio" class="file" color="primary" label="Tipo de servicio"
+                                    <!-- <v-select v-model="form.tipo_servicio" class="file" color="primary" label="Tipo de servicio"
                                         :items="['Adomicilio','Reserva/Cita']"
-                                        variant="solo"></v-select>
+                                        variant="solo"></v-select> -->
+                                    <v-combobox v-model="form.tipo_servicio" :items="['Adomicilio', 'Reserva/Cita']"
+                                        variant="solo" class="file" color="primary" label="Tipo de servicio" chips
+                                        multiple></v-combobox>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-textarea v-model="form.descripcion" class="areaa" color="primary" label="Descripcion del servicio"
-                                        variant="solo"></v-textarea>
+                                    <v-textarea v-model="form.descripcion" class="areaa" color="primary"
+                                        label="Descripcion del servicio" variant="solo"></v-textarea>
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -55,12 +60,12 @@
                         <v-card-text>
                             <v-row>
                                 <v-col cols="12" md="6">
-                                    <v-select v-model="form.dia_inicio" class="file" color="primary" label="Horario de Inicio" :items="dias"
-                                        variant="solo"></v-select>
+                                    <v-select v-model="form.dia_inicio" class="file" color="primary"
+                                        label="Horario de Inicio" :items="dias" variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-select v-model="form.dia_fin" class="file" color="primary" label="Horario de Fin" :items="dias"
-                                        variant="solo"></v-select>
+                                    <v-select v-model="form.dia_fin" class="file" color="primary" label="Horario de Fin"
+                                        :items="dias" variant="solo"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <flat-pickr :config="config" v-model="timeInicio" placeholder="Hora de apertura"
@@ -71,17 +76,19 @@
                                         class="timepicker" />
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="form.precio" class="file" color="primary" label="Costo del servicio"
-                                        variant="solo" prefix="$"></v-text-field>
+                                    <v-text-field v-model="form.precio" class="file" color="primary"
+                                        label="Costo del servicio" variant="solo" prefix="$"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="form.precio_adomicilio" class="file" color="primary" label="Costo de recargo por adomicilio"
-                                        variant="solo" prefix="$"></v-text-field>
+                                    <v-text-field v-model="form.precio_adomicilio" class="file" color="primary"
+                                        label="Costo de recargo por adomicilio" variant="solo"
+                                        prefix="$"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" class="d-flex flex-xs-row justify-space-between">
                                     <v-btn prepend-icon="mdi-cancel" color="error">Cancelar</v-btn>
-                                    
-                                    <v-btn :loading="cargando" type="submit" prepend-icon="mdi-car-wrench" color="primary">Inscribir
+
+                                    <v-btn :loading="cargando" type="submit" prepend-icon="mdi-car-wrench"
+                                        color="primary">Inscribir
                                         servicio</v-btn>
                                 </v-col>
                             </v-row>
@@ -98,7 +105,7 @@
 import { ref, watch, onMounted } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import { getData ,postData } from '@/plugins/api.js';
+import { getData, postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
 import { format, parse } from 'date-fns';
 
@@ -190,7 +197,7 @@ const handleImageChange = (event) => {
     const file = event.target.files[0];
     console.log("Archivo seleccionado:", file);
     image.value = file;
-    
+
     // Verificar si el archivo es una instancia de Blob
     if (file instanceof Blob) {
         if (file.type.startsWith('image/')) {
@@ -209,10 +216,10 @@ const handleImageChange = (event) => {
 };
 
 const formatTime = (time) => {
-    if(time === null){
+    if (time === null) {
         return ''
     }
-    
+
     const parsedDate = parse(time, 'h:mm a', new Date());
 
     const horaMySQL = format(parsedDate, 'HH:mm:ss');
@@ -232,10 +239,10 @@ const getPerfil = async () => {
         }
 
         idMecanico.value = data.id
-        
+
     } catch (error) {
         notify(error.message, 'error');
-    } 
+    }
 };
 
 const postServicio = async () => {
