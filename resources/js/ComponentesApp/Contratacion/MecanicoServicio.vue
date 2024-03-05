@@ -97,11 +97,12 @@
                                 <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                                     v-if="servicio.estado.estado === 'Activo'">
                                     <div class="d-flex flex-row gap-10">
+                                        <detalleContratacion type="text" :id="servicio.id" mode="detalles"></detalleContratacion>
 
                                         <completado :id="servicio.id" type="text" @actualizar="getPerfil()">
                                         </completado>
 
-                                        <v-btn class="bg-grey2" icon>
+                                        <v-btn class="bg-grey2" size="small" icon>
                                             <v-icon>mdi-message-outline</v-icon>
                                             <v-tooltip activator="parent" location="top">Chat</v-tooltip>
                                         </v-btn>
@@ -114,6 +115,8 @@
                                 <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                                     v-else-if="servicio.estado.estado === 'En espera'">
                                     <div class="d-flex flex-row gap-10">
+                                        <detalleContratacion type="text" :id="servicio.id" mode="detalles"></detalleContratacion>
+
                                         <AceptarServicio :id="servicio.id" type="text" @actualizar="getPerfil()">
                                         </AceptarServicio>
                                         <CancelarRechazar :id="servicio.id" title="Rechazar" type="text"
@@ -126,7 +129,10 @@
 
                                 <v-card-actions class="d-flex justify-space-between"
                                     v-else-if="servicio.estado.estado === 'Rechazado'">
-                                    <div class="d-flex flex-column flex-sm-row gap-10">
+                                    
+                                    <div class="d-flex flex-row gap-10">
+                                        <detalleContratacion type="text" :id="servicio.id" mode="detalles"></detalleContratacion>
+
                                         <VerRechazo :id="servicio.id" type="text"></VerRechazo>
                                     </div>
                                 </v-card-actions>
@@ -170,6 +176,7 @@
 
                         <template v-slot:item.acciones="{ item }">
                             <div v-if="item.estado.estado === 'Activo'">
+                                <detalleContratacion type="icon" :id="item.id" mode="detalles"></detalleContratacion>
                                 <completado :id="item.id" type="icon" @actualizar="getPerfil()"></completado>
                                 <v-btn variant="flat" density="compact" icon="mdi-message-outline"></v-btn>
                                 <CancelarRechazar :id="item.id" title="Rechazar" type="icon" @actualizar="getPerfil()">
@@ -177,6 +184,7 @@
                             </div>
 
                             <div v-else-if="item.estado.estado === 'En espera'">
+                                <detalleContratacion type="icon" :id="item.id" mode="detalles"></detalleContratacion>
                                 <AceptarServicio :id="item.id" type="icon" @actualizar="getPerfil()"></AceptarServicio>
                                 <CancelarRechazar :id="item.id" title="Rechazar" type="icon" @actualizar="getPerfil()">
                                 </CancelarRechazar>
@@ -185,6 +193,7 @@
                             </div>
 
                             <div v-else-if="item.estado.estado === 'Rechazado'">
+                                <detalleContratacion type="icon" :id="item.id" mode="detalles"></detalleContratacion>
                                 <VerRechazo :id="item.id" type="icon"></VerRechazo>
                             </div>
                         </template>
@@ -206,13 +215,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import detalleContratacion from './Modales/DetallesContratacion.vue';
 import AceptarServicio from './Modales/AceptarServicio.vue';
 import Observacion from './Modales/Observacion.vue';
 import VerRechazo from './Modales/VerRechazo.vue';
 import completado from './Modales/completado.vue';
 import CancelarRechazar from './Modales/CancelarRechazar.vue';
 import notify from '@/plugins/notify.js';
-import { getData, postData } from '@/plugins/api.js';
+import { getData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
 import { format } from 'date-fns';
 

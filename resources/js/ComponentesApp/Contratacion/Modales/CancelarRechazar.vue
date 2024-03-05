@@ -1,14 +1,14 @@
 <template>
     <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }" v-if="prop.type === 'text'">
-            <v-btn v-if="prop.title === 'Rechazar'" v-bind="props" class="bg-orange-darken-4" icon>
+            <v-btn v-if="prop.title === 'Rechazar'" v-bind="props" size="small" class="bg-orange-darken-4" icon>
                 <v-icon>
                     mdi-close-circle-outline
                 </v-icon>
                 <v-tooltip activator="parent" location="top">Rechazar servicio</v-tooltip>
             </v-btn>
 
-            <v-btn v-else v-bind="props" class="bg-error" icon>
+            <v-btn v-else v-bind="props" class="bg-error" size="small" icon>
                 <v-icon>
                     mdi-delete-outline
                 </v-icon>

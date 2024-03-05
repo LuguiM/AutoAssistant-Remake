@@ -23,12 +23,13 @@
                 <v-col cols="12">
                     <v-card variant="outlined" class="cardServicio">
                         <v-row>
-                            <v-col cols="12" sm="5" class="d-flex align-center justify-center pr-0">
-
-                                <v-img :width="250"
+                            <v-col cols="12" sm="5" class="d-flex align-center justify-center pr-md-0">
+                                <v-card-text>
+                                    <v-img 
                                     aspect-ratio="4/3"
                                     
                                     :src="infoServicio.logo"></v-img>
+                                </v-card-text>
                             </v-col>
 
                             <v-col cols="12" sm="7">

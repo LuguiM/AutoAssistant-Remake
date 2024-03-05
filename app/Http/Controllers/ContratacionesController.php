@@ -110,7 +110,19 @@ class ContratacionesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $contratacion = Contratacion::with('servicio')->find($id);
+
+        if (!$contratacion) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Ocurrio un error al encontrar la contratación',
+            ], 404);
+        }
+    
+        return response()->json([
+            'status' => true,
+            'data' => $contratacion,
+        ], 200);
     }
 
     /**

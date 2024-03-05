@@ -3,8 +3,9 @@ import { toast } from 'vue3-toastify';
 const notify = (mensaje, type, theme) => {
 
     toast(mensaje, {
-        "theme": theme || 'dark',
+        "theme": theme || 'colored',
         "type": type,
+        "hideProgressBar": true,
         // icon: false
     }) 
 }

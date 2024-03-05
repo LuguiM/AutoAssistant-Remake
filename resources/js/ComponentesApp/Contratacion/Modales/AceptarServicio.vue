@@ -1,7 +1,7 @@
 <template>
      <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }">
-            <v-btn v-if="prop.type ==='text'" v-bind="props" class="bg-primary" icon>
+            <v-btn v-if="prop.type ==='text'" size="small" v-bind="props" class="bg-primary" icon>
                 <v-icon>
                     mdi-check-circle-outline
                 </v-icon>

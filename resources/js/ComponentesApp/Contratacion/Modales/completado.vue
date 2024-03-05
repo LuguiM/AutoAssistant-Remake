@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog" persistent width="auto">
        <template v-slot:activator="{ props }">
-           <v-btn v-if="prop.type ==='text'" v-bind="props" class="bg-success" icon>
+           <v-btn v-if="prop.type ==='text'" v-bind="props" size="small" class="bg-success" icon>
                 <v-icon>mdi-wrench-check-outline</v-icon>
                 <v-tooltip activator="parent" location="top">Completar servicio</v-tooltip>
             </v-btn>

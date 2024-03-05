@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }">
-            <v-btn v-if="prop.type === 'text'" v-bind="props" class="bg-primary" icon @click="getMotivo()">
+            <v-btn v-if="prop.type === 'text'" v-bind="props" size="small" class="bg-primary" icon @click="getMotivo()">
             <v-icon>mdi-comment-eye-outline</v-icon>
             <v-tooltip activator="parent" location="top">Motivo de rechazo</v-tooltip>
             </v-btn>
@@ -33,8 +33,8 @@
 </template>
 
 <script setup>
-import {ref, defineProps, onMounted} from 'vue';
-import { getData, postData } from '@/plugins/api.js';
+import {ref, defineProps } from 'vue';
+import { getData } from '@/plugins/api.js';
 import notify from '@/plugins/notify.js';
 
 

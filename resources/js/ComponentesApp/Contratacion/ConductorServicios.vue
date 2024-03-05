@@ -88,10 +88,11 @@
                     <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                         v-if="servicio.estado.estado === 'Activo'">
                         <div class="d-flex flex--row gap-10">
+                            <detalleContratacion type="text" :id="servicio.id" mode="detalles"></detalleContratacion>
                             <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>
                         </div>
 
-                        <v-btn class="bg-grey2" icon>
+                        <v-btn class="bg-grey2" size="small" icon>
                             <v-icon>mdi-message-outline</v-icon>
                             <v-tooltip activator="parent" location="top">Chat</v-tooltip>
                         </v-btn>
@@ -99,10 +100,11 @@
                     <v-card-actions class="d-flex flex-row justify-space-between gap-10"
                         v-else-if="servicio.estado.estado === 'En espera'">
                         <div class="d-flex flex-row gap-10">
-                            <v-btn class="bg-primary" icon>
-                                <v-icon>mdi-square-edit-outline</v-icon>
-                                <v-tooltip activator="parent" location="top">Modificar servicio</v-tooltip>
-                            </v-btn>
+                            <detalleContratacion type="text" :id="servicio.id" mode="detalles"></detalleContratacion>
+
+                            <detalleContratacion type="text" :id="servicio.id" mode="modificar"></detalleContratacion>
+
+                            
                             <CancelarRechazar title="Cancelar" type="text" :id="servicio.id" @actualizar="cargarDatos()"></CancelarRechazar>
                         </div>
 
@@ -110,10 +112,16 @@
                     </v-card-actions>
 
                     <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado.estado === 'Rechazado'">
-                        <div class="d-flex flex-column flex-sm-row gap-10">
+                        <div class="d-flex flex-row gap-10">
+                            <detalleContratacion type="text" :id="servicio.id" mode="detalles"></detalleContratacion>
                             <VerRechazo :id="servicio.id" type="text"></VerRechazo>
                         </div>
                     </v-card-actions>
+                    <!-- <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado.estado === 'Completado'">
+                        <div class="d-flex flex-row gap-10">
+                            <detalleContratacion type="text" :id="servicio.id"></detalleContratacion>
+                        </div>
+                    </v-card-actions> -->
                 </v-card>
             </v-col>
         </v-row>
@@ -129,8 +137,9 @@ import { ref, onMounted } from 'vue';
 import Observacion from './Modales/Observacion.vue';
 import VerRechazo from './Modales/VerRechazo.vue';
 import CancelarRechazar from './Modales/CancelarRechazar.vue';
+import detalleContratacion from './Modales/DetallesContratacion.vue';
 import notify from '@/plugins/notify.js';
-import { getData, postData } from '@/plugins/api.js';
+import { getData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
 import { format } from 'date-fns';
 
