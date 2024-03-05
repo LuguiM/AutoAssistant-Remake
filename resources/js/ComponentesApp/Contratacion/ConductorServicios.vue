@@ -126,9 +126,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import Observacion from '../../Components/Modales/Observacion.vue';
-import VerRechazo from '../../Components/Modales/VerRechazo.vue';
-import CancelarRechazar from '../../Components/Modales/CancelarRechazar.vue';
+import Observacion from './Modales/Observacion.vue';
+import VerRechazo from './Modales/VerRechazo.vue';
+import CancelarRechazar from './Modales/CancelarRechazar.vue';
 import notify from '@/plugins/notify.js';
 import { getData, postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';

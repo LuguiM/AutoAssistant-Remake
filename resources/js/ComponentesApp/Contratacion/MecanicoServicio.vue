@@ -98,15 +98,15 @@
                                     v-if="servicio.estado.estado === 'Activo'">
                                     <div class="d-flex flex-row gap-10">
 
-                                        <completado :id="servicio.id" type="text"
-                                        @actualizar="getPerfil()"></completado>
+                                        <completado :id="servicio.id" type="text" @actualizar="getPerfil()">
+                                        </completado>
 
                                         <v-btn class="bg-grey2" icon>
                                             <v-icon>mdi-message-outline</v-icon>
                                             <v-tooltip activator="parent" location="top">Chat</v-tooltip>
                                         </v-btn>
                                     </div>
-                                   
+
                                     <CancelarRechazar :id="servicio.id" title="Rechazar" type="text"
                                         @actualizar="getPerfil()"></CancelarRechazar>
 
@@ -119,7 +119,8 @@
                                         <CancelarRechazar :id="servicio.id" title="Rechazar" type="text"
                                             @actualizar="getPerfil()"></CancelarRechazar>
                                     </div>
-                                    <Observacion :id="servicio.id" @actualizar="cargarDatos()" title="Crear" type="text"></Observacion>
+                                    <Observacion :id="servicio.id" @actualizar="cargarDatos()" title="Crear"
+                                        type="text"></Observacion>
 
                                 </v-card-actions>
 
@@ -169,8 +170,7 @@
 
                         <template v-slot:item.acciones="{ item }">
                             <div v-if="item.estado.estado === 'Activo'">
-                                <completado :id="item.id" type="icon"
-                                        @actualizar="getPerfil()"></completado>
+                                <completado :id="item.id" type="icon" @actualizar="getPerfil()"></completado>
                                 <v-btn variant="flat" density="compact" icon="mdi-message-outline"></v-btn>
                                 <CancelarRechazar :id="item.id" title="Rechazar" type="icon" @actualizar="getPerfil()">
                                 </CancelarRechazar>
@@ -180,7 +180,8 @@
                                 <AceptarServicio :id="item.id" type="icon" @actualizar="getPerfil()"></AceptarServicio>
                                 <CancelarRechazar :id="item.id" title="Rechazar" type="icon" @actualizar="getPerfil()">
                                 </CancelarRechazar>
-                                <Observacion :id="item.id" @actualizar="cargarDatos()" title="Crear" type="icon"></Observacion>
+                                <Observacion :id="item.id" @actualizar="cargarDatos()" title="Crear" type="icon">
+                                </Observacion>
                             </div>
 
                             <div v-else-if="item.estado.estado === 'Rechazado'">
@@ -194,8 +195,6 @@
                                     @click="cargarDatos"></v-pagination>
                             </div>
                         </template>
-
-
                     </v-data-table>
                 </v-container>
             </v-window-item>
@@ -207,11 +206,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import AceptarServicio from '../../Components/Modales/AceptarServicio.vue';
-import Observacion from '../../Components/Modales/Observacion.vue';
-import VerRechazo from '../../Components/Modales/VerRechazo.vue';
-import completado from '../../Components/Modales/completado.vue';
-import CancelarRechazar from '../../Components/Modales/CancelarRechazar.vue';
+import AceptarServicio from './Modales/AceptarServicio.vue';
+import Observacion from './Modales/Observacion.vue';
+import VerRechazo from './Modales/VerRechazo.vue';
+import completado from './Modales/completado.vue';
+import CancelarRechazar from './Modales/CancelarRechazar.vue';
 import notify from '@/plugins/notify.js';
 import { getData, postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
