@@ -80,7 +80,8 @@
                                                 <v-img :src="servicio.perfil_mecanico.logo"
                                                     :alt="servicio.perfil_mecanico.representante"></v-img>
                                             </v-avatar>
-                                            <p>{{ servicio.perfil_mecanico.representante }}</p>
+                                            <p v-if="servicio.perfil_mecanico?.nombre_taller">{{ servicio.perfil_mecanico.nombre_taller }}</p>
+                                            <p v-else>{{ servicio.perfil_mecanico.representante }}</p>
                                         </v-card-actions>
 
                                     </v-card>

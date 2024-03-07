@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-row  v-if="loading" v-model="loading" class="fill-height" align-content="center" justify="center">
+        <v-row v-if="loading" v-model="loading" class="fill-height" align-content="center" justify="center">
             <v-col class="text-subtitle-1 text-center" cols="12">
                 Cargando Servicio
             </v-col>
@@ -25,10 +25,7 @@
                         <v-row>
                             <v-col cols="12" sm="5" class="d-flex align-center justify-center pr-md-0">
                                 <v-card-text>
-                                    <v-img 
-                                    aspect-ratio="4/3"
-                                    
-                                    :src="infoServicio.logo"></v-img>
+                                    <v-img aspect-ratio="4/3" :src="infoServicio.logo"></v-img>
                                 </v-card-text>
                             </v-col>
 
@@ -43,7 +40,7 @@
                                             <h3 class="font-weight-bold">Descripcion del servicio:</h3>
                                         </v-col>
                                         <v-col cols="12" md="6">
-                                           {{ infoServicio.descripcion }}
+                                            {{ infoServicio.descripcion }}
                                         </v-col>
 
                                         <v-col cols="12" md="6">
@@ -57,29 +54,29 @@
                                             <h3 class="font-weight-bold">Horario:</h3>
                                         </v-col>
                                         <v-col cols="12" md="6">
-                                            {{infoServicio.dia_inicio}} - {{infoServicio.dia_fin}} <br>
-                                            {{infoServicio.hora_apertura}} - {{infoServicio.hora_cierre}}
+                                            {{ infoServicio.dia_inicio }} - {{ infoServicio.dia_fin }} <br>
+                                            {{ infoServicio.hora_apertura }} - {{ infoServicio.hora_cierre }}
                                         </v-col>
 
                                         <v-col cols="12" md="6">
                                             <h3 class="font-weight-bold">Rubro:</h3>
                                         </v-col>
                                         <v-col cols="12" md="6">
-                                            {{infoServicio.rubro}}
+                                            {{ infoServicio.rubro }}
                                         </v-col>
 
                                         <v-col cols="12" md="6">
                                             <h3 class="font-weight-bold">Precio del servicio:</h3>
                                         </v-col>
                                         <v-col cols="12" md="6">
-                                            $ {{infoServicio.precio}}
+                                            $ {{ infoServicio.precio }}
                                         </v-col>
 
                                         <v-col cols="12" md="6">
                                             <h3 class="font-weight-bold">Recargo por servicio adomicilios</h3>
                                         </v-col>
                                         <v-col cols="12" md="6">
-                                            $ {{infoServicio.precio_adomicilio}}
+                                            $ {{ infoServicio.precio_adomicilio }}
                                         </v-col>
 
                                         <v-col cols="12" class="d-flex justify-end">
@@ -99,43 +96,95 @@
                         </v-row>
                     </v-card>
                 </v-col>
+                <v-col cols="12">
+                    <v-card variant="outlined"  class="cardServicio d-flex flex-column flex-sm-row mx-auto pa-sm-8" elevation="10">
+                        <div>
+                            <div class="d-flex justify-center mt-auto text-h6 ">
+                                Calificación general
+                            </div>
+
+                            <div class="d-flex align-center flex-column my-auto">
+                                <div class="text-h2 mt-5">
+                                    3
+                                    <span class="text-h6 ml-n3">/5</span>
+                                </div>
+
+                                <v-rating readonly active-color="primary" empty-icon="mdi-cog-outline" full-icon="mdi-cog" :model-value="3"
+                                    ></v-rating>
+                                <div class="px-3">3,360 calificaciones</div>
+                            </div>
+                        </div>
+                        <div style="width:100%;">
+                            <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
+                                <v-list-item v-for="(rating, i) in 5" :key="i">
+                                    <v-progress-linear :model-value="rating * 15" class="mx-n5" color="primary"
+                                        height="20" rounded></v-progress-linear>
+
+                                    <template v-slot:prepend>
+                                        <span>{{ rating }}</span>
+                                        <v-icon class="mx-3" icon="mdi-cog"></v-icon>
+                                    </template>
+
+                                    <template v-slot:append>
+                                        <div class="rating-values">
+                                            <span class="d-flex justify-end"> {{ rating * 224 }} </span>
+                                        </div>
+                                    </template>
+                                </v-list-item>
+                            </v-list>
+
+                            <v-card class="pa-4">
+                                <div class="d-flex align-center">
+                                    <v-avatar color="info" style="border:1px solid #FFFFFF;">
+                                        <v-img class="" src="https://fakeimg.pl/600x400?text=Foto"
+                                            alt="representante"></v-img>
+                                    </v-avatar>
+                                    <p>Conductor</p>
+                                </div>
+                            </v-card>
+                        </div>
+                    </v-card>
+                </v-col>
             </v-row>
 
             <v-dialog v-model="contratarModal" width="auto">
-                <v-card max-width="550"  class="bg-greyDark">
+                <v-card max-width="550" class="bg-greyDark">
                     <v-card-text>
-                        <v-form  @submit.prevent="postContratar()" validate-on="submit lazy">
+                        <v-form @submit.prevent="postContratar()" validate-on="submit lazy">
                             <v-row>
                                 <v-col cols="12" class="d-flex justify-space-between">
                                     <h2 class="text-primary">Contratar el servicio</h2>
-                                
+
                                     <v-btn icon elevation="0" class="bg-transparent" @click="contratarModal = false">
                                         <v-icon>mdi-close-thick</v-icon>
                                     </v-btn>
                                 </v-col>
-                               
+
                                 <v-col cols="12">
-                                    <v-text-field  hide-details v-model="infoServicio.servicio" readonly variant="solo"  label="Servicio a contratar"
-                                        required></v-text-field>
+                                    <v-text-field hide-details v-model="infoServicio.servicio" readonly variant="solo"
+                                        label="Servicio a contratar" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <VueDatePicker v-model="date" time-picker-inline teleport-center :is-24="false" :min-date="minDate" locale="es"
-                                        cancelText="Cancelar" class="pickerDate" selectText="Aceptar"
-                                        placeholder="Fecha y hora" />
+                                    <VueDatePicker v-model="date" time-picker-inline teleport-center :is-24="false"
+                                        :min-date="minDate" locale="es" cancelText="Cancelar" class="pickerDate"
+                                        selectText="Aceptar" placeholder="Fecha y hora" />
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-select v-model="form.tipo_servicio" variant="solo" class="selectModal" label="Seleccione el tipo de servicio"
-                                        :items="[infoServicio.tipo_servicio]" hide-details></v-select>
+                                    <v-select v-model="form.tipo_servicio" variant="solo" class="selectModal"
+                                        label="Seleccione el tipo de servicio" :items="[infoServicio.tipo_servicio]"
+                                        hide-details></v-select>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field v-model="form.direccion" hide-details color="primary" label="Dirección" required
-                                        variant="solo"></v-text-field>
+                                    <v-text-field v-model="form.direccion" hide-details color="primary"
+                                        label="Dirección" required variant="solo"></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-textarea v-model="form.comentario" base-color="primary" hide-details label="Comentario" color="primary" variant="solo"></v-textarea>
+                                    <v-textarea v-model="form.comentario" base-color="primary" hide-details
+                                        label="Comentario" color="primary" variant="solo"></v-textarea>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-btn :loading="cargando" color="primary" type="submit" prepend-icon="mdi-car-cog">Contratar
+                                    <v-btn :loading="cargando" color="primary" type="submit"
+                                        prepend-icon="mdi-car-cog">Contratar
                                         servicio</v-btn>
                                 </v-col>
                             </v-row>
@@ -244,9 +293,9 @@ const serviciosMecanico = async (id) => {
 };
 
 const postContratar = async () => {
-    try{
+    try {
         cargando.value = true;
-        
+
         const fechaMySQL = formatDatetime(date.value)
 
         form.value.fecha_contratacion = fechaMySQL;
@@ -255,10 +304,10 @@ const postContratar = async () => {
         form.value.mecanico_id = infoServicio.value.perfil_mecanico_id;
         console.log(form.value)
         await postData('contratacion', form.value, { headers: { 'Content-Type': 'application/json' } }, '/serviciosContratados');
-    }catch(error){
+    } catch (error) {
         notify(error.message, 'error');
         console.error(error.message)
-    }finally {
+    } finally {
         contratarModal.value = false;
         cargando.value = false;
     }
