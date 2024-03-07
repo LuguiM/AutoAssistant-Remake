@@ -22,127 +22,192 @@
                 </v-col>
                 <v-col cols="12">
                     <v-card variant="outlined" class="cardServicio">
-                        <v-row>
-                            <v-col cols="12" sm="5" class="d-flex align-center justify-center pr-md-0">
-                                <v-card-text>
-                                    <v-img aspect-ratio="4/3" :src="infoServicio.logo"></v-img>
-                                </v-card-text>
-                            </v-col>
+                        <v-card-text>
+                            <v-row>
+                                <v-col cols="12" sm="5" class="d-flex align-center justify-center pr-md-0">
+                                    <v-card-text>
+                                        <v-img aspect-ratio="4/3" :src="infoServicio.logo"></v-img>
+                                    </v-card-text>
+                                </v-col>
 
-                            <v-col cols="12" sm="7">
-                                <v-card-title class="text-h5 bg-primary text-center font-weight-bold">
-                                    {{ infoServicio.servicio }}
-                                </v-card-title>
+                                <v-col cols="12" sm="7">
+                                    <v-card-title class="text-h5 bg-primary rounded-lg text-center font-weight-bold">
+                                        {{ infoServicio.servicio }}
+                                    </v-card-title>
 
-                                <v-card-Text class="mt-5">
-                                    <v-row>
-                                        <v-col cols="12" md="6">
-                                            <h3 class="font-weight-bold">Descripcion del servicio:</h3>
-                                        </v-col>
-                                        <v-col cols="12" md="6">
-                                            {{ infoServicio.descripcion }}
-                                        </v-col>
+                                    <v-card-Text class="mt-5">
+                                        <v-row>
+                                            <v-col cols="12" md="6">
+                                                <h3 class="font-weight-bold">Descripcion del servicio:</h3>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                {{ infoServicio.descripcion }}
+                                            </v-col>
 
-                                        <v-col cols="12" md="6">
-                                            <h3 class="font-weight-bold">Tipo de servicio: </h3>
-                                        </v-col>
-                                        <v-col cols="12" md="6">
-                                            {{ infoServicio.tipo_servicio }}
-                                        </v-col>
+                                            <v-col cols="12" md="6">
+                                                <h3 class="font-weight-bold">Tipo de servicio: </h3>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                {{ infoServicio.tipo_servicio }}
+                                            </v-col>
 
-                                        <v-col cols="12" md="6">
-                                            <h3 class="font-weight-bold">Horario:</h3>
-                                        </v-col>
-                                        <v-col cols="12" md="6">
-                                            {{ infoServicio.dia_inicio }} - {{ infoServicio.dia_fin }} <br>
-                                            {{ infoServicio.hora_apertura }} - {{ infoServicio.hora_cierre }}
-                                        </v-col>
+                                            <v-col cols="12" md="6">
+                                                <h3 class="font-weight-bold">Horario:</h3>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                {{ infoServicio.dia_inicio }} - {{ infoServicio.dia_fin }} <br>
+                                                {{ infoServicio.hora_apertura }} - {{ infoServicio.hora_cierre }}
+                                            </v-col>
 
-                                        <v-col cols="12" md="6">
-                                            <h3 class="font-weight-bold">Rubro:</h3>
-                                        </v-col>
-                                        <v-col cols="12" md="6">
-                                            {{ infoServicio.rubro }}
-                                        </v-col>
+                                            <v-col cols="12" md="6">
+                                                <h3 class="font-weight-bold">Rubro:</h3>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                {{ infoServicio.rubro }}
+                                            </v-col>
 
-                                        <v-col cols="12" md="6">
-                                            <h3 class="font-weight-bold">Precio del servicio:</h3>
-                                        </v-col>
-                                        <v-col cols="12" md="6">
-                                            $ {{ infoServicio.precio }}
-                                        </v-col>
+                                            <v-col cols="12" md="6">
+                                                <h3 class="font-weight-bold">Precio del servicio:</h3>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                $ {{ infoServicio.precio }}
+                                            </v-col>
 
-                                        <v-col cols="12" md="6">
-                                            <h3 class="font-weight-bold">Recargo por servicio adomicilios</h3>
-                                        </v-col>
-                                        <v-col cols="12" md="6">
-                                            $ {{ infoServicio.precio_adomicilio }}
-                                        </v-col>
+                                            <v-col cols="12" md="6">
+                                                <h3 class="font-weight-bold">Recargo por servicio adomicilios</h3>
+                                            </v-col>
+                                            <v-col cols="12" md="6">
+                                                $ {{ infoServicio.precio_adomicilio }}
+                                            </v-col>
 
-                                        <v-col cols="12" class="d-flex justify-end">
-                                            <v-btn class="blueButton" prepend-icon="mdi-account"
-                                                @click="verPerfilMecanico(infoServicio.perfil_mecanico_id)">Perfil</v-btn>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-btn variant="outlined" block class="text-primary btnContratar"
-                                                prepend-icon="mdi-wrench-cog" @click="contratarModal = true">Contratar
-                                                servicio</v-btn>
-                                        </v-col>
-                                    </v-row>
+                                            <v-col cols="12">
+                                                <v-btn variant="outlined" block class="text-primary btnContratar"
+                                                    prepend-icon="mdi-wrench-cog"
+                                                    @click="contratarModal = true">Contratar
+                                                    servicio</v-btn>
+                                            </v-col>
+                                        </v-row>
 
-                                </v-card-Text>
+                                    </v-card-Text>
 
-                            </v-col>
-                        </v-row>
+                                </v-col>
+                                <v-col cols="12">
+
+                                    <v-card class="text-center perfilCard"
+                                        @click="verPerfilMecanico(infoServicio.perfil_mecanico_id)" hover>
+                                        <v-row align="center">
+                                            <v-col cols="12" sm="3">
+                                                <v-card-text>
+                                                    <v-avatar color="grey" size="60" class="mt-4">
+                                                        <v-img cover :src="infoServicio.perfil_mecanico.logo"></v-img>
+                                                    </v-avatar>
+                                                </v-card-text>
+
+                                            </v-col>
+                                            <v-col class="d-flex flex-column flex-sm-row">
+                                                <v-card-text>
+                                                    <v-icon>mdi-account</v-icon>
+                                                    Representante <br> {{ infoServicio.perfil_mecanico.representante }}
+                                                </v-card-text>
+                                                <v-card-text v-if="infoServicio.perfil_mecanico?.nombre_taller">
+                                                    <v-icon>mdi-car-cog</v-icon>
+                                                    Taller Mecanico <br> {{ infoServicio.perfil_mecanico.nombre_taller }}
+                                                </v-card-text>
+                                                <v-card-text v-else>
+                                                    <v-icon>mdi-car-cog</v-icon>
+
+                                                    Mecanico Independiente
+                                                </v-card-text>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+
                     </v-card>
                 </v-col>
                 <v-col cols="12">
-                    <v-card variant="outlined"  class="cardServicio d-flex flex-column flex-sm-row mx-auto pa-sm-8" elevation="10">
-                        <div>
-                            <div class="d-flex justify-center mt-auto text-h6 ">
-                                Calificación general
-                            </div>
-
-                            <div class="d-flex align-center flex-column my-auto">
-                                <div class="text-h2 mt-5">
-                                    3
-                                    <span class="text-h6 ml-n3">/5</span>
+                    <v-card variant="outlined" class="cardServicio d-flex flex-column  mx-auto pa-sm-8" elevation="10">
+                        <div class="d-flex flex-column flex-sm-row">
+                            <div>
+                                <div class="d-flex justify-center mt-auto text-h6 ">
+                                    Calificación general
                                 </div>
 
-                                <v-rating readonly active-color="primary" empty-icon="mdi-cog-outline" full-icon="mdi-cog" :model-value="3"
-                                    ></v-rating>
-                                <div class="px-3">3,360 calificaciones</div>
+                                <div class="d-flex align-center flex-column my-auto">
+                                    <div class="text-h2 mt-5">
+                                        3
+                                        <span class="text-h6 ml-n3">/5</span>
+                                    </div>
+
+                                    <v-rating readonly active-color="primary" empty-icon="mdi-cog-outline"
+                                        full-icon="mdi-cog" :model-value="3"></v-rating>
+                                    <div class="px-3">3,360 calificaciones</div>
+                                </div>
+                            </div>
+                            <div style="width:100%;">
+                                <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
+                                    <v-list-item v-for="(rating, i) in 5" :key="i">
+                                        <v-progress-linear :model-value="rating * 15" class="mx-n5" color="primary"
+                                            height="20" rounded></v-progress-linear>
+
+                                        <template v-slot:prepend>
+                                            <span>{{ rating }}</span>
+                                            <v-icon class="mx-3" icon="mdi-cog"></v-icon>
+                                        </template>
+
+                                        <template v-slot:append>
+                                            <div class="rating-values">
+                                                <span class="d-flex justify-end"> {{ rating * 224 }} </span>
+                                            </div>
+                                        </template>
+                                    </v-list-item>
+                                </v-list>
                             </div>
                         </div>
-                        <div style="width:100%;">
-                            <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
-                                <v-list-item v-for="(rating, i) in 5" :key="i">
-                                    <v-progress-linear :model-value="rating * 15" class="mx-n5" color="primary"
-                                        height="20" rounded></v-progress-linear>
 
-                                    <template v-slot:prepend>
-                                        <span>{{ rating }}</span>
-                                        <v-icon class="mx-3" icon="mdi-cog"></v-icon>
-                                    </template>
 
-                                    <template v-slot:append>
-                                        <div class="rating-values">
-                                            <span class="d-flex justify-end"> {{ rating * 224 }} </span>
+                        <v-infinite-scroll mode="manual" @load="load">
+                            <template v-for="(item, index) in items" :key="item">
+                                <v-card class="pa-4 ma-4">
+                                    <div class="d-flex flex-column flex-sm-row justify-space-between align-center">
+                                        <div class="d-flex align-center gap-10">
+                                            <v-avatar color="info" style="border:1px solid #FFFFFF;"
+                                                image="https://fakeimg.pl/600x400?text=Foto">
+                                            </v-avatar>
+                                            <p>Conductor</p>
                                         </div>
-                                    </template>
-                                </v-list-item>
-                            </v-list>
 
-                            <v-card class="pa-4">
-                                <div class="d-flex align-center">
-                                    <v-avatar color="info" style="border:1px solid #FFFFFF;">
-                                        <v-img class="" src="https://fakeimg.pl/600x400?text=Foto"
-                                            alt="representante"></v-img>
-                                    </v-avatar>
-                                    <p>Conductor</p>
-                                </div>
-                            </v-card>
-                        </div>
+                                        <v-rating readonly :model-value="3" active-color="primary"
+                                            empty-icon="mdi-cog-outline" full-icon="mdi-cog"
+                                            density="compact"></v-rating>
+                                    </div>
+
+                                    <v-card-text>
+                                        <h4 class="mb-3">Comentario</h4>
+                                        <p class="text-justify">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor
+                                            incididunt ut labore et
+                                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                            ullamco
+                                            laboris nisi ut aliquip ex
+                                            ea commodo consequat.
+                                        </p>
+
+                                    </v-card-text>
+                                </v-card>
+                            </template>
+                            <template v-slot:load-more="{ props }">
+                                <v-btn class="bg-primary" v-bind="props" prepend-icon="mdi-refresh">Cargar mas
+                                    comentarios</v-btn>
+
+                            </template>
+                            <template v-slot:empty>
+                                <v-alert type="info">¡Has llegado al final de los comentarios!</v-alert>
+                            </template>
+                        </v-infinite-scroll>
                     </v-card>
                 </v-col>
             </v-row>
@@ -313,6 +378,19 @@ const postContratar = async () => {
     }
 }
 
+
+const items = ref(Array.from({ length: 10 }, (k, v) => v + 1))
+function load({ done }) {
+    setTimeout(() => {
+      items.value.push(...Array.from({ length: 10 }, (k, v) => v + items.value.at(-1) + 1))
+      done('ok')
+    }, 1000)
+
+    // setTimeout(() => {
+    //     done('empty')
+    // }, 1000)
+}
+
 onMounted(() => {
     if (prop.id !== null) {
         serviciosMecanico(prop.id)
@@ -339,5 +417,11 @@ onMounted(() => {
 
 .dp__input::placeholder {
     color: #1279C1 !important;
+}
+
+.perfilCard {
+    border: #1279C1 solid 3px;
+    background: linear-gradient(to bottom right, #242424, #0f619b);
+    color: #FFFFFF;
 }
 </style>
