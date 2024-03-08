@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('comentarios', function (Blueprint $table) {
             $table->id();
             $table->text('comentario');
+            $table->integer('calificacion');
+            $table->unsignedBigInteger('contratacion_id');
+            $table->foreign('contratacion_id')->references('id')->on('contrataciones')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('servicio_id');

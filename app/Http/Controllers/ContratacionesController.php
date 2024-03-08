@@ -8,7 +8,7 @@ use App\Models\Contratacion;
 use App\Models\Estados;
 use App\Models\Rechazo;
 use App\Models\Observacion;
-
+use App\Models\Comentario;
 
 
 
@@ -321,4 +321,63 @@ class ContratacionesController extends Controller
         ], 200);
 
     }
+    public function verComentario($id){
+        
+        $comentario = Comentario::where('contratacion_id', $id)->first();
+
+        // $comentario = Comentario::where('servicio_id', $id)
+        // ->where('user_id', $userId)
+        // ->first();
+
+        if (!$comentario) {
+            return response()->json([
+                'status' => true,
+                'exist' => false,
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => true,
+            'exist' => true,
+            'data' => $comentario,
+        ], 200);
+
+    }
+
+    public function crearComentario(Request $request){
+        $rules = [
+            'comentario' => 'required|text',
+            'puntuacion'=> 'required|integer',
+        ];
+
+        $validator = Validator::make($request->input(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()->all()
+            ], 400);
+        }
+
+        $comentario = new Comentario();
+
+        $comentario->comentario = $request->comentario;
+        $comentario->puntuacion = $request->puntuacion;
+        $comentario->contratacion_id = $request->contratacion_id;
+        $comentario->servicio_id = $request->servicio_id;
+        $comentario->user_id = $request->user_id;
+
+        if($comentario->save){
+            return response()->json([
+                'status' => true,
+                'message' => 'Calificacion guardada con exito',
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Fallo al guardar la calificación',
+            ], 400);
+        }
+    }
 }
+
+

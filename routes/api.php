@@ -54,6 +54,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('verRechazo/{id}',[ContratacionesController::class, 'verRechazo']);
     Route::get('verObservacion/{id}',[ContratacionesController::class, 'verObservacion']);
     Route::get('detalleContratacion/{id}',[ContratacionesController::class, 'show']);
+
+    Route::get('comentario/{id}',[ContratacionesController::class,'verComentario']);
+    Route::post('comentario',[ContratacionesController::class,'crearComentario']);
+
     
 
 

@@ -117,11 +117,11 @@
                             <VerRechazo :id="servicio.id" type="text"></VerRechazo>
                         </div>
                     </v-card-actions>
-                    <!-- <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado.estado === 'Completado'">
+                    <v-card-actions class="d-flex justify-space-between" v-else-if="servicio.estado.estado === 'Completado'">
                         <div class="d-flex flex-row gap-10">
-                            <detalleContratacion type="text" :id="servicio.id"></detalleContratacion>
+                            <comentario type="text" :id="servicio.id" :info="servicio"></comentario>
                         </div>
-                    </v-card-actions> -->
+                    </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
@@ -136,6 +136,7 @@
 import { ref, onMounted } from 'vue';
 import Observacion from './Modales/Observacion.vue';
 import VerRechazo from './Modales/VerRechazo.vue';
+import comentario from './Modales/Comentario.vue';
 import CancelarRechazar from './Modales/CancelarRechazar.vue';
 import detalleContratacion from './Modales/DetallesContratacion.vue';
 import notify from '@/plugins/notify.js';
