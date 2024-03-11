@@ -118,7 +118,7 @@ class ContratacionesController extends Controller
                 'message' => 'Ocurrio un error al encontrar la contratación',
             ], 404);
         }
-    
+
         return response()->json([
             'status' => true,
             'data' => $contratacion,
@@ -151,7 +151,7 @@ class ContratacionesController extends Controller
                 $rules = [
                     'observacion' => 'required',
                 ];
-        
+
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
                     return response()->json([
@@ -187,7 +187,7 @@ class ContratacionesController extends Controller
                 $rules = [
                     'motivo' => 'required',
                 ];
-        
+
                 $validator = Validator::make($request->input(), $rules);
                 if ($validator->fails()) {
                     return response()->json([
@@ -228,10 +228,11 @@ class ContratacionesController extends Controller
         }
     }
 
-    public function edit(Request $request, $id){
+    public function edit(Request $request, $id)
+    {
         $contratacion = Contratacion::find($id);
 
-        if(!$contratacion){
+        if (!$contratacion) {
             return response()->json([
                 'status' => false,
                 'message' => 'No se ha encontrado la contratación',
@@ -288,7 +289,8 @@ class ContratacionesController extends Controller
         ], 200);
     }
 
-    public function verRechazo($id){
+    public function verRechazo($id)
+    {
         $rechazo = Rechazo::where('contratacion_id', $id)->first();
 
         if (!$rechazo) {
@@ -297,7 +299,7 @@ class ContratacionesController extends Controller
                 'message' => 'Ocurrio un error al encontrar el rechazo',
             ], 404);
         }
-    
+
         return response()->json([
             'status' => true,
             'data' => $rechazo,
@@ -305,7 +307,8 @@ class ContratacionesController extends Controller
 
     }
 
-    public function verObservacion($id){
+    public function verObservacion($id)
+    {
         $observacion = Observacion::where('contratacion_id', $id)->latest('created_at')->first();
 
         if (!$observacion) {
@@ -314,15 +317,16 @@ class ContratacionesController extends Controller
                 'message' => 'Actualmente no hay observaciones',
             ], 404);
         }
-    
+
         return response()->json([
             'status' => true,
             'data' => $observacion,
         ], 200);
 
     }
-    public function verComentario($id){
-        
+    public function verComentario($id)
+    {
+
         $comentario = Comentario::where('contratacion_id', $id)->first();
 
         // $comentario = Comentario::where('servicio_id', $id)
@@ -344,10 +348,11 @@ class ContratacionesController extends Controller
 
     }
 
-    public function crearComentario(Request $request){
+    public function crearComentario(Request $request)
+    {
         $rules = [
-            'comentario' => 'required|text',
-            'puntuacion'=> 'required|integer',
+            'comentario' => 'required',
+            'calificacion' => 'required|integer',
         ];
 
         $validator = Validator::make($request->input(), $rules);
@@ -361,23 +366,89 @@ class ContratacionesController extends Controller
         $comentario = new Comentario();
 
         $comentario->comentario = $request->comentario;
-        $comentario->puntuacion = $request->puntuacion;
+        $comentario->calificacion = $request->calificacion;
         $comentario->contratacion_id = $request->contratacion_id;
         $comentario->servicio_id = $request->servicio_id;
         $comentario->user_id = $request->user_id;
 
-        if($comentario->save){
+        if ($comentario->save()) {
             return response()->json([
                 'status' => true,
-                'message' => 'Calificacion guardada con exito',
+                'message' => 'Calificación guardada con éxito',
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Fallo al guardar la calificación',
             ], 400);
         }
+
+        // try {
+        //     $comentario->save();
+        //     return response()->json([
+        //         'status' => true,
+        //         'message' => 'Calificación guardada con éxito',
+        //     ], 200);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Fallo al guardar la calificación',
+        //         'error' => $e->getMessage() // Aquí se muestra el error exacto
+        //     ], 400);
+        // }
     }
+
+    public function showComentarios($id)
+    {
+        // Obtener todos los comentarios relacionados con el servicio específico
+        $comentarios = Comentario::with('user')->where('servicio_id', $id)->get();
+
+        // Inicializar un array para almacenar el recuento de cada calificación
+        $ratingCounts = array_fill(1, 5, 0);
+
+        // Inicializar una variable para calcular la suma de todas las calificaciones
+        $totalRating = 0;
+
+        // Contar el total de cada calificación y calcular la suma de todas las calificaciones
+        foreach ($comentarios as $comentario) {
+            $calificacion = $comentario->calificacion;
+            $ratingCounts[$calificacion]++;
+            $totalRating += $calificacion;
+        }
+
+        // Calcular el total de comentarios
+        $totalComentarios = $comentarios->count();
+
+        // Calcular la media de todas las calificaciones
+        $averageRating = $totalComentarios > 0 ? $totalRating / $totalComentarios : 0;
+
+        if ($comentarios->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No se encontraron comentarios para este servicio.',
+                'data' => [
+                    'comentarios' => [],
+                    'rating' => [
+                        'counts' => array_fill(1, 5, 0),
+                        'average' => 0,
+                    ],
+                ],
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'comentarios' => $comentarios,
+                'rating' => [
+                    'counts' => $ratingCounts,
+                    'average' => $averageRating,
+                ],
+            ],
+        ], 200);
+    }
+
+
 }
 
 

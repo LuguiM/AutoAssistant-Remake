@@ -57,6 +57,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('comentario/{id}',[ContratacionesController::class,'verComentario']);
     Route::post('comentario',[ContratacionesController::class,'crearComentario']);
+    Route::get('comentarios-Servicios/{id}',[ContratacionesController::class,'showComentarios']);
+
 
     
 

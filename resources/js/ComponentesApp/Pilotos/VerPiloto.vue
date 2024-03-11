@@ -11,18 +11,20 @@
             <v-col cols="12">
                 <v-card class="pilotoDetail">
                     <v-row>
-                        <v-col col="12" md="5">
-                            <v-img class="" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+                        <v-col cols="12" md="5" class="d-flex align-center justify-center">
+                            <v-card-text >
+                                <v-img class="" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+                            </v-card-text>
                         </v-col>
 
-                        <v-col col="12" md="7">
-
-                            <v-card-title class="text-h5 font-weight-bold">
+                        <v-col cols="12" md="7">
+                          <v-card-text>
+                            <v-card-title class="text-h5 font-weight-bold bg-primary rounded-lg mb-5">
                                 Intermitente y luces de emergencia
                             </v-card-title>
 
                             <v-card-Text>
-                                <h3>Descripcion:</h3>
+                                <h3>Descripcion</h3>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est
                                 labore voluptatibus! Eaque cupiditate minima
                             </v-card-Text>
@@ -34,6 +36,7 @@
                                     </v-expansion-panel>
                                 </v-expansion-panels>
                             </v-card-text>
+                        </v-card-text>
 
                         </v-col>
                     </v-row>

@@ -111,7 +111,8 @@
                                                 </v-card-text>
                                                 <v-card-text v-if="infoServicio.perfil_mecanico?.nombre_taller">
                                                     <v-icon>mdi-car-cog</v-icon>
-                                                    Taller Mecanico <br> {{ infoServicio.perfil_mecanico.nombre_taller }}
+                                                    Taller Mecanico <br> {{ infoServicio.perfil_mecanico.nombre_taller
+                                                    }}
                                                 </v-card-text>
                                                 <v-card-text v-else>
                                                     <v-icon>mdi-car-cog</v-icon>
@@ -137,20 +138,20 @@
 
                                 <div class="d-flex align-center flex-column my-auto">
                                     <div class="text-h2 mt-5">
-                                        3
+                                        {{ rating.average }}
                                         <span class="text-h6 ml-n3">/5</span>
                                     </div>
 
                                     <v-rating readonly active-color="primary" empty-icon="mdi-cog-outline"
-                                        full-icon="mdi-cog" :model-value="3"></v-rating>
-                                    <div class="px-3">3,360 calificaciones</div>
+                                        full-icon="mdi-cog" :model-value="rating.average"></v-rating>
+                                    <div class="px-3">{{ comentarios.length }} calificaciones</div>
                                 </div>
                             </div>
                             <div style="width:100%;">
                                 <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
-                                    <v-list-item v-for="(rating, i) in 5" :key="i">
-                                        <v-progress-linear :model-value="rating * 15" class="mx-n5" color="primary"
-                                            height="20" rounded></v-progress-linear>
+                                    <v-list-item v-for="(count, rating) in rating.counts" :key="rating">
+                                        <v-progress-linear :model-value="(count / comentarios.length) * 100"
+                                            class="mx-n5" color="primary" height="20" rounded></v-progress-linear>
 
                                         <template v-slot:prepend>
                                             <span>{{ rating }}</span>
@@ -159,7 +160,7 @@
 
                                         <template v-slot:append>
                                             <div class="rating-values">
-                                                <span class="d-flex justify-end"> {{ rating * 224 }} </span>
+                                                <span class="d-flex justify-end">{{ count }}</span>
                                             </div>
                                         </template>
                                     </v-list-item>
@@ -167,19 +168,22 @@
                             </div>
                         </div>
 
-
                         <v-infinite-scroll mode="manual" @load="load">
-                            <template v-for="(item, index) in items" :key="item">
+                            <template
+                                v-for="(comentario, index) in Object.values(comentarios).slice(0, comentariosMostrados)"
+                                :key="index">
                                 <v-card class="pa-4 ma-4">
                                     <div class="d-flex flex-column flex-sm-row justify-space-between align-center">
                                         <div class="d-flex align-center gap-10">
-                                            <v-avatar color="info" style="border:1px solid #FFFFFF;"
-                                                image="https://fakeimg.pl/600x400?text=Foto">
+                                            <v-avatar :style="{ backgroundColor: avatarColor(index) }">
+                                                <span class="avatar-initials">
+                                                    {{ initials(comentario.user.nombre)}}
+                                                </span>
                                             </v-avatar>
-                                            <p>Conductor</p>
+                                            <p>{{ comentario.user.nombre }}</p>
                                         </div>
 
-                                        <v-rating readonly :model-value="3" active-color="primary"
+                                        <v-rating readonly :model-value="comentario.calificacion" active-color="primary"
                                             empty-icon="mdi-cog-outline" full-icon="mdi-cog"
                                             density="compact"></v-rating>
                                     </div>
@@ -187,13 +191,7 @@
                                     <v-card-text>
                                         <h4 class="mb-3">Comentario</h4>
                                         <p class="text-justify">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor
-                                            incididunt ut labore et
-                                            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco
-                                            laboris nisi ut aliquip ex
-                                            ea commodo consequat.
+                                            {{ comentario.comentario }}
                                         </p>
 
                                     </v-card-text>
@@ -205,7 +203,7 @@
 
                             </template>
                             <template v-slot:empty>
-                                <v-alert type="info">¡Has llegado al final de los comentarios!</v-alert>
+                                <v-alert type="warning">¡No se encontraron comentarios!</v-alert>
                             </template>
                         </v-infinite-scroll>
                     </v-card>
@@ -265,12 +263,11 @@
 
 // :to="{ path: '/verPiloto/' + piloto.id }" para cuando haya endpoint
 
-import { ref, defineProps, onMounted } from 'vue';
+import { ref, defineProps, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import notify from '@/plugins/notify.js';
 import { getData, postData } from '@/plugins/api.js';
 import { useAuthStore } from '@/Stores/auth';
-import { parse, format } from 'date-fns';
 
 const authStore = useAuthStore();
 
@@ -299,7 +296,9 @@ const loading = ref(true);
 const status = ref(false);
 const message = ref('');
 const msg = ref('El servicio mecanico solicitado no se ha encontrado o no esta disponible')
-
+const comentarios = ref({});
+const rating = ref({});
+const comentariosMostrados = ref(10);
 
 
 const verPerfilMecanico = (id) => {
@@ -308,17 +307,14 @@ const verPerfilMecanico = (id) => {
 
 
 const formatDatetime = (datetime) => {
-    // console.log('Valor original de datetime:', datetime);
 
-    // Si el datetime es null, devolver una cadena vacía
     if (datetime === null) {
-        // console.log('El datetime es null. Devolviendo cadena vacía.');
         return '';
     }
 
     // Verificar si datetime es un objeto Date
     if (datetime instanceof Date) {
-        // console.log('El datetime es un objeto Date. Convirtiendo a formato MySQL.');
+
 
         const year = datetime.getFullYear();
         const month = String(datetime.getMonth() + 1).padStart(2, '0');
@@ -332,8 +328,6 @@ const formatDatetime = (datetime) => {
         return datetimeMySQL;
     }
 
-    // Si datetime está en formato deseado, devolver datetime sin cambios
-    // console.log('El datetime no es un objeto Date. Devolviendo datetime sin cambios.');
     return datetime;
 }
 
@@ -355,6 +349,31 @@ const serviciosMecanico = async (id) => {
     } finally {
         loading.value = false;
     }
+};
+
+const obtenerComentarios = async (id) => {
+    try {
+        const data = await getData(('comentarios-Servicios/' + id));
+        comentarios.value = data.data.comentarios;
+        rating.value = data.data.rating;
+    } catch (error) {
+        notify(error.message, 'error');
+    }
+}
+
+const initials = (nameUser) => {
+    const fullName = nameUser
+    if (fullName) {
+        const names = fullName.split(' ');
+        return names.map(name => name.charAt(0)).join('').toUpperCase();
+    } else {
+        return '';
+    }
+};
+
+const avatarColor = (index) => {
+    const hue = (index * 137.508) % 360;
+    return `hsl(${hue}, 70%, 70%)`;
 };
 
 const postContratar = async () => {
@@ -379,23 +398,27 @@ const postContratar = async () => {
 }
 
 
-const items = ref(Array.from({ length: 10 }, (k, v) => v + 1))
-function load({ done }) {
-    setTimeout(() => {
-      items.value.push(...Array.from({ length: 10 }, (k, v) => v + items.value.at(-1) + 1))
-      done('ok')
-    }, 1000)
-
-    // setTimeout(() => {
-    //     done('empty')
-    // }, 1000)
+async function load({ done }) {
+    try {
+        if (comentariosMostrados.value < comentarios.value.length) {
+            comentariosMostrados.value += 10;
+            done('ok');
+        } else {
+            done('empty');
+        }
+    } catch (error) {
+        console.error('Error al cargar comentarios:', error);
+        done('error');
+    }
 }
 
 onMounted(() => {
     if (prop.id !== null) {
         serviciosMecanico(prop.id)
+        obtenerComentarios(prop.id)
     } else {
         serviciosMecanico(routerParams.params.id)
+        obtenerComentarios(routerParams.params.id)
     }
 });
 </script>
@@ -423,5 +446,11 @@ onMounted(() => {
     border: #1279C1 solid 3px;
     background: linear-gradient(to bottom right, #242424, #0f619b);
     color: #FFFFFF;
+}
+
+.avatar-initials {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
 }
 </style>

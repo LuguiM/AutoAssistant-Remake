@@ -2,7 +2,7 @@
     <v-dialog v-model="dialog" persistent width="auto">
         <template v-slot:activator="{ props }">
             <v-btn v-if="prop.type === 'text'" v-bind="props" @click="obtenerCalificacion()" size="small"
-                class="bg-success" icon>
+                class="bg-cyan-darken-4" icon>
                 <v-icon>mdi-star-cog-outline</v-icon>
                 <v-tooltip activator="parent" location="top">Reseñar servicio</v-tooltip>
             </v-btn>
@@ -16,38 +16,56 @@
                 Calificación del servicio
             </v-card-title>
             <v-divider class="border-opacity-100" color="primary"></v-divider>
-            <v-card-text v-if="!exist">Califica este servicio de acuerdo a tu experiencia</v-card-text>
-            <v-card-text v-else>Tu calificaión</v-card-text>
-
-            <v-card-text>
-                <div v-if="!exist">
-                    <div class="d-flex gap-10 justify-center mb-4">
-                        <v-rating v-model="form.calificacion" active-color="primary" empty-icon="mdi-cog-outline"
-                        full-icon="mdi-cog" density="compact"></v-rating>
-                        <pre>{{ form.calificacion }}</pre>
-                    </div>
-                    
-                    <v-textarea  label="Comentario" variant="solo"></v-textarea>
-
-
-                </div>
-
-                <p v-else>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor
-                    incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco
-                    laboris nisi ut aliquip ex
-                    ea commodo consequat.
-                </p>
+            <v-card-text v-if="cargando">
+                <v-row class="fill-height" align-content="center" justify="center">
+                    <v-col class="text-subtitle-1 text-center" cols="12">
+                        Cargando...
+                    </v-col>
+                    <v-col cols="6">
+                        <v-progress-linear indeterminate rounded height="6"></v-progress-linear>
+                    </v-col>
+                </v-row>
             </v-card-text>
+            <div v-else>
 
-            <v-card-actions class="mt-3">
-                <v-btn v-if="!exist" class="bg-primary" @click="enviarComentario">Confimar</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn class="bg-error" @click="dialog = false">Cerrar</v-btn>
-            </v-card-actions>
+                <v-card-text v-if="!exist">Califica este servicio de acuerdo a tu experiencia</v-card-text>
+                <v-card-text v-else class="text-h6">Tu calificación</v-card-text>
+
+                <v-card-text>
+                    <div v-if="!exist">
+                        <div class="d-flex gap-10 justify-center align-center mb-4">
+                            <p>Calificación: </p>
+                            <v-rating v-model="form.calificacion" active-color="primary" empty-icon="mdi-cog-outline"
+                                full-icon="mdi-cog" density="compact"></v-rating>
+                            <pre>{{ form.calificacion }}</pre>
+                        </div>
+
+                        <v-textarea v-model="form.comentario" label="Comentario" variant="solo"></v-textarea>
+
+
+                    </div>
+                    <div v-else>
+                        <div class="d-flex gap-10 justify-center align-center mb-4">
+                            <p>Calificación: </p>
+                            <v-rating readonly v-model="comentarioData.calificacion" active-color="primary"
+                                empty-icon="mdi-cog-outline" full-icon="mdi-cog" density="compact"></v-rating>
+                            <pre>{{ comentarioData.calificacion }}</pre>
+                        </div>
+
+                        <v-textarea readonly no-resize v-model="comentarioData.comentario" label="Comentario"
+                            variant="solo" row-height="30" rows="4" auto-grow></v-textarea>
+                    </div>
+
+
+                </v-card-text>
+
+                <v-card-actions class="mt-3">
+                    <v-btn v-if="!exist" class="bg-primary" @click="enviarComentario">Confimar</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn class="bg-error" @click="dialog = false">Cerrar</v-btn>
+                </v-card-actions>
+            </div>
+
         </v-card>
 
     </v-dialog>
@@ -62,6 +80,7 @@ import { postData, getData } from '@/plugins/api.js';
 
 
 const dialog = ref(false);
+const cargando = ref(true);
 
 const prop = defineProps({
     type: {
@@ -74,7 +93,7 @@ const prop = defineProps({
         required: true,
         default: null
     },
-    info:{
+    info: {
         required: false,
     }
 
@@ -82,29 +101,37 @@ const prop = defineProps({
 const emit = defineEmits(['actualizar'])
 
 const exist = ref(true);
-const form = ref({})
+const comentarioData = ref({});
+const form = ref({
+    calificacion: 0,
+})
 
 const enviarComentario = async () => {
 
     try {
-        form.value.estado_id = 3;
-        await postData(('comentario/' + prop.id), form.value, { headers: { 'Content-Type': 'application/json' } });
+        form.value.contratacion_id = prop.id;
+        form.value.servicio_id = prop.info.servicio_id;
+        form.value.user_id = prop.info.conductor_id;
+        await postData(('comentario'), form.value, { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
         notify(error, 'error');
     } finally {
-        dialog.value = false;
         emit('actualizar')
+        dialog.value = false;
     }
 }
 
 const obtenerCalificacion = async () => {
     try {
         const data = await getData(('comentario/' + prop.id));
+        comentarioData.value = data.data;
         exist.value = data.exist;
         console.log(prop.info)
 
     } catch (error) {
         notify(error, 'warning');
+    } finally {
+        cargando.value = false;
     }
 }
 
