@@ -23,7 +23,7 @@
                     :prepend-icon="item.icon">
                     {{ item.nombre }}
                 </v-list-item>
-                <v-list-item v-show="authStore.user.rol == 'admin'" class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index"
+                <v-list-item v-show="authStore.user.rol == 'Admin'" class="font-weight-bold" v-for="(item, index) in items" :to="item.ruta" :key="index"
                     :prepend-icon="item.icon">
                     {{ item.nombre }}
                 </v-list-item>
@@ -75,6 +75,7 @@ const items = ref([
     { nombre: 'Servicios Mecanicos', icon: 'mdi-car-wrench', ruta: '/servicios-mecanicos' },
     { nombre: 'Servicios Activos', icon: 'mdi-wrench-clock', ruta: '/serviciosActivos' },
     { nombre: 'Perfil Mecanico', icon: 'mdi-account-cog', ruta: '/crearPerfilMecanico' },
+    { nombre: 'Crear Pilotos', icon: 'mdi-car-key', ruta: '/crearPilotos' },
 ]);
 
 const rutasConductor = ref([
